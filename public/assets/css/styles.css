@@ -102,7 +102,7 @@ header{
 /* Nosotros */
 .nosotros{
   background:linear-gradient(0deg,rgba(24,27,30,.68),rgba(24,27,30,.48)),
-             url("https://masqueclima.es/img/especialista-limpia-y-repara-el-aire-acondicionado-de-pared.jpg") center/cover no-repeat;
+             url("../img/especialista-limpia-y-repara-el-aire-acondicionado-de-pared.jpg") center/cover no-repeat;
   padding:4rem 0 3rem;color:#fff;text-align:center;position:relative;
 }
 .nosotros-title{color:#fff;font-size:2.3rem;margin-bottom:1.3rem;}
