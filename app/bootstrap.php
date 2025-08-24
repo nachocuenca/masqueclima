@@ -1,11 +1,43 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 
+// Cargar configuración base (config.php) y helpers
 if (!isset($GLOBALS['config'])) {
   $GLOBALS['config'] = [
     'brand' => ['langs'=>['es','en','de','nl','ru'], 'default_lang'=>'es'],
-    'app'   => ['base_url'=>'', 'ga4_id'=>''],
+    'app'   => ['base_url'=>'', 'ga4_id'=>'', 'env'=>'production'],
   ];
+}
+
+$cfgFile = __DIR__.'/config.php';
+if (is_file($cfgFile)) {
+  $userCfg = require $cfgFile;
+  if (is_array($userCfg)) {
+    $GLOBALS['config'] = array_replace_recursive($GLOBALS['config'], $userCfg);
+  }
+}
+
+if (!function_exists('config')) {
+  function config(string $key, $default=null){
+    $parts = explode('.', $key);
+    $val = $GLOBALS['config'] ?? [];
+    foreach ($parts as $p) {
+      if (!is_array($val) || !array_key_exists($p, $val)) return $default;
+      $val = $val[$p];
+    }
+    return $val;
+  }
+}
+
+$env = strtolower((string)config('app.env', 'production'));
+if ($env === 'production') {
+  ini_set('display_errors', '0');
+} else {
+  ini_set('display_errors', '1');
+}
+ini_set('log_errors', '1');
+if (!ini_get('error_log')) {
+  @ini_set('error_log', __DIR__.'/../storage/php_error.log');
 }
 
 if (!function_exists('detect_lang')){
@@ -30,7 +62,7 @@ if (!function_exists('detect_lang')){
 $current_lang = detect_lang();
 $GLOBALS['current_lang']=$current_lang;
 
-if (isset($_GET['setlang'])) { require_once __DIR__.'/seo.php'; header('Location: '.lang_url($current_lang), true, 302); exit; }
+if (isset($_GET['setlang'])) { require_once __DIR__.'/helpers.php'; header('Location: '.lang_url($current_lang), true, 302); exit; }
 
 if (!function_exists('load_translations')){
   function load_translations(string $lang): array {

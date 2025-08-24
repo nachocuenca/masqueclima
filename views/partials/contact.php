@@ -16,7 +16,6 @@ $lang = $GLOBALS['current_lang'] ?? 'es';
       <div class="contact-form">
         <h3><?php echo e(t('contact.form_title')); ?></h3>
         <form action="<?php echo e(asset('send.php')); ?>" method="post" novalidate>
-          <?php echo csrf_field(); ?>
           <input type="hidden" name="lang" value="<?php echo e($lang); ?>">
           <input type="text" name="company" value="" style="display:none" tabindex="-1" autocomplete="off"> <!-- honeypot -->
           <div class="form-group">

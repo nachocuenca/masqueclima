@@ -14,7 +14,7 @@ $TT = function(string $key): string {
 <section class="hero" id="inicio">
   <div class="hero-bg">
     <video class="hero-video" autoplay muted loop playsinline>
-      <source src="https://masqueclima.es/img/0_Air_Conditioner_Remote_Control_3840x2160.mp4" type="video/mp4">
+      <source src="<?= asset('img/0_Air_Conditioner_Remote_Control_3840x2160.mp4'); ?>" type="video/mp4">
     </video>
   </div>
   <div class="container">
@@ -37,22 +37,22 @@ $TT = function(string $key): string {
     <h2 class="section-title"><?php echo $TT('method.title'); ?></h2>
     <div class="services-grid">
       <div class="service-card">
-        <img src="https://masqueclima.es/img/Asesoramiento.png" alt="<?php echo $TT('img.asesoramiento_alt'); ?>">
+        <img src="<?= asset('img/Asesoramiento.png'); ?>" alt="<?php echo $TT('img.asesoramiento_alt'); ?>">
         <h3><?php echo $TT('method.s1.title'); ?></h3>
         <p><?php echo $TT('method.s1.text'); ?></p>
       </div>
       <div class="service-card">
-        <img src="https://masqueclima.es/img/Venta.png" alt="<?php echo $TT('img.seleccion_alt'); ?>">
+        <img src="<?= asset('img/Venta.png'); ?>" alt="<?php echo $TT('img.seleccion_alt'); ?>">
         <h3><?php echo $TT('method.s2.title'); ?></h3>
         <p><?php echo $TT('method.s2.text'); ?></p>
       </div>
       <div class="service-card">
-        <img src="https://masqueclima.es/img/Instalacion.png" alt="<?php echo $TT('img.instalacion_alt'); ?>">
+        <img src="<?= asset('img/Instalacion.png'); ?>" alt="<?php echo $TT('img.instalacion_alt'); ?>">
         <h3><?php echo $TT('method.s3.title'); ?></h3>
         <p><?php echo $TT('method.s3.text'); ?></p>
       </div>
       <div class="service-card">
-        <img src="https://masqueclima.es/img/postVenta.png" alt="<?php echo $TT('img.mantenimiento_alt'); ?>">
+        <img src="<?= asset('img/postVenta.png'); ?>" alt="<?php echo $TT('img.mantenimiento_alt'); ?>">
         <h3><?php echo $TT('method.s4.title'); ?></h3>
         <p><?php echo $TT('method.s4.text'); ?></p>
       </div>
@@ -226,14 +226,14 @@ $TT = function(string $key): string {
     <h2 class="section-title text-center mb-4"><?php echo $TT('brands.title'); ?></h2>
     <div class="swiper brand-swiper">
       <div class="swiper-wrapper align-items-center">
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/Daikin-Logo.png" alt="<?php echo $TT('brands.daikin_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/Mitsubishi-Electric-Logo.png" alt="<?php echo $TT('brands.mitsubishi_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/Logo-Fujitsu.png" alt="<?php echo $TT('brands.fujitsu_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/Logo Panasonic.png" alt="<?php echo $TT('brands.panasonic_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/Haier-Logo.wine.png" alt="<?php echo $TT('brands.haier_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/LG-logo.png" alt="<?php echo $TT('brands.lg_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/gree-logo.png" alt="<?php echo $TT('brands.gree_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="https://masqueclima.es/img/giatsu-01.png" alt="<?php echo $TT('brands.giatsu_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Daikin-Logo.png'); ?>" alt="<?php echo $TT('brands.daikin_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Mitsubishi-Electric-Logo.png'); ?>" alt="<?php echo $TT('brands.mitsubishi_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Logo-Fujitsu.png'); ?>" alt="<?php echo $TT('brands.fujitsu_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Logo Panasonic.png'); ?>" alt="<?php echo $TT('brands.panasonic_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Haier-Logo.wine.png'); ?>" alt="<?php echo $TT('brands.haier_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/LG-logo.png'); ?>" alt="<?php echo $TT('brands.lg_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/gree-logo.png'); ?>" alt="<?php echo $TT('brands.gree_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/giatsu-01.png'); ?>" alt="<?php echo $TT('brands.giatsu_alt'); ?>" class="brand-logo"></div>
       </div>
     </div>
   </div>
@@ -282,7 +282,6 @@ $TT = function(string $key): string {
       <div class="contact-form">
         <h3><?php echo $TT('contact.form_title'); ?></h3>
         <form method="post" novalidate>
-          <?php echo csrf_field(); ?>
           <input type="hidden" name="company" value="">
           <div class="form-group">
             <label for="nombre"><?php echo $TT('form.name'); ?> *</label>
@@ -346,5 +345,5 @@ $TT = function(string $key): string {
 ======================= -->
 <a href="https://wa.me/34613026600" class="whatsapp-floating js-track" data-ev="whatsapp_float" target="_blank" rel="noopener" aria-label="<?php echo $TT('cta.whatsapp'); ?>">
   <span><?php echo $TT('cta.whatsapp'); ?></span>
-  <img src="https://masqueclima.es/img/WhatsApp.png" alt="<?php echo $TT('img.whatsapp_alt'); ?>" class="WhatsApp" style="width:20px;height:20px;">
+  <img src="<?= asset('img/WhatsApp.png'); ?>" alt="<?php echo $TT('img.whatsapp_alt'); ?>" class="WhatsApp" style="width:20px;height:20px;">
 </a>

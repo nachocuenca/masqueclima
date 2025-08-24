@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+DirectoryIndex index.php
+
+# servir sitemap/robots directamente
+RewriteRule ^(sitemap\.xml|robots\.txt)$ - [L]
+
+# servir archivos/directorios reales
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# idiomas principales
+RewriteRule ^(es|en|de|nl|ru)/?$ index.php [L]
+
+# fallback
+RewriteRule ^ index.php [L]
+</IfModule>

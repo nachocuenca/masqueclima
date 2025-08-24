@@ -36,7 +36,7 @@ $render_flags = function($classes = '', $show_active_disabled = true) use ($lang
 
       <!-- Logo (izquierda) -->
       <a class="navbar-brand order-1" href="<?php echo e(lang_url($lang)); ?>">
-        <img src="https://masqueclima.es/img/masqueclimalogo_.png" alt="+QUECLIMA" style="height:60px;">
+        <img src="<?php echo e(asset('img/masqueclimalogo_.png')); ?>" alt="+QUECLIMA" style="height:60px;">
       </a>
 
       <!-- Menú centrado -->
@@ -75,36 +75,3 @@ $render_flags = function($classes = '', $show_active_disabled = true) use ($lang
     </div>
   </nav>
 </header>
-
-<script>
-// Fallback robusto para el colapso del menú
-document.addEventListener('DOMContentLoaded', function () {
-  const collapseEl = document.getElementById('navbarNav');
-  const toggler    = document.querySelector('.navbar-toggler');
-
-  let bsCollapse = null;
-  if (collapseEl && typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
-    bsCollapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
-  }
-
-  // Cerrar menú al pulsar enlaces de ancla (móvil)
-  document.querySelectorAll('.navbar-nav .nav-link[href^="#"]').forEach(link => {
-    link.addEventListener('click', () => {
-      if (!collapseEl) return;
-      const isShown = collapseEl.classList.contains('show');
-      if (!isShown) return;
-      if (bsCollapse) bsCollapse.hide(); else collapseEl.classList.remove('show');
-    });
-  });
-
-  // Fallback por si Bootstrap no está activo
-  if (toggler) {
-    toggler.addEventListener('click', function (e) {
-      if (!collapseEl) return;
-      if (bsCollapse) return; // lo maneja Bootstrap
-      e.preventDefault();
-      collapseEl.classList.toggle('show');
-    });
-  }
-});
-</script>
