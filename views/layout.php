@@ -26,6 +26,7 @@ $GLOBALS['__view_name__'] = $view ?? 'home';
   <!-- Performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap">
 
   <!-- Fonts + CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -35,6 +36,16 @@ $GLOBALS['__view_name__'] = $view ?? 'home';
 
   <!-- JSON-LD -->
   <?php print_jsonld(); ?>
+
+  <?php if ($id = config('app.ga4_id')): ?>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo e($id); ?>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '<?php echo e($id); ?>');
+    </script>
+  <?php endif; ?>
 </head>
 <body>
   <?php include __DIR__.'/partials/header.php'; ?>
@@ -50,8 +61,8 @@ $GLOBALS['__view_name__'] = $view ?? 'home';
   <?php include __DIR__.'/partials/footer.php'; ?>
 
   <!-- JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
   <script defer src="<?php echo asset('js/main.js'); ?>"></script>
 </body>
 </html>

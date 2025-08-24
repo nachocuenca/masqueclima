@@ -15,3 +15,4 @@ RewriteRule ^video/(.*)$ /masqueclima/public/assets/video/$1 [L]
 # todo lo demás al front controller
 RewriteRule ^.*$ /masqueclima/public/index.php [L]
 </IfModule>
+

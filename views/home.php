@@ -13,7 +13,7 @@ $TT = function(string $key): string {
 ======================= -->
 <section class="hero" id="inicio">
   <div class="hero-bg">
-    <video class="hero-video" autoplay muted loop playsinline>
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="<?= asset('img/hero.jpg'); ?>">
       <source src="<?= asset('img/0_Air_Conditioner_Remote_Control_3840x2160.mp4'); ?>" type="video/mp4">
     </video>
   </div>
@@ -37,22 +37,22 @@ $TT = function(string $key): string {
     <h2 class="section-title"><?php echo $TT('method.title'); ?></h2>
     <div class="services-grid">
       <div class="service-card">
-        <img src="<?= asset('img/Asesoramiento.png'); ?>" alt="<?php echo $TT('img.asesoramiento_alt'); ?>">
+        <img src="<?= asset('img/Asesoramiento.png'); ?>" alt="<?php echo $TT('img.asesoramiento_alt'); ?>" width="120" height="120" loading="lazy" decoding="async">
         <h3><?php echo $TT('method.s1.title'); ?></h3>
         <p><?php echo $TT('method.s1.text'); ?></p>
       </div>
       <div class="service-card">
-        <img src="<?= asset('img/Venta.png'); ?>" alt="<?php echo $TT('img.seleccion_alt'); ?>">
+        <img src="<?= asset('img/Venta.png'); ?>" alt="<?php echo $TT('img.seleccion_alt'); ?>" width="120" height="120" loading="lazy" decoding="async">
         <h3><?php echo $TT('method.s2.title'); ?></h3>
         <p><?php echo $TT('method.s2.text'); ?></p>
       </div>
       <div class="service-card">
-        <img src="<?= asset('img/Instalacion.png'); ?>" alt="<?php echo $TT('img.instalacion_alt'); ?>">
+        <img src="<?= asset('img/Instalacion.png'); ?>" alt="<?php echo $TT('img.instalacion_alt'); ?>" width="120" height="120" loading="lazy" decoding="async">
         <h3><?php echo $TT('method.s3.title'); ?></h3>
         <p><?php echo $TT('method.s3.text'); ?></p>
       </div>
       <div class="service-card">
-        <img src="<?= asset('img/postVenta.png'); ?>" alt="<?php echo $TT('img.mantenimiento_alt'); ?>">
+        <img src="<?= asset('img/postVenta.png'); ?>" alt="<?php echo $TT('img.mantenimiento_alt'); ?>" width="120" height="120" loading="lazy" decoding="async">
         <h3><?php echo $TT('method.s4.title'); ?></h3>
         <p><?php echo $TT('method.s4.text'); ?></p>
       </div>
@@ -226,14 +226,14 @@ $TT = function(string $key): string {
     <h2 class="section-title text-center mb-4"><?php echo $TT('brands.title'); ?></h2>
     <div class="swiper brand-swiper">
       <div class="swiper-wrapper align-items-center">
-        <div class="swiper-slide"><img src="<?= asset('img/Daikin-Logo.png'); ?>" alt="<?php echo $TT('brands.daikin_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="<?= asset('img/Mitsubishi-Electric-Logo.png'); ?>" alt="<?php echo $TT('brands.mitsubishi_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="<?= asset('img/Logo-Fujitsu.png'); ?>" alt="<?php echo $TT('brands.fujitsu_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="<?= asset('img/Logo Panasonic.png'); ?>" alt="<?php echo $TT('brands.panasonic_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="<?= asset('img/Haier-Logo.wine.png'); ?>" alt="<?php echo $TT('brands.haier_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="<?= asset('img/LG-logo.png'); ?>" alt="<?php echo $TT('brands.lg_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="<?= asset('img/gree-logo.png'); ?>" alt="<?php echo $TT('brands.gree_alt'); ?>" class="brand-logo"></div>
-        <div class="swiper-slide"><img src="<?= asset('img/giatsu-01.png'); ?>" alt="<?php echo $TT('brands.giatsu_alt'); ?>" class="brand-logo"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Daikin-Logo.png'); ?>" alt="<?php echo $TT('brands.daikin_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Mitsubishi-Electric-Logo.png'); ?>" alt="<?php echo $TT('brands.mitsubishi_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Logo-Fujitsu.png'); ?>" alt="<?php echo $TT('brands.fujitsu_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Logo Panasonic.png'); ?>" alt="<?php echo $TT('brands.panasonic_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/Haier-Logo.wine.png'); ?>" alt="<?php echo $TT('brands.haier_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/LG-logo.png'); ?>" alt="<?php echo $TT('brands.lg_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/gree-logo.png'); ?>" alt="<?php echo $TT('brands.gree_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
+        <div class="swiper-slide"><img src="<?= asset('img/giatsu-01.png'); ?>" alt="<?php echo $TT('brands.giatsu_alt'); ?>" class="brand-logo" width="160" height="90" loading="lazy" decoding="async"></div>
       </div>
     </div>
   </div>
@@ -281,7 +281,7 @@ $TT = function(string $key): string {
 
       <div class="contact-form">
         <h3><?php echo $TT('contact.form_title'); ?></h3>
-        <form method="post" novalidate>
+        <form method="post" novalidate class="js-track-form" data-ev="form_submit">
           <input type="hidden" name="company" value="">
           <div class="form-group">
             <label for="nombre"><?php echo $TT('form.name'); ?> *</label>

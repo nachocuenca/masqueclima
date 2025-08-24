@@ -85,18 +85,101 @@ if (!function_exists('print_og_locales')) {
 
 if (!function_exists('print_jsonld')) {
     function print_jsonld(): void {
-        $lang  = $GLOBALS['current_lang'] ?? config('brand.default_lang', 'es');
-        $brand = config('brand.name', '+QUECLIMA');
-        $logo  = base_url() . asset('img/masqueclimalogo_.png');
-        $url   = lang_url($lang);
-        $data  = [
+        $lang   = $GLOBALS['current_lang'] ?? config('brand.default_lang', 'es');
+        $brand  = config('brand.name', '+QUECLIMA');
+        $logo   = base_url() . asset('img/masqueclimalogo_.png');
+        $url    = lang_url($lang);
+        $phone  = config('brand.phone');
+        $langs  = config('brand.langs', ['es']);
+
+        // Organization
+        $org = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'Organization',
+            'name'     => $brand,
+            'url'      => base_url() . '/',
+            'logo'     => $logo,
+        ];
+        if ($same = config('brand.sameAs', [])) $org['sameAs'] = $same;
+        echo '<script type="application/ld+json">' . json_encode($org, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</script>\n";
+
+        // HVACBusiness
+        $hvac = [
             '@context' => 'https://schema.org',
             '@type'    => 'HVACBusiness',
             'name'     => $brand,
             'url'      => $url,
             'logo'     => $logo,
+            'areaServed'   => config('brand.area'),
+            'serviceType'  => ['Instalación aire acondicionado','Mantenimiento climatización','Energía solar'],
+            'contactPoint' => [
+                '@type' => 'ContactPoint',
+                'telephone' => $phone,
+                'contactType' => 'customer service',
+                'availableLanguage' => $langs,
+            ],
         ];
-        echo '<script type="application/ld+json">'.json_encode($data, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES)."</script>\n";
+        echo '<script type="application/ld+json">' . json_encode($hvac, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</script>\n";
+
+        // WebSite
+        $site = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'WebSite',
+            'url'      => base_url() . '/',
+            'potentialAction' => [
+                '@type'       => 'SearchAction',
+                'target'      => base_url() . '/search?q={search_term_string}',
+                'query-input' => 'required name=search_term_string',
+            ],
+        ];
+        echo '<script type="application/ld+json">' . json_encode($site, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</script>\n";
+
+        // Breadcrumb (mínimo Home)
+        $crumb = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'BreadcrumbList',
+            'itemListElement' => [[
+                '@type'    => 'ListItem',
+                'position' => 1,
+                'name'     => t('nav.home'),
+                'item'     => $url,
+            ]],
+        ];
+        echo '<script type="application/ld+json">' . json_encode($crumb, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</script>\n";
+
+        // FAQPage (solo en home)
+        if (($GLOBALS['__view_name__'] ?? '') === 'home') {
+            $faqs = [];
+            for ($i = 1; $i <= 8; $i++) {
+                $q = t('faq.q' . $i);
+                $a = t('faq.a' . $i);
+                if ($q === 'faq.q' . $i || $a === 'faq.a' . $i) continue;
+                if ($i === 3) {
+                    $items = [];
+                    for ($j = 1; $j <= 5; $j++) {
+                        $li = t('faq.a3.i' . $j);
+                        if ($li !== 'faq.a3.i' . $j) $items[] = $li;
+                    }
+                    if ($items) $a .= ' ' . implode(' ', $items);
+                }
+                $faqs[] = [
+                    '@type' => 'Question',
+                    'name'  => $q,
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text'  => $a,
+                    ],
+                ];
+            }
+            if ($faqs) {
+                $faqPage = [
+                    '@context'    => 'https://schema.org',
+                    '@type'       => 'FAQPage',
+                    'mainEntity'  => $faqs,
+                ];
+                echo '<script type="application/ld+json">' . json_encode($faqPage, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) . "</script>\n";
+            }
+        }
     }
 }
 
