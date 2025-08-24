@@ -13,6 +13,13 @@ La app es estática y no mantiene procesos. Reinicios se limitan a:
 - `?__health=1` responde `OK` y sirve para chequeos externos.
 - Comprobar diariamente que no existan errores 500 o redirecciones en bucle.
 
+## Seguridad básica
+- `display_errors = Off` en producción y `error_log` dedicado.
+- `expose_php = Off`.
+- Formularios con campo honeypot y sanitización de entrada.
+- Limitar mensajes de contacto a <2000 caracteres.
+- Forzar HTTPS a nivel de panel y usar permisos `644/755`.
+
 ## Incidencias comunes
 - **500**: revisar sintaxis PHP (`php -l`), permisos de archivos y `error_log`.
 - **Bucles de redirección**: verificar reglas `.htaccess` y que el dominio apunte a `public_html/`.

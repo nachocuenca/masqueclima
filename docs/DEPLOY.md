@@ -31,6 +31,21 @@ public_html/
    - Revisar logs de error en `cPanel → Metrics → Errors`.
    - Comprobar que `https://tu-dominio/?__health=1` responde `OK`.
 
+## Variables de entorno
+- `APP_ENV` – `production` o `development` (controla `?__dbg=1`).
+- `BRAND_DOMAIN` – dominio base usado por `base_url()`.
+- `GA4_ID` – identificador opcional de Google Analytics 4.
+- `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` – credenciales opcionales para PHPMailer.
+
 ## Rollback
 - Conservar copia del commit anterior.
 - Para deshacer, sustituir la carpeta `masqueclima` por la versión previa y volver a subir `.htaccess` original.
+
+## Checklist rápido
+- [ ] Actualizar repo local (`git pull`).
+- [ ] Ejecutar `tools/deploy-verify.sh` en staging.
+- [ ] Subir código a `public_html/masqueclima`.
+- [ ] Copiar `.htaccess` raíz y `public/.htaccess`.
+- [ ] Seleccionar PHP 8.2 en cPanel.
+- [ ] Limpiar caché de LiteSpeed/CDN.
+- [ ] Ejecutar `tools/deploy-verify.sh https://dominio`.
