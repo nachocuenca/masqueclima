@@ -1,18 +1,12 @@
-<IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteBase /
 
-# servir archivos/directorios reales
+# Permitir archivos/directorios existentes
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# mapear assets
-RewriteRule ^assets/(.*)$ /masqueclima/public/assets/$1 [L]
-RewriteRule ^img/(.*)$ /masqueclima/public/assets/img/$1 [L]
-RewriteRule ^video/(.*)$ /masqueclima/public/assets/video/$1 [L]
+# Mapear assets a la aplicación
+RewriteRule ^(assets|img|video)/(.*)$ masqueclima/public/$1/$2 [L]
 
-# todo lo demás al front controller
-RewriteRule ^.*$ /masqueclima/public/index.php [L]
-</IfModule>
-
+# Enrutar todo lo demás al front controller evitando bucles
+RewriteRule ^(?!masqueclima/).* masqueclima/public/index.php [QSA,L]
