@@ -11,6 +11,16 @@
     }
   });
 
+  // ---- Tracking submit ----
+  document.addEventListener('submit', function (e) {
+    var f = e.target && e.target.closest('.js-track-form');
+    if (!f) return;
+    var ev = f.getAttribute('data-ev') || 'form_submit';
+    if (typeof gtag === 'function') {
+      try { gtag('event', ev, { event_category: 'engagement' }); } catch (_) {}
+    }
+  });
+
   // ---- Smooth scroll para anclas ----
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest('a[href^="#"]');

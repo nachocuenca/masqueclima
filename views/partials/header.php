@@ -22,7 +22,7 @@ $render_flags = function($classes = '', $show_active_disabled = true) use ($lang
            hreflang="<?php echo e($l); ?>"
            aria-label="<?php echo e($name); ?>"
            title="<?php echo e($name); ?>">
-          <img src="<?php echo e(flag_url($l)); ?>" alt="<?php echo e($name); ?>" width="16" height="12" class="lang-flag">
+          <img src="<?php echo e(flag_url($l)); ?>" alt="<?php echo e($name); ?>" width="16" height="12" class="lang-flag" loading="lazy" decoding="async">
         </a>
       </li>
     <?php endforeach; ?>
@@ -36,7 +36,7 @@ $render_flags = function($classes = '', $show_active_disabled = true) use ($lang
 
       <!-- Logo (izquierda) -->
       <a class="navbar-brand order-1" href="<?php echo e(lang_url($lang)); ?>">
-        <img src="<?php echo e(asset('img/masqueclimalogo_.png')); ?>" alt="+QUECLIMA" style="height:60px;">
+        <img src="<?php echo e(asset('img/masqueclimalogo_.png')); ?>" alt="+QUECLIMA" width="180" height="60" style="height:60px;">
       </a>
 
       <!-- Menú centrado -->

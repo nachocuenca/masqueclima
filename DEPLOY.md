@@ -1,9 +1,10 @@
-# Despliegue en cPanel (Nicalia)
+# Despliegue en cPanel
 
-1. **Subir el repo** al servidor dentro de `public_html/masqueclima/`.
-2. Copiar los archivos de `public_html/` de este repositorio al `public_html/` real:
+1. **Subir el repositorio** a `public_html/masqueclima/` usando Git o FTP.
+2. En el `public_html/` raíz del dominio copiar:
    - `public_html/index.php`
    - `public_html/.htaccess`
-3. Asegurarse de que el dominio apunte a `public_html` y que esté habilitado **PHP 8.0 o superior** en cPanel.
-4. El front controller real quedará en `public_html/masqueclima/public/index.php`.
-5. Vaciar cachés o CDN si existen para ver los cambios.
+3. En cPanel → *Select PHP Version* escoger **PHP 8.0+** para el dominio.
+4. El front controller quedará en `public_html/masqueclima/public/index.php`.
+5. Subir también `public/.htaccess`, `public/robots.txt` y `public/sitemap.xml` dentro de `masqueclima/public/`.
+6. Limpiar cachés (cPanel o CDN) y comprobar que `/`, `/es/`… responden `200`.

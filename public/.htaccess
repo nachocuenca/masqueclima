@@ -16,3 +16,14 @@ RewriteRule ^(es|en|de|nl|ru)/?$ index.php [L]
 # fallback
 RewriteRule ^ index.php [L]
 </IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|png|jpg|jpeg|gif|svg|webp|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|php)$">
+    Header set Cache-Control "no-store"
+  </FilesMatch>
+</IfModule>
+
+AddDefaultCharset utf-8

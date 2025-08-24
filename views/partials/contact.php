@@ -15,7 +15,8 @@ $lang = $GLOBALS['current_lang'] ?? 'es';
 
       <div class="contact-form">
         <h3><?php echo e(t('contact.form_title')); ?></h3>
-        <form action="<?php echo e(asset('send.php')); ?>" method="post" novalidate>
+        <form method="post" novalidate class="js-track-form" data-ev="form_submit">
+          <?php echo csrf_field(); ?>
           <input type="hidden" name="lang" value="<?php echo e($lang); ?>">
           <input type="text" name="company" value="" style="display:none" tabindex="-1" autocomplete="off"> <!-- honeypot -->
           <div class="form-group">
@@ -46,7 +47,7 @@ $lang = $GLOBALS['current_lang'] ?? 'es';
             <label for="mensaje"><?php echo e(t('form.desc')); ?></label>
             <textarea id="mensaje" name="message" rows="4"></textarea>
           </div>
-          <button type="submit" class="submit-btn" name="contact_submit" value="1"><?php echo e(t('form.submit')); ?></button>
+          <button type="submit" class="submit-btn js-track" data-ev="form_submit" name="contact_submit" value="1"><?php echo e(t('form.submit')); ?></button>
         </form>
       </div>
     </div>
