@@ -1,29 +1,30 @@
-<IfModule mod_rewrite.c>
-RewriteEngine On
 DirectoryIndex index.php
+AddDefaultCharset utf-8
 
-# servir sitemap/robots directamente
-RewriteRule ^(sitemap\.xml|robots\.txt)$ - [L]
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType video/mp4 "access plus 1 year"
+</IfModule>
+<FilesMatch "\.(css|js|png|jpe?g|gif|svg|mp4|webp)$">
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
 
-# servir archivos/directorios reales
+RewriteEngine On
+
+# Permitir archivos/directorios existentes
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# idiomas principales
-RewriteRule ^(es|en|de|nl|ru)/?$ index.php [L]
+# Idiomas válidos
+RewriteRule ^(es|en|de|nl|ru)/?$ index.php [L,QSA]
 
-# fallback
-RewriteRule ^ index.php [L]
-</IfModule>
-
-<IfModule mod_headers.c>
-  <FilesMatch "\.(js|css|png|jpg|jpeg|gif|svg|webp|mp4)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
-  </FilesMatch>
-  <FilesMatch "\.(html|php)$">
-    Header set Cache-Control "no-store"
-  </FilesMatch>
-</IfModule>
-
-AddDefaultCharset utf-8
+# Fallback
+RewriteRule ^ index.php [L,QSA]
