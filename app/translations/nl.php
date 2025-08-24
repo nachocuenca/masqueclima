@@ -1,94 +1,103 @@
 <?php
 return [
-  'meta' => [
-    'title'       => '+QUECLIMA · Airconditioning in Alicante',
-    'description' => 'Installatie en onderhoud van airconditioning, verwarming, elektra en zonneboilers in de provincie Alicante.',
-    'home' => [
-      'title'       => 'Airco-installatie in Alicante | +QUECLIMA',
-      'description' => '+QUECLIMA: specialisten in installatie, onderhoud en reparatie van airco, verwarming, elektra en zonneboilers in Alicante.',
-    ],
+  'seo' => [
+    'title'       => 'Airco-installatie in Benidorm en Marina Baixa | +QUECLIMA',
+    'description' => 'Experts in airconditioning, verwarming en zonneboilers in Benidorm en de Marina Baixa. Schone montage, eerlijk advies en 3 jaar garantie in heel Alicante.',
   ],
+
   'nav' => [
     'home'=>'Home','method'=>'Methode','about'=>'Over ons','coverage'=>'Gebied','faq'=>'FAQ','contact'=>'Contact',
   ],
+
   'hero' => [
-    'title'    => 'Installatie & onderhoud van airconditioning',
-    'subtitle' => 'Experts in airco, verwarming en energie in Alicante',
+    'title'    => 'Professionele airco- en verwarmingsinstallatie',
+    'subtitle' => 'Airconditioning, verwarming, elektra en zonneboilers in Benidorm en de Marina Baixa met eerlijk advies en 3 jaar echte garantie.',
   ],
-  'cta' => ['quote'=>'Offerte aanvragen','whatsapp'=>'WhatsApp'],
+
+  'cta' => ['quote'=>'Vraag een vrijblijvende offerte','whatsapp'=>'Bericht via WhatsApp'],
+
   'method' => [
-    'title' => 'Professionele HVAC-aanpak',
-    's1' => ['title'=>'Persoonlijke diagnose','text'=>'Analyse van de ruimte en behoeften. Thermische studie en advies met focus op energie-efficiëntie.'],
-    's2' => ['title'=>'Beste oplossing','text'=>'Topmerken en ruime modelkeuze: het ideale systeem voor de beste prijs.'],
-    's3' => ['title'=>'Efficiënte & veilige installatie','text'=>'Gekwalificeerde technici met ruime ervaring voor nette, gegarandeerde installaties.'],
-    's4' => ['title'=>'Onderhoud & garantie','text'=>'Preventief onderhoud en reparaties. 3 jaar garantie op onze installaties en producten.'],
+    'title' => 'Onze aanpak: efficiënt, netjes en betrouwbaar',
+    's1' => ['title'=>'Advies en warmteberekening','text'=>'We bekijken jouw woning of bedrijf, letten op ligging, isolatie en gebruik. Daarna maken we een warmteberekening en adviseren de meest efficiënte oplossing zodat je alleen betaalt voor wat je echt nodig hebt.'],
+    's2' => ['title'=>'Keuze van het juiste systeem','text'=>'Split, kanaal of cassette: we vergelijken topmerken op prestaties en verbruik. Zo krijg je een duurzame installatie binnen jouw budget.'],
+    's3' => ['title'=>'Nette en veilige montage','text'=>'Gecertificeerde monteurs beschermen jouw interieur, werken precies en ruimen alles op. Je ontvangt de RITE-certificaten en 3 jaar garantie op de installatie.'],
+    's4' => ['title'=>'Preventief onderhoud','text'=>'Regelmatige controles, filterreiniging en snelle service bij storingen houden het systeem efficiënt. We herinneren je aan noodzakelijke onderhoudsmomenten.'],
   ],
+
   'about' => [
-    'title'=>'Experts in energietotaaloplossingen',
-    'p1'=>'+QUECLIMA is gespecialiseerd in klimaatbeheersing: installatie, reparatie en onderhoud.',
-    'p2'=>'We analyseren de warmtevraag van woning of bedrijf en adviseren de beste oplossing.',
-    'p3'=>'Gecertificeerde technici met ruime ervaring.',
-    'p4'=>'We werken met topmerken zoals Mitsubishi Electric, Daikin, Fujitsu, Panasonic, Haier, LG, Gree, enz.',
-    'cert'=>'Conform RITE en officiële registratie van installaties.',
+    'title'=>'Gecertificeerde klimaatspecialisten',
+    'p1'=>'+QUECLIMA combineert techniek en vakmanschap voor installatie, reparatie en onderhoud van klimaat- en energiesystemen.',
+    'p2'=>'We bekijken elk project om comfort te verhogen en kosten te verlagen, voor woningen, winkels en VvE’s.',
+    'p3'=>'Ons team beschikt over officiële certificaten en volgt continu trainingen.',
+    'p4'=>'We werken met merken als Mitsubishi Electric, Daikin, Fujitsu, Panasonic, Haier, LG en Gree.',
+    'cert'=>'Installaties worden geregistreerd en voldoen volledig aan het RITE.',
   ],
+
   'coverage' => [
-    'title'=>'Werkgebied: gehele provincie Alicante',
-    'text'=>'Wij werken in de hele provincie, met name Marina Baixa: Benidorm, Altea, Albir, La Nucía, Calpe, Finestrat, Alfaz del Pi en Moraira.',
+    'title'=>'Service vanuit Benidorm door de hele provincie Alicante',
+    'text'=>'Vanuit Benidorm bedienen we de Marina Baixa en de rest van Alicante met snelle aanrijtijd. Altea, La Nucía, Calpe, Finestrat, Alfaz del Pi, Villajoyosa of Moraira: we zijn op tijd voor installatie of onderhoud, en ook verdere plaatsen in de provincie bereiken we zonder vertraging.',
     'area_name'=>'Provincie Alicante',
     'map_title'=>'+QUECLIMA werkgebied kaart',
   ],
+
   'faq' => [
     'title'=>'Veelgestelde vragen',
     'q1'=>'Hoeveel vermogen heeft mijn airco nodig?',
-    'a1'=>'Vuistregel: ~100 frigorie per m², afhankelijk van oriëntatie, isolatie, ramen en bezetting. Een persoonlijke studie is aanbevolen.',
-    'q2'=>'Wat is het verbruik?',
-    'a2'=>'Afhankelijk van vermogen en efficiëntie. Een A++ unit van ~3,4 kW verbruikt ca. 0,55 kWh/h. Inverter verlaagt het verbruik.',
-    'q3'=>'Hoe gebruik ik de airco correct?',
-    'a3'=>'Best practices.',
-    'a3.i1'=>'Reinig filters 2× per jaar.',
-    'a3.i2'=>'Gebruik automodus en timer.',
-    'a3.i3'=>'Vermijd directe luchtstroom op personen.',
-    'a3.i4'=>'Aanbevolen temp.: 23–26 °C (zomer), 20–24 °C (winter).',
-    'a3.i5'=>'Houd deuren en ramen gesloten tijdens gebruik.',
-    'q4'=>'Welke verwarming past het best?',
-    'a4'=>'Afhankelijk van ruimte, gebruik en budget. Wij adviseren op maat.',
+    'a1'=>'Dat hangt af van oppervlakte, ligging en isolatie. Gemiddeld reken je zo’n 100 watt koelvermogen per m². Hoge plafonds, veel glas of volle zon vragen meer capaciteit. We voeren ter plekke een warmteberekening uit om het systeem exact af te stemmen en onnodig verbruik te voorkomen.',
+    'q2'=>'Wat verbruikt een inverter-airco?',
+    'a2'=>'Het verbruik hangt af van het vermogen en de efficiëntieklasse. Een split van 3,5 kW met label A++ gebruikt rond 0,55 kWh per uur bij normale belasting. Invertertechniek past het toerental aan, waardoor pieken verminderen en de temperatuur stabiel blijft met minder stroom.',
+    'q3'=>'Hoe verleng ik de levensduur van mijn airco?',
+    'a3'=>'Belangrijke tips:',
+    'a3.i1'=>'Reinig filters en warmtewisselaar twee keer per jaar.',
+    'a3.i2'=>'Zorg dat de buitenunit vrij en geventileerd blijft.',
+    'a3.i3'=>'Gebruik automodus en timers.',
+    'a3.i4'=>'Stel zomers 24 °C en ’s winters 21 °C in.',
+    'a3.i5'=>'Houd ramen en deuren gesloten tijdens gebruik.',
+    'q4'=>'Welk verwarmingssysteem is het meest efficiënt?',
+    'a4'=>'In het zachte klimaat van Alicante is een lucht-luchtwarmtepomp zeer efficiënt. Voor grotere woningen of bestaande radiatoren kan een gasketel of hybride systeem beter passen. We beoordelen isolatie, gebruik en budget om de beste oplossing te adviseren.',
     'q5'=>'Installeren jullie zonneboilers?',
-    'a5'=>'Ja, zonneboilers voor sanitair warm water en ondersteuning verwarming.',
+    'a5'=>'Ja, we ontwerpen en plaatsen zonnecollectoren voor warm tapwater en ondersteuning van de verwarming. Ze benutten de zon van Alicante, verlagen het energieverbruik en voldoen aan alle regelgeving.',
     'q6'=>'Met welke merken werken jullie?',
-    'a6'=>'Daikin, Mitsubishi Electric, Fujitsu, Panasonic, LG, Gree, Toshiba, Haier, enz.',
+    'a6'=>'We installeren en onderhouden topmerken zoals Daikin, Mitsubishi Electric, Fujitsu, Panasonic, LG, Gree, Toshiba en Haier. Onze keuze hangt af van efficiëntie en de beschikbaarheid van onderdelen.',
     'q7'=>'Welke garanties bieden jullie?',
-    'a7'=>'Geregistreerde installaties met garantie en RITE-conform.',
-    'q8'=>'Waar leveren jullie diensten?',
-    'a8'=>'In de hele provincie Alicante, met name Marina Baixa.',
+    'a7'=>'Alle installaties worden officieel geregistreerd en krijgen 3 jaar echte garantie. Daarnaast bieden we technische ondersteuning en advies over verplicht onderhoud om de fabrieksgarantie te behouden.',
+    'q8'=>'Welke gebieden bedienen jullie?',
+    'a8'=>'Wij werken in de hele provincie Alicante en reageren snel. We zijn regelmatig in Benidorm, Altea, La Nucía, Calpe, Finestrat, Alfaz del Pi, Villajoyosa en omliggende plaatsen.',
   ],
+
   'brands' => [
     'title'=>'Topmerken die wij installeren',
     'daikin_alt'=>'Daikin logo','mitsubishi_alt'=>'Mitsubishi Electric logo','fujitsu_alt'=>'Fujitsu logo',
     'panasonic_alt'=>'Panasonic logo','haier_alt'=>'Haier logo','lg_alt'=>'LG logo','gree_alt'=>'Gree logo','giatsu_alt'=>'Giatsu logo',
   ],
+
   'contact' => [
-    'title'=>'Vraag je persoonlijke offerte aan',
-    'info_title'=>'Snelle contactgegevens',
-    'phone'=>'Telefoon','email'=>'E-mail','area'=>'Werkgebied','area_text'=>'Gehele provincie Alicante',
-    'hours_label'=>'Openingstijden','hours_text'=>'Maandag t/m zaterdag: 8:00 — 20:00',
-    'form_title'=>'Persoonlijk advies en service',
+    'title'=>'Vraag een vrijblijvende offerte aan',
+    'info_title'=>'Direct contact',
+    'phone'=>'Telefoon','email'=>'E-mail','area'=>'Werkgebied','area_text'=>'Benidorm, Marina Baixa en provincie Alicante',
+    'hours_label'=>'Openingstijden','hours_text'=>'Maandag t/m zaterdag: 8:00–20:00',
+    'form_title'=>'Persoonlijk advies zonder verplichtingen',
   ],
+
   'form' => [
     'name'=>'Naam','phone'=>'Telefoon','email'=>'E-mail','service'=>'Type dienst','select'=>'Kies een dienst',
     'desc'=>'Werkbeschrijving','submit'=>'Versturen','ok'=>'Verzonden. We nemen snel contact op.',
   ],
+
   'service' => [
     'install_ac'=>'Airco-installatie','maintenance'=>'Onderhoud HVAC',
     'install_heating'=>'Verwarmingsinstallatie','electrical'=>'Elektrische installaties',
     'plumbing'=>'Loodgieterswerk','urgent'=>'24/7 spoedservice',
   ],
+
   'reviews' => [
-    'title'=>'Echte Google-reviews',
-    'desc'=>'+QUECLIMA levert professionele klimaat- en energiediensten.',
-    'helper'=>'Dit zijn geverifieerde reviews van klanten.',
-    'cta'=>'Vraag vrijblijvend een offerte aan',
-    'keywords'=>'airconditioning, verwarming en zonne-energie in Alicante',
+    'title'=>'Google-reviews van klanten',
+    'desc'=>'+QUECLIMA staat voor nette montage en eerlijk advies.',
+    'helper'=>'Deze reviews zijn door Google geverifieerd.',
+    'cta'=>'Vraag vrijblijvend een offerte',
+    'keywords'=>'airconditioning, verwarming en zonneboilers in Alicante',
   ],
+
   'img' => [
     'asesoramiento_alt'=>'Persoonlijk advies en diagnose',
     'seleccion_alt'=>'Selectie van de beste oplossing',
@@ -96,14 +105,17 @@ return [
     'mantenimiento_alt'=>'Preventief onderhoud en reparaties',
     'whatsapp_alt'=>'Contact via WhatsApp',
   ],
+
   'offers' => ['title'=>'HVAC- en energiediensten'],
+
   'footer' => [
     'rights'=>'Alle rechten voorbehouden.',
-    'line2'=>'Specialisten in airconditioning, verwarming, loodgieterij en elektra in de provincie Alicante.',
+    'line2'=>'Specialist in airconditioning, verwarming, elektra en zonneboilers in de provincie Alicante.',
     'line3'=>'Service in Benidorm, Altea, La Nucía, Calpe, Finestrat, Alfaz del Pi en omgeving.',
   ],
+
   '404' => [
-    'message'=>'De pagina bestaat niet meer of is verplaatst. Ga terug naar de startpagina van {site}.',
+    'message'=>'De pagina bestaat niet of is verplaatst. Ga terug naar de startpagina van {site}.',
     'back_home'=>'Terug naar home',
   ],
 ];

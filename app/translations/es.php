@@ -1,16 +1,10 @@
 <?php
 return [
-  // META (global + por vista)
-  'meta' => [
-    'title'       => '+QUECLIMA · Climatización en Alicante',
-    'description' => 'Instalación y mantenimiento de aire acondicionado, calefacción, electricidad y energía solar térmica en Alicante y provincia.',
-    'home' => [
-      'title'       => 'Instalación de Aire Acondicionado en Alicante | +QUECLIMA',
-      'description' => '+QUECLIMA, especialistas en instalación, mantenimiento y reparación de aire acondicionado, calefacción, electricidad y energía solar térmica en toda la provincia de Alicante.',
-    ],
+  'seo' => [
+    'title'       => 'Climatización en Benidorm y la Marina Baixa | +QUECLIMA',
+    'description' => 'Aire acondicionado, calefacción, electricidad y solar térmica en Benidorm, Marina Baixa. Montaje limpio, asesoramiento experto y 3 años de garantía en Alicante.',
   ],
 
-  // Navegación
   'nav' => [
     'home'     => 'Inicio',
     'method'   => 'Método',
@@ -20,84 +14,77 @@ return [
     'contact'  => 'Contacto',
   ],
 
-  // Hero
   'hero' => [
-    'title'    => 'Instalación y Mantenimiento de Climatización',
-    'subtitle' => 'Expertos en aire acondicionado, calefacción y energía en Alicante',
+    'title'    => 'Instalación y mantenimiento profesional de climatización',
+    'subtitle' => 'Aire acondicionado, calefacción, electricidad y solar térmica en Benidorm y la Marina Baixa con asesoramiento experto y garantía real',
   ],
 
-  // CTA
   'cta' => [
-    'quote'    => 'Solicitar Presupuesto',
-    'whatsapp' => 'WhatsApp',
+    'quote'    => 'Pide presupuesto sin compromiso',
+    'whatsapp' => 'Escríbenos por WhatsApp',
   ],
 
-  // Método / Servicios
   'method' => [
-    'title' => 'Método de trabajo profesional en climatización',
+    'title' => 'Nuestro método: valor, limpieza y eficiencia',
     's1' => [
-      'title' => 'Diagnóstico personalizado',
-      'text'  => 'Ofrecemos la mejor opción según las características del espacio y las necesidades del usuario. Realizamos estudio térmico y asesoramos con enfoque en eficiencia energética.',
+      'title' => 'Asesoramiento y estudio previo',
+      'text'  => 'Visitamos su vivienda o negocio para analizar orientación, aislamiento y uso. Con estos datos realizamos un estudio térmico y le proponemos la opción más eficiente para que solo pague por la potencia necesaria.',
     ],
     's2' => [
-      'title' => 'Selección de la mejor solución',
-      'text'  => 'Trabajamos con marcas líderes y una amplia variedad de modelos para ofrecer el equipo ideal al mejor precio.',
+      'title' => 'Selección del equipo idóneo',
+      'text'  => 'Comparamos sistemas split, por conductos o cassette de marcas líderes. Evaluamos rendimiento y consumo para ofrecerle la solución más rentable dentro de su presupuesto.',
     ],
     's3' => [
-      'title' => 'Instalación eficiente y segura',
-      'text'  => 'Técnicos cualificados con gran experiencia para cualquier tipo de instalación, con acabados limpios y garantía.',
+      'title' => 'Montaje limpio y seguro',
+      'text'  => 'Técnicos certificados protegen su espacio, instalan con precisión y retiran los residuos. Entregamos certificados RITE y respaldamos la instalación con 3 años de garantía.',
     ],
     's4' => [
-      'title' => 'Mantenimiento y garantías',
-      'text'  => 'Mantenimiento preventivo y reparaciones. 3 años de garantía en nuestras instalaciones y productos.',
+      'title' => 'Mantenimiento y postventa',
+      'text'  => 'Realizamos revisiones periódicas, limpieza de filtros y asistencia rápida ante averías para prolongar la vida útil y mantener la eficiencia del sistema.',
     ],
   ],
 
-  // Quiénes somos
   'about' => [
-    'title' => 'Expertos en soluciones energéticas',
-    'p1'    => '+QUECLIMA es una empresa especializada en climatización: instalación, reparación y mantenimiento.',
-    'p2'    => 'Analizamos necesidades térmicas del hogar o comercio y recomendamos la mejor solución.',
-    'p3'    => 'Equipo técnico con certificaciones oficiales y amplia experiencia.',
-    'p4'    => 'Colaboramos con marcas líderes como Mitsubishi Electric, Daikin, Fujitsu, Panasonic, Haier, LG, Gree, etc.',
-    'cert'  => 'Cumplimos el RITE y legalizamos instalaciones en industria.',
+    'title' => 'Especialistas certificados en climatización',
+    'p1'    => 'En +QUECLIMA combinamos ingeniería y oficio para instalar, reparar y mantener sistemas de climatización y energía.',
+    'p2'    => 'Estudiamos cada proyecto para optimizar el confort y reducir el consumo en viviendas, comercios y comunidades.',
+    'p3'    => 'Nuestro equipo posee carnets oficiales y formación continua en nuevas tecnologías.',
+    'p4'    => 'Trabajamos con Mitsubishi Electric, Daikin, Fujitsu, Panasonic, Haier, LG, Gree y otras marcas de referencia.',
+    'cert'  => 'Registramos las instalaciones y cumplimos estrictamente el RITE.',
   ],
 
-  // Cobertura
   'coverage' => [
-    'title'      => 'Cobertura: instalamos en toda la provincia de Alicante',
-    'text'       => 'Realizamos instalaciones en toda la provincia, especialmente en Marina Baixa: Benidorm, Altea, Albir, La Nucía, Calpe, Finestrat, Alfaz del Pi y Moraira.',
-    'area_name'  => 'Provincia de Alicante',
-    'map_title'  => 'Mapa de cobertura +QUECLIMA',
+    'title'     => 'Servicio desde Benidorm a toda la provincia de Alicante',
+    'text'      => 'Con base en Benidorm, cubrimos la Marina Baixa y el resto de la provincia con desplazamiento rápido. Altea, La Nucía, Calpe, Finestrat, Alfaz del Pi, Villajoyosa o Moraira, además de otras localidades alicantinas: llegamos a tiempo donde nos necesite para instalación o mantenimiento.',
+    'area_name' => 'Provincia de Alicante',
+    'map_title' => 'Mapa de cobertura de +QUECLIMA',
   ],
 
-  // FAQ
   'faq' => [
     'title' => 'Preguntas frecuentes',
-    'q1' => '¿Cuánta potencia necesita mi aire acondicionado?',
-    'a1' => 'Como referencia, ~100 frigorías por m², dependiendo de orientación, aislamiento, ventanas y ocupación. Recomendamos un estudio térmico personalizado.',
-    'q2' => '¿Qué consumo tiene un aire acondicionado?',
-    'a2' => 'Depende de la potencia y la eficiencia. Un equipo A++ de ~3,4 kW consume ~0,55 kWh/h. Los sistemas inverter reducen el consumo.',
-    'q3' => '¿Cómo usar correctamente el aire acondicionado?',
-    'a3' => 'Buenas prácticas de uso.',
-    'a3.i1' => 'Limpia los filtros 2 veces al año.',
-    'a3.i2' => 'Usa modo automático y temporizador.',
-    'a3.i3' => 'Evita el aire directo sobre personas.',
-    'a3.i4' => 'Temperaturas: 23–26 °C (verano) y 20–24 °C (invierno).',
-    'a3.i5' => 'Cierra puertas y ventanas durante el uso.',
-    'q4' => '¿Qué tipo de calefacción me conviene más?',
-    'a4' => 'Depende de espacio, uso y presupuesto. Te asesoramos sin compromiso para elegir la mejor opción.',
-    'q5' => '¿Trabajáis con energía solar térmica?',
-    'a5' => 'Sí, instalamos sistemas solares térmicos para ACS y apoyo a calefacción.',
-    'q6' => '¿Qué marcas instaláis?',
-    'a6' => 'Daikin, Mitsubishi Electric, Fujitsu, Panasonic, LG, Gree, Toshiba, Haier, entre otras.',
+    'q1' => '¿Qué potencia necesita mi aire acondicionado?',
+    'a1' => 'Depende del tamaño, la orientación y el aislamiento. Como referencia se calculan unas 100 frigorías por metro cuadrado. Techos altos, grandes ventanales o zonas muy soleadas requieren más potencia. Realizamos un estudio térmico in situ para dimensionar el sistema y evitar consumos excesivos.',
+    'q2' => '¿Cuánto consume un equipo inverter?',
+    'a2' => 'El gasto depende de la potencia nominal y la eficiencia. Un split A++ de 3,5 kW ronda los 0,55 kWh por hora a carga media. La tecnología inverter modula el compresor, reduciendo picos y manteniendo una temperatura estable con menos electricidad.',
+    'q3' => '¿Cómo alargar la vida útil del aire acondicionado?',
+    'a3' => 'Recomendaciones clave:',
+    'a3.i1' => 'Limpie filtros y baterías al menos dos veces al año.',
+    'a3.i2' => 'Mantenga la unidad exterior despejada y ventilada.',
+    'a3.i3' => 'Active modo automático y programaciones.',
+    'a3.i4' => 'Fije 24 °C en verano y 21 °C en invierno como referencia.',
+    'a3.i5' => 'Cierre puertas y ventanas durante el funcionamiento.',
+    'q4' => '¿Qué sistema de calefacción es más eficiente?',
+    'a4' => 'La bomba de calor aire‑aire es muy eficiente en climas templados como el de Alicante. En viviendas amplias o con radiadores existentes puede convenir una caldera de gas o un sistema híbrido. Analizamos aislamiento, uso y presupuesto para proponer la mejor alternativa.',
+    'q5' => '¿Realizan instalaciones de energía solar térmica?',
+    'a5' => 'Sí, diseñamos e instalamos captadores solares para agua caliente sanitaria y apoyo a calefacción. Aprovechan la radiación de Alicante para reducir el uso de electricidad o gas y cumplen la normativa vigente.',
+    'q6' => '¿Con qué marcas trabajáis?',
+    'a6' => 'Instalamos y damos servicio a marcas como Daikin, Mitsubishi Electric, Fujitsu, Panasonic, LG, Gree, Toshiba y Haier. Recomendamos cada equipo según su eficiencia y la disponibilidad de repuestos.',
     'q7' => '¿Qué garantías ofrecéis?',
-    'a7' => 'Instalaciones garantizadas, registradas en industria y conforme a RITE.',
-    'q8' => '¿Dónde prestáis servicio?',
-    'a8' => 'En toda la provincia de Alicante, especialmente Marina Baixa.',
+    'a7' => 'Todas las instalaciones se registran en industria y cuentan con una garantía real de 3 años. Además, ofrecemos soporte técnico durante toda la vida útil y asesoramos sobre el mantenimiento obligatorio.',
+    'q8' => '¿En qué localidades dais servicio?',
+    'a8' => 'Atendemos toda la provincia de Alicante con tiempos de respuesta ajustados. Trabajamos habitualmente en Benidorm, Altea, La Nucía, Calpe, Finestrat, Alfaz del Pi, Villajoyosa y municipios cercanos.',
   ],
 
-  // Marcas
   'brands' => [
     'title'          => 'Marcas líderes que instalamos',
     'daikin_alt'     => 'Logo Daikin',
@@ -110,20 +97,18 @@ return [
     'giatsu_alt'     => 'Logo Giatsu',
   ],
 
-  // Contacto
   'contact' => [
-    'title'       => 'Solicita tu presupuesto personalizado',
-    'info_title'  => 'Información de contacto',
+    'title'       => 'Solicita tu presupuesto sin compromiso',
+    'info_title'  => 'Contacto rápido',
     'phone'       => 'Teléfono',
     'email'       => 'Email',
     'area'        => 'Área de servicio',
-    'area_text'   => 'Toda la provincia de Alicante',
+    'area_text'   => 'Benidorm, Marina Baixa y provincia de Alicante',
     'hours_label' => 'Horario',
-    'hours_text'  => 'Lunes a Sábado: 8:00 - 20:00',
-    'form_title'  => 'Atención y asesoramiento personalizado',
+    'hours_text'  => 'Lunes a sábado: 8:00-20:00',
+    'form_title'  => 'Te asesoramos de forma personalizada',
   ],
 
-  // Formulario
   'form' => [
     'name'   => 'Nombre',
     'phone'  => 'Teléfono',
@@ -135,7 +120,6 @@ return [
     'ok'     => 'Solicitud enviada. Te contactaremos pronto.',
   ],
 
-  // Servicios
   'service' => [
     'install_ac'      => 'Instalación de aire acondicionado',
     'maintenance'     => 'Mantenimiento de sistemas de climatización',
@@ -145,16 +129,14 @@ return [
     'urgent'          => 'Servicio urgente 24h',
   ],
 
-  // Opiniones
   'reviews' => [
-    'title'    => 'Opiniones reales en Google',
-    'desc'     => 'En +QUECLIMA trabajamos para ofrecer un servicio profesional de climatización y energía.',
-    'helper'   => 'Estas son opiniones verificadas de nuestros clientes.',
+    'title'    => 'Opiniones de clientes en Google',
+    'desc'     => 'En +QUECLIMA buscamos montajes limpios y asesoramiento honesto.',
+    'helper'   => 'Estas valoraciones están verificadas por Google.',
     'cta'      => 'Pide presupuesto sin compromiso',
     'keywords' => 'climatización, calefacción y energía solar en Alicante',
   ],
 
-  // Imágenes (alt)
   'img' => [
     'asesoramiento_alt' => 'Asesoramiento y diagnóstico personalizado',
     'seleccion_alt'     => 'Selección de la mejor solución',
@@ -163,21 +145,18 @@ return [
     'whatsapp_alt'      => 'Contactar por WhatsApp',
   ],
 
-  // Ofertas (JSON-LD)
   'offers' => [
     'title' => 'Servicios de climatización y energía',
   ],
 
-  // Footer
   'footer' => [
     'rights' => 'Todos los derechos reservados.',
-    'line2'  => 'Especialistas en climatización, calefacción, fontanería y electricidad en la provincia de Alicante.',
+    'line2'  => 'Especialistas en climatización, calefacción, electricidad y solar térmica en la provincia de Alicante.',
     'line3'  => 'Servicio técnico en Benidorm, Altea, La Nucía, Calpe, Finestrat, Alfaz del Pi y alrededores.',
   ],
 
-  // 404
   '404' => [
-    'message'   => 'La página que buscas no existe o ha cambiado. Vuelve al inicio para continuar navegando en {site}.',
+    'message'   => 'La página que busca no existe o ha sido movida. Regrese al inicio de {site} para continuar.',
     'back_home' => 'Volver al inicio',
   ],
 ];
