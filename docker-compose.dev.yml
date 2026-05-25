@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: ./current
+      dockerfile: Dockerfile
+    container_name: masqueclima-dev-web
+    restart: unless-stopped
+    env_file:
+      - ./shared/.env
+    environment:
+      APP_ENV: staging
+      NEXT_PUBLIC_SITE_URL: https://dev.masqueclima.es
+      NEXT_PUBLIC_PRODUCTION_URL: https://masqueclima.es
+    ports:
+      - "127.0.0.1:18110:3000"
+    volumes:
+      - ./shared/logs:/app/logs
