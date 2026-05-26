@@ -2,12 +2,13 @@
 
 :root {
   color-scheme: light;
-  --background: #f7f8f6;
+  --background: #ffffff;
   --foreground: #15191f;
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -15,9 +16,14 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
     Arial,
-    Helvetica,
     sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -45,4 +51,23 @@ textarea {
 .focus-ring:focus-visible {
   outline: 3px solid #f5b642;
   outline-offset: 3px;
+}
+
+/* Premium card hover */
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Mobile bottom nav safe area */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Smooth scroll for anchor links */
+section[id] {
+  scroll-margin-top: 80px;
 }

@@ -12,6 +12,7 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { WhatsAppFloating } from "@/components/ui/WhatsAppFloating";
+import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { getDictionary, getHomeFaqs } from "@/lib/i18n";
 import { buildHomeMetadata } from "@/lib/seo";
 import {
@@ -65,7 +66,7 @@ export default async function HomePage({ params }: HomePageProps) {
       />
       <JsonLd data={faqSchema(faqs)} />
       <Header dictionary={dictionary} lang={lang} />
-      <main>
+      <main className="pb-20 md:pb-0">
         <Hero dictionary={dictionary} />
         <Method dictionary={dictionary} />
         <Reviews dictionary={dictionary} lang={lang} />
@@ -78,6 +79,7 @@ export default async function HomePage({ params }: HomePageProps) {
       </main>
       <Footer dictionary={dictionary} />
       <WhatsAppFloating label={dictionary.cta.whatsapp} />
+      <MobileBottomNav lang={lang} />
     </>
   );
 }

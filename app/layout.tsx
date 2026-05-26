@@ -1,7 +1,18 @@
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { headers } from "next/headers";
 import { LANGS } from "@/lib/routes";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: "/assets/img/favicon.ico", sizes: "any" },
+      { url: "/assets/img/favicon-32x32.png", sizes: "32x32", type: "image/png" }
+    ],
+    shortcut: "/assets/img/favicon.ico"
+  }
+};
 
 type RootLayoutProps = {
   children: ReactNode;

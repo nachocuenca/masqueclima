@@ -31,10 +31,10 @@ export const site = {
   area: legacyConfig.brand.area,
   defaultLang: legacyConfig.brand.default_lang,
   langs: legacyConfig.brand.langs,
-  logo: "/assets/img/masqueclimalogo_.png",
+  logo: "/assets/img/logo.svg",
   ogImage: "/assets/img/og.jpg",
-  heroPoster: "/assets/img/hero.jpg",
-  heroVideo: "/assets/img/0_Air_Conditioner_Remote_Control_3840x2160.mp4",
+  heroPoster: "/assets/img/hero1.webp",
+  heroVideo: "/assets/img/hero.mp4",
   mapEmbed:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12725.620917144712!2d-0.136398!3d38.538232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6221f6b0e9dffd%3A0x3ee4adcdf1ef9be4!2sBenidorm%2C%20Alicante!5e0!3m2!1ses!2ses!4v1689843948108!5m2!1ses!2ses",
   homeMeta: legacyConfig.seo
