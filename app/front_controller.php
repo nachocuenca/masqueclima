@@ -424,6 +424,11 @@ function snapshot_feedback_script(): string {
 }
 
 function render_es_hub_page(string $path): ?string {
+  $servicePage = es_service_page_for_path($path);
+  if ($servicePage !== null) {
+    return render_es_legacy_shell($servicePage, $path, render_service_detail_body($servicePage));
+  }
+
   $pages = [
     '/es/servicios/' => [
       'slug' => 'servicios',
@@ -516,12 +521,36 @@ function final_budget_cta_html(string $lang): string {
   return render_partial('final_budget_cta', ['lang' => $lang]);
 }
 
+function es_service_page_for_path(string $path): ?array {
+  $pages = es_service_pages();
+  return $pages[$path] ?? null;
+}
+
+function es_service_pages(): array {
+  static $pages = null;
+  if ($pages !== null) {
+    return $pages;
+  }
+
+  $file = __DIR__ . '/content/services/es.php';
+  $loaded = is_file($file) ? require $file : [];
+  $pages = is_array($loaded) ? $loaded : [];
+
+  return $pages;
+}
+
+function render_service_detail_body(array $service): string {
+  ob_start();
+  include __DIR__ . '/../views/service_detail.php';
+  return (string) ob_get_clean();
+}
+
 function render_es_minimal_shell(array $page, string $path, string $body): string {
   $canonical = 'https://masqueclima.es' . $path;
   return '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' .
     '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">' .
     '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">' .
-    '<link rel="stylesheet" href="/assets/css/styles.css">' . es_hub_jsonld($path, $page['breadcrumb']) . '</head><body><main id="main-content">' .
+    '<link rel="stylesheet" href="/assets/css/styles.css">' . es_page_jsonld($path, $page) . '</head><body><main id="main-content">' .
     $body . final_budget_cta_html('es') . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
@@ -537,9 +566,64 @@ function patch_es_hub_head(string $html, array $page, string $path): string {
   $html = preg_replace('/<meta property="og:url" content="[^"]*">/i', '<meta property="og:url" content="' . $canonical . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
-  $html = str_replace('</head>', es_hub_jsonld($path, $page['breadcrumb']) . "\n</head>", $html);
+  $html = str_replace('</head>', es_page_jsonld($path, $page) . "\n</head>", $html);
 
   return $html;
+}
+
+function es_page_jsonld(string $path, array $page): string {
+  $base = 'https://masqueclima.es';
+  $breadcrumbName = (string) ($page['breadcrumb'] ?? 'Pagina');
+  $itemList = [[
+    '@type' => 'ListItem',
+    'position' => 1,
+    'name' => 'Inicio',
+    'item' => $base . '/es/',
+  ]];
+
+  if (str_starts_with($path, '/es/servicios/') && $path !== '/es/servicios/') {
+    $itemList[] = [
+      '@type' => 'ListItem',
+      'position' => 2,
+      'name' => 'Servicios',
+      'item' => $base . '/es/servicios/',
+    ];
+  }
+
+  $itemList[] = [
+    '@type' => 'ListItem',
+    'position' => count($itemList) + 1,
+    'name' => html_entity_decode($breadcrumbName, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+    'item' => $base . $path,
+  ];
+
+  $schemas = [[
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => $itemList,
+  ]];
+
+  if (!empty($page['service_type'])) {
+    $schemas[] = [
+      '@context' => 'https://schema.org',
+      '@type' => 'Service',
+      'name' => html_entity_decode((string) $page['service_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'description' => html_entity_decode((string) $page['description'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'url' => $base . $path,
+      'provider' => [
+        '@type' => 'HVACBusiness',
+        'name' => '+QUECLIMA',
+        'telephone' => '+34 613 02 66 00',
+        'url' => $base . '/es/',
+      ],
+      'areaServed' => ['Benidorm', 'Altea', 'Calpe', 'Finestrat', 'La Nucia', 'Marina Baixa', 'Alicante'],
+      'serviceType' => html_entity_decode((string) $page['service_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+    ];
+  }
+
+  return '<script type="application/ld+json">' .
+    json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .
+    '</script>';
 }
 
 function es_hub_jsonld(string $path, string $name): string {

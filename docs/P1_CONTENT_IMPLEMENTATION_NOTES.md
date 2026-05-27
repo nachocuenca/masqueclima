@@ -168,9 +168,19 @@ Comprobacion realizada antes de desplegar estos cambios: dev sigue sirviendo la 
 - No se modificaron rutas, sitemap, copy visible ni comportamiento de popup/WhatsApp.
 - Detalle tecnico en `docs/LEGACY_PARTIALS_REFACTOR_NOTES.md`.
 
+## Fase SEO de servicios en espanol
+
+- Se crearon cinco paginas de servicio bajo `/es/servicios/`.
+- El contenido vive en `app/content/services/es.php` y se renderiza con `views/service_detail.php`.
+- `app/front_controller.php` solo resuelve la URL, carga la configuracion y pasa los datos a la vista.
+- Las cards de `/es/servicios/` enlazan a las nuevas paginas de servicio.
+- Cada pagina incluye hero compacto, bloques de servicio, proceso, zonas, FAQ breve, CTA a presupuesto y cierre final reutilizable.
+- Se anadio JSON-LD `Service` junto con `BreadcrumbList` para estas paginas.
+- No se tocaron sitemap, header, footer, rutas extranjeras, popup ni WhatsApp.
+
 ## Siguiente fase recomendada
 
-No implementado todavia. Cuando se apruebe la siguiente fase, crear paginas SEO especificas de servicio:
+Tras validar esta fase, revisar si las paginas de servicio deben entrar en sitemap y si conviene enlazarlas desde landings P1 con anchors naturales:
 
 - `/es/servicios/instalacion-aire-acondicionado/`
 - `/es/servicios/mantenimiento-climatizacion/`

@@ -34,8 +34,19 @@
   .marina-map .map-zone:hover .zone-shape,.marina-map .map-zone:focus .zone-shape{fill:#bfe0ff;stroke:#005fc0;}
   .marina-map .map-zone:hover .map-label,.marina-map .map-zone:focus .map-label{fill:#005fc0;opacity:1;}
   .zone-list-card .hub-muted{text-align:center;}
+  .service-detail-grid,.service-step-grid,.service-faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:1.5rem;align-items:stretch;}
+  .service-step-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .service-detail-card,.service-step,.service-faq-card{border:1px solid #e7edf5;border-radius:14px;background:#fff;padding:22px;box-shadow:0 5px 18px rgba(15,23,42,.06);}
+  .service-detail-card h3,.service-faq-card h3{font-size:1.08rem;font-weight:800;margin:0 0 .75rem;color:#142033;}
+  .service-detail-card ul{margin:0;padding-left:1.15rem;color:#425466;line-height:1.72;}
+  .service-detail-card li+li{margin-top:.45rem;}
+  .service-step{display:flex;gap:1rem;align-items:flex-start;}
+  .service-step-number{width:2rem;height:2rem;border-radius:50%;background:#eaf4ff;color:#005fc0;display:inline-flex;align-items:center;justify-content:center;font-weight:900;flex:0 0 auto;}
+  .service-step p,.service-faq-card p{margin:0;color:#425466;line-height:1.68;}
+  .service-inline-cta{margin-top:1.7rem;}
   @media (max-width:1100px){.hub-grid.services-grid{grid-template-columns:repeat(3,minmax(0,1fr));}.hub-grid.guides-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
   @media (max-width:900px){.service-zones-panel,.zone-layout{grid-template-columns:1fr}.mini-map-card{order:-1}}
+  @media (max-width:700px){.service-detail-grid,.service-step-grid,.service-faq-grid{grid-template-columns:1fr}.service-detail-card,.service-step,.service-faq-card{padding:18px}}
   @media (max-width:700px){.hero.hub-hero.hero--compact{min-height:330px;padding:6rem 0 2.4rem}.hero.hub-hero.hero--compact h1{font-size:2rem}.hero.hub-hero.hero--compact p{font-size:1rem}.hub-section{padding:2.6rem 0}.hub-grid.services-grid,.hub-grid.guides-grid{grid-template-columns:1fr}.service-zones-copy,.mini-map-card,.zone-map-card,.zone-list-card{padding:18px}}
 
   /* =============================================

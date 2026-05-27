@@ -93,6 +93,18 @@ Estado Fase P1:
 - Ciudades y reformas quedan fuera del header principal; `/es/blog/` se muestra como Guias en footer y no entra en sitemap.
 - La home enlaza de forma contextual a servicios, zonas y guias desde Metodo, Zona y FAQ.
 
+Estado Fase servicios SEO:
+
+- `/es/servicios/` enlaza a cinco paginas de servicio:
+  - `/es/servicios/instalacion-aire-acondicionado/`
+  - `/es/servicios/mantenimiento-climatizacion/`
+  - `/es/servicios/reparacion-aire-acondicionado/`
+  - `/es/servicios/aerotermia-bomba-calor/`
+  - `/es/servicios/energia-solar-termica/`
+- Cada pagina de servicio enlaza de vuelta a `/es/servicios/`, a `/es/zonas/` y a las landings P1 de Benidorm, Altea, Calpe, Finestrat y La Nucia.
+- No se crearon equivalentes extranjeros ni se enlazaron rutas extranjeras inexistentes.
+- No se anadieron estas rutas al sitemap todavia.
+
 ## Tratamiento de `/es/zonas/`
 
 Debe ser hub y listado:
@@ -106,7 +118,7 @@ Debe ser hub y listado:
 
 Debe ser hub transaccional:
 
-- Enlaza a servicios individuales.
+- Enlaza a los cinco servicios individuales creados en espanol.
 - Enlaza a P1 ciudades con texto contextual.
 - Debe tener CTA principal a presupuesto y WhatsApp.
 - No debe intentar posicionar por todas las ciudades.
