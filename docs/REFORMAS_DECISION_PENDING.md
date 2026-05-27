@@ -34,7 +34,7 @@ Reformas existe como grupo vivo de URLs en 6 idiomas y responde 200 en dev.
 | Title | Generico de climatizacion, no especifico de reformas |
 | H1 | Especifico de reformas |
 | Sitemap | No incluido |
-| Enlazado interno | Enlace sitewide desde navegacion |
+| Enlazado interno | Fuera del header y del footer principal tras ajuste P1 |
 | JSON-LD | Contiene datos de negocio/local business |
 
 Riesgo adicional: los breadcrumbs JSON-LD de reformas no parecen alineados con las URLs reales en todos los idiomas. Ejemplos detectados: EN/DE/NL/RU/NO apuntan a rutas tipo `/{lang}/reformas-integrales-benidorm/` en el breadcrumb, aunque el canonical usa el slug traducido. En ES el breadcrumb JSON-LD apunta a `https://masqueclima.es/reformas-integrales-benidorm/` sin prefijo `/es/`. No corregir todavia; queda anotado para fase posterior.
@@ -49,11 +49,11 @@ No aplicar ahora:
 - No redirigir.
 - No noindexar todavia.
 - No anadir al sitemap todavia.
-- No quitar enlaces sin una decision comercial/SEO.
+- No volver a meter en header ni footer principal sin una decision comercial/SEO.
 
 ## Estado tras ajuste de navegacion P1
 
-Reformas se elimina de la navegacion principal porque esta web queda centrada en climatizacion.
+Reformas se elimina de la navegacion principal y del footer principal porque esta web queda centrada en climatizacion.
 
 La URL sigue viva temporalmente para no romper enlaces y poder auditarla despues:
 
@@ -70,6 +70,7 @@ Decision mantenida:
 - No redirigir.
 - No anadir al sitemap.
 - No convertir en blog.
+- Mantener fuera de header y footer principal.
 - Reabrir decision cuando exista proyecto/web especifico de reformas.
 
 ## Opciones para fase posterior
@@ -91,7 +92,7 @@ Si la empresa quiere vender reformas:
 - Crear contenido mas claro sobre alcance, zonas, plazos, garantias y casos.
 - Corregir breadcrumbs JSON-LD.
 - Decidir si debe entrar en sitemap despues de mejorar contenido.
-- Revisar si el enlace sitewide tiene sentido o si debe estar bajo servicios.
+- Revisar si debe tener arquitectura propia fuera de esta web o un proyecto especifico.
 
 ## Recomendacion si no se mantiene
 
@@ -106,7 +107,7 @@ Si reformas no es servicio activo:
 ## Riesgos actuales
 
 - Topical dilution: reformas puede alejar la web de climatizacion si se promociona demasiado sin estrategia.
-- Enlace sitewide hacia una pagina no incluida en sitemap.
+- URLs vivas no promocionadas desde header/footer mientras no haya decision.
 - Title generico de climatizacion en una pagina de reformas.
 - Breadcrumb JSON-LD con URLs inconsistentes.
 - Decision pendiente puede bloquear una arquitectura limpia de servicios.

@@ -96,19 +96,35 @@ Menu ES visible:
 
 - Inicio
 - Metodo
-- Servicios
-- Zonas
+- Nosotros
+- Zona
 - FAQ
-- Guias
 - Contacto
 
-`#nosotros` se conserva en la home, pero sale del menu principal para mantener una navegacion mas ligera.
+El header queda reservado para anclas principales de la home. Servicios, Zonas y Guias pasan al footer y a enlaces contextuales.
 
 No aparecen en el menu principal:
 
+- Servicios
+- Zonas
+- Guias
 - Ciudades
 - Reformas integrales
 - Blog como etiqueta
+
+Footer ES:
+
+- Servicios
+- Zonas
+- Guias
+- Contacto
+- WhatsApp
+
+Enlaces contextuales ES en home:
+
+- Metodo: `Ver servicios de climatizacion`
+- Zona: `Ver zonas de servicio`
+- FAQ: `Ver guias de climatizacion`
 
 ## Hero de hubs
 

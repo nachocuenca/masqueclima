@@ -145,6 +145,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_snapshot_remove_city_navigation_extras($html);
   $html = patch_snapshot_contact_anchor($html);
   $html = patch_snapshot_footer_guides_link($html, $lang);
+  $html = patch_snapshot_home_context_links($html, $path, $lang);
 
   $html = patch_es_p1_location_page($html, $path, $lang);
 
@@ -244,16 +245,63 @@ function patch_snapshot_contact_anchor(string $html): string {
 }
 
 function patch_snapshot_footer_guides_link(string $html, string $lang): string {
-  if ($lang !== 'es' || str_contains($html, 'footer-main-links')) {
+  if (str_contains($html, 'footer-main-links')) {
     return $html;
   }
 
+  $links = footer_main_links_html($lang);
+
   return preg_replace(
     '/(<footer class="bg-dark text-white py-4">[\s\S]*?<div class="container text-center">)/',
-    '$1' . "\n" . '    <p class="mb-1 footer-main-links"><a class="text-white" href="/es/servicios/">Servicios</a> | <a class="text-white" href="/es/zonas/">Zonas</a> | <a class="text-white" href="/es/blog/">Gu&iacute;as</a></p>',
+    '$1' . "\n" . '    ' . $links,
     $html,
     1
   ) ?? $html;
+}
+
+function footer_main_links_html(string $lang): string {
+  if ($lang === 'es') {
+    return '<p class="mb-1 footer-main-links"><a class="text-white" href="/es/servicios/">Servicios</a> | <a class="text-white" href="/es/zonas/">Zonas</a> | <a class="text-white" href="/es/blog/">Gu&iacute;as</a> | <a class="text-white" href="/es/#contacto">Contacto</a> | <a class="text-white" href="https://wa.me/34613026600" target="_blank" rel="noopener">WhatsApp</a></p>';
+  }
+
+  $home = e(lang_url($lang));
+  $faq = e(lang_url($lang) . '#faq');
+  $contact = e(lang_url($lang) . '#contacto');
+  $homeLabel = e(t('nav.home', 'Inicio'));
+  $faqLabel = e(t('nav.faq', 'FAQ'));
+  $contactLabel = e(t('nav.contact', 'Contacto'));
+
+  return '<p class="mb-1 footer-main-links"><a class="text-white" href="' . $home . '">' . $homeLabel . '</a> | <a class="text-white" href="' . $faq . '">' . $faqLabel . '</a> | <a class="text-white" href="' . $contact . '">' . $contactLabel . '</a> | <a class="text-white" href="https://wa.me/34613026600" target="_blank" rel="noopener">WhatsApp</a></p>';
+}
+
+function patch_snapshot_home_context_links(string $html, string $path, string $lang): string {
+  if ($lang !== 'es' || !snapshot_is_home_path($path, $lang) || str_contains($html, 'home-context-links')) {
+    return $html;
+  }
+
+  $servicesLink = '    <p class="mt-4 mb-0 text-center home-context-links"><a class="btn btn-outline-primary" href="/es/servicios/">Ver servicios de climatizaci&oacute;n</a></p>' . "\n";
+  $html = preg_replace_callback(
+    '/(<section class="services-plain" id="metodo">[\s\S]*?)(\s*<\/div>\s*<\/section>)/',
+    static function (array $matches) use ($servicesLink): string {
+      return rtrim($matches[1]) . "\n" . $servicesLink . $matches[2];
+    },
+    $html,
+    1
+  ) ?? $html;
+
+  $zonesLink = '    <p class="mt-3 mb-4 text-center home-context-links"><a class="btn btn-outline-primary" href="/es/zonas/">Ver zonas de servicio</a></p>' . "\n";
+  $zonesNeedle = '    <div class="zona-mapa">';
+  if (str_contains($html, $zonesNeedle)) {
+    $html = str_replace($zonesNeedle, $zonesLink . $zonesNeedle, $html);
+  }
+
+  $guidesLink = '    <p class="text-center mb-4 home-context-links"><a class="btn btn-outline-primary" href="/es/blog/">Ver gu&iacute;as de climatizaci&oacute;n</a></p>' . "\n";
+  $faqNeedle = '    <div class="accordion" id="faqAccordion">';
+  if (str_contains($html, $faqNeedle)) {
+    $html = str_replace($faqNeedle, $guidesLink . $faqNeedle, $html);
+  }
+
+  return $html;
 }
 
 function patch_snapshot_body_links(string $body, string $lang): string {

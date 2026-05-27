@@ -1,14 +1,14 @@
 # Plan de enlazado interno
 
 Fecha: 2026-05-27  
-Alcance: arquitectura de enlaces propuesta. No aplicar todavia.
+Alcance: arquitectura de enlaces P1 aplicada en legacy PHP y decisiones pendientes.
 
 ## Estado actual
 
 - Las ciudades enlazan entre si de forma amplia: cada landing ES contiene enlaces a las 20 URLs ES de ciudad.
-- Reformas esta enlazado desde la navegacion de los snapshots.
-- No existen hubs vivos `/es/servicios/`, `/es/zonas/` ni `/es/blog/`.
-- Las paginas de servicio y guias existen como contenido/vistas en repo, pero no como rutas vivas en dev.
+- Reformas queda fuera del header y del footer principal.
+- Existen hubs vivos en espanol: `/es/servicios/`, `/es/zonas/` y `/es/blog/`.
+- Servicios, Zonas y Guias no cargan el header; se enlazan desde footer ES y desde contexto.
 - Las paginas preservan popup/formulario y WhatsApp.
 
 ## Objetivo
@@ -40,7 +40,7 @@ Blog hub
 
 | Origen | Enlazar a | Motivo |
 | --- | --- | --- |
-| `/es/` | `/es/servicios/`, `/es/zonas/`, `/es/blog/`, P1 ciudades | Orientar arquitectura desde home |
+| `/es/` | `/es/servicios/`, `/es/zonas/`, `/es/blog/`, P1 ciudades | Orientar arquitectura desde enlaces contextuales y footer |
 | `/es/servicios/` | Servicios individuales y P1 ciudades | Convertir demanda transaccional |
 | Servicio individual | Ciudades donde mas aplica y blog relacionado | Relevancia servicio + local |
 | `/es/zonas/` | 20 ciudades actuales | Hub de cobertura sin cambiar URLs |
@@ -88,9 +88,10 @@ Estado Fase P1:
 - No se anadieron al sitemap en esta fase.
 - Las landings P1 enlazan hacia `/es/servicios/` y `/es/zonas/`.
 - El indice `/es/blog/` no enlaza a articulos inexistentes; muestra temas futuros sin URLs publicables.
-- El menu principal ES queda como Inicio, Metodo, Servicios, Zonas, FAQ, Guias y Contacto.
-- Ciudades y reformas quedan fuera del menu principal; Blog se muestra como Guias y no entra en sitemap.
-- La seccion `#nosotros` se conserva en la home, pero no se muestra en el menu principal para evitar saturacion.
+- El header principal ES queda como Inicio, Metodo, Nosotros, Zona, FAQ y Contacto.
+- Servicios, Zonas y Guias quedan fuera del header principal y se muestran en el footer ES.
+- Ciudades y reformas quedan fuera del header principal; Blog se muestra como Guias en footer y no entra en sitemap.
+- La home enlaza de forma contextual a servicios, zonas y guias desde Metodo, Zona y FAQ.
 
 ## Tratamiento de `/es/zonas/`
 
@@ -126,4 +127,4 @@ Hasta decidir su futuro:
 - No redirigir.
 - No quitar `/no/`.
 - No anadir al sitemap sin decision.
-- Revisar si conviene mantener enlace sitewide o moverlo a una zona menos prominente en fase posterior.
+- Mantener fuera de header y footer principal hasta decision comercial.

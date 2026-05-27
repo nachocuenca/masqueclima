@@ -26,29 +26,33 @@ Menu ES:
 
 - Inicio
 - Metodo
-- Servicios
-- Zonas
+- Nosotros
+- Zona
 - FAQ
-- Guias
 - Contacto
 - Selector de idioma
 
 En idiomas sin hub real de servicios/zonas/guias no se inventan rutas extranjeras. El menu muestra home, Metodo, FAQ y contacto, manteniendo el selector de idioma.
 
-Elementos retirados del menu principal:
+Elementos retirados del header principal:
 
+- Servicios
+- Zonas
+- Guias
 - Ciudades
 - Reformas integrales
 
 Notas:
 
-- Metodo y Quienes somos siguen existiendo como secciones de la home. `#nosotros` se conserva, aunque sale del menu principal para que la navegacion no quede apretada.
-- Ciudades queda consolidado en `/es/zonas/`.
+- Metodo, Quienes somos, Zona, FAQ y Contacto vuelven a ser las anclas principales del header.
+- Servicios, Zonas y Guias quedan accesibles desde el footer ES y desde enlaces contextuales de la home.
+- Ciudades queda consolidado en `/es/zonas/`, sin item propio en header.
 - Blog sigue vivo como `/es/blog/` y se muestra como `Guias`; no entra en sitemap mientras no tenga articulos reales.
 - Reformas sigue vivo, pero sale de la navegacion principal por foco de climatizacion.
 - El selector de idioma usa URLs relativas al host actual; no salta a produccion.
-- La home conserva sus secciones originales y el menu enlaza a `#metodo`, `#faq` y `#contacto`; `#nosotros` queda disponible para enlaces internos futuros.
+- La home conserva sus secciones originales y el menu enlaza a `#metodo`, `#nosotros`, `#zona`, `#faq` y `#contacto`.
 - Los hubs usan un hero compacto para que el contenido principal aparezca antes sin cambiar la estetica base.
+- El footer ES enlaza a `/es/servicios/`, `/es/zonas/`, `/es/blog/`, `/es/#contacto` y WhatsApp.
 
 ## Sitemap
 
@@ -121,7 +125,8 @@ Se retiro de la navegacion principal y se mantiene como decision pendiente segun
 - Validacion de que los hubs incluyen `quoteModal`, `contact-submit.php` y `btn-whatsapp-pulse`
 - Validacion de que los hubs no generan hreflang a idiomas sin equivalente real
 - Validacion de que el cuerpo HTML no contiene enlaces visibles `href="https://masqueclima.es..."`
-- Validacion de menu principal en home, hubs, landing P1, reformas, EN y NO
+- Validacion de header principal en home, hubs, landing P1, reformas, EN y NO
+- Validacion de footer ES con Servicios, Zonas, Guias, Contacto y WhatsApp
 - Validacion de selector de idioma con URLs relativas (`/en/`, `/no/`, etc.)
 - Validacion de copy visible sin terminos internos como `landing`, `hub`, `P1`, `URL`, `placeholder`, `sitemap` o `contenido fino`
 - `bash -lc 'find ... | xargs ... php -l'` no pudo ejecutarse porque no hay `/bin/bash` disponible en este entorno; se ejecuto validacion PowerShell equivalente.

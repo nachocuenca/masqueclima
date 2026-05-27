@@ -85,10 +85,9 @@ if (!function_exists('primary_nav_items')) {
             return [
                 ['label' => 'Inicio', 'href' => '/es/'],
                 ['label' => 'Método', 'href' => '/es/#metodo'],
-                ['label' => 'Servicios', 'href' => '/es/servicios/'],
-                ['label' => 'Zonas', 'href' => '/es/zonas/'],
+                ['label' => 'Nosotros', 'href' => '/es/#nosotros'],
+                ['label' => 'Zona', 'href' => '/es/#zona'],
                 ['label' => 'FAQ', 'href' => '/es/#faq'],
-                ['label' => 'Guías', 'href' => '/es/blog/'],
                 ['label' => 'Contacto', 'href' => '/es/#contacto'],
             ];
         }
