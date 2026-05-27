@@ -261,17 +261,15 @@ function patch_snapshot_footer_guides_link(string $html, string $lang): string {
 
 function footer_main_links_html(string $lang): string {
   if ($lang === 'es') {
-    return '<p class="mb-1 footer-main-links"><a class="text-white" href="/es/servicios/">Servicios</a> | <a class="text-white" href="/es/zonas/">Zonas</a> | <a class="text-white" href="/es/blog/">Gu&iacute;as</a> | <a class="text-white" href="/es/#contacto">Contacto</a> | <a class="text-white" href="https://wa.me/34613026600" target="_blank" rel="noopener">WhatsApp</a></p>';
+    return '<p class="mb-1 footer-main-links"><a class="text-white" href="/es/servicios/">Servicios</a> | <a class="text-white" href="/es/zonas/">Zonas</a> | <a class="text-white" href="/es/blog/">Gu&iacute;as</a></p>';
   }
 
   $home = e(lang_url($lang));
   $faq = e(lang_url($lang) . '#faq');
-  $contact = e(lang_url($lang) . '#contacto');
   $homeLabel = e(t('nav.home', 'Inicio'));
   $faqLabel = e(t('nav.faq', 'FAQ'));
-  $contactLabel = e(t('nav.contact', 'Contacto'));
 
-  return '<p class="mb-1 footer-main-links"><a class="text-white" href="' . $home . '">' . $homeLabel . '</a> | <a class="text-white" href="' . $faq . '">' . $faqLabel . '</a> | <a class="text-white" href="' . $contact . '">' . $contactLabel . '</a> | <a class="text-white" href="https://wa.me/34613026600" target="_blank" rel="noopener">WhatsApp</a></p>';
+  return '<p class="mb-1 footer-main-links"><a class="text-white" href="' . $home . '">' . $homeLabel . '</a> | <a class="text-white" href="' . $faq . '">' . $faqLabel . '</a></p>';
 }
 
 function patch_snapshot_home_context_links(string $html, string $path, string $lang): string {
@@ -443,9 +441,9 @@ function render_es_hub_page(string $path): ?string {
     ],
     '/es/blog/' => [
       'slug' => 'blog',
-      'title' => 'Gu&iacute;as de climatizaci&oacute;n y aire acondicionado | +QUECLIMA',
-      'description' => 'Gu&iacute;as pr&aacute;cticas sobre aire acondicionado, potencia, mantenimiento, ahorro y sistemas de climatizaci&oacute;n en la Costa Blanca.',
-      'h1' => 'Gu&iacute;as de climatizaci&oacute;n y aire acondicionado',
+      'title' => 'Gu&iacute;as de climatizaci&oacute;n, aerotermia y aire acondicionado | +QUECLIMA',
+      'description' => 'Gu&iacute;as pr&aacute;cticas sobre climatizaci&oacute;n, aerotermia, bomba de calor, mantenimiento, consumo e instalaci&oacute;n en la Costa Blanca.',
+      'h1' => 'Gu&iacute;as de climatizaci&oacute;n, aerotermia y aire acondicionado',
       'breadcrumb' => 'Gu&iacute;as',
     ],
   ];
@@ -731,7 +729,7 @@ HTML;
 
 function hub_blog_body(): string {
   $intro = hub_intro(
-    'Gu&iacute;as de climatizaci&oacute;n y aire acondicionado',
+    'Gu&iacute;as de climatizaci&oacute;n, aerotermia y aire acondicionado',
     'Consejos pr&aacute;cticos para elegir, mantener y aprovechar mejor tu sistema de climatizaci&oacute;n en la Costa Blanca.'
   );
   $styles = hub_styles();
@@ -742,28 +740,32 @@ function hub_blog_body(): string {
 <section class="hub-section" aria-labelledby="blog-plan">
   <div class="container">
     <p class="hub-kicker">Gu&iacute;as</p>
-    <h2 class="section-title" id="blog-plan">Pr&oacute;ximas gu&iacute;as</h2>
-    <p class="hub-muted">Estamos preparando contenidos &uacute;tiles basados en las dudas m&aacute;s habituales de nuestros clientes.</p>
+    <h2 class="section-title" id="blog-plan">Biblioteca de gu&iacute;as &uacute;tiles</h2>
+    <p class="hub-muted">Estamos preparando gu&iacute;as &uacute;tiles basadas en dudas reales de clientes: consumo, potencia necesaria, mantenimiento, bomba de calor, aerotermia, instalaci&oacute;n en viviendas, apartamentos tur&iacute;sticos y comunidades.</p>
     <div class="hub-grid">
       <article class="hub-card">
-        <h3>&iquest;Cu&aacute;nto cuesta instalar aire acondicionado?</h3>
-        <p>Factores que influyen en el precio: tipo de equipo, distancia de instalaci&oacute;n, potencia y caracter&iacute;sticas de la vivienda.</p>
+        <h3>Aerotermia y bomba de calor: cu&aacute;ndo merece la pena</h3>
+        <p>Una gu&iacute;a para entender cu&aacute;ndo una bomba de calor puede mejorar el confort y reducir el consumo.</p>
       </article>
       <article class="hub-card">
-        <h3>Qu&eacute; potencia necesita tu vivienda</h3>
-        <p>Una orientaci&oacute;n sencilla sobre frigor&iacute;as, metros cuadrados, aislamiento, orientaci&oacute;n y uso real de cada estancia.</p>
+        <h3>Qu&eacute; potencia de aire acondicionado necesita una vivienda</h3>
+        <p>Orientaci&oacute;n b&aacute;sica sobre metros cuadrados, aislamiento, orientaci&oacute;n y uso real.</p>
       </article>
       <article class="hub-card">
-        <h3>Mantenimiento antes del verano</h3>
-        <p>Recomendaciones para salitre, filtros, bater&iacute;as, drenajes y revisiones antes de temporada alta.</p>
+        <h3>Mantenimiento del aire acondicionado antes del verano</h3>
+        <p>Revisiones, limpieza de filtros y se&ntilde;ales de aviso antes de la temporada de calor.</p>
       </article>
       <article class="hub-card">
         <h3>Aire acondicionado para apartamentos tur&iacute;sticos</h3>
-        <p>Consejos para elegir equipos fiables, silenciosos y f&aacute;ciles de usar en viviendas con alta rotaci&oacute;n.</p>
+        <p>Aspectos importantes para viviendas de alquiler vacacional: consumo, ruido, control y fiabilidad.</p>
       </article>
       <article class="hub-card">
-        <h3>Split o conductos: qu&eacute; sistema elegir</h3>
-        <p>Diferencias pr&aacute;cticas entre sistemas seg&uacute;n distribuci&oacute;n, presupuesto, reforma disponible y nivel de confort.</p>
+        <h3>Split, multisplit o conductos: qu&eacute; sistema elegir</h3>
+        <p>Diferencias principales entre sistemas y cu&aacute;ndo conviene cada soluci&oacute;n.</p>
+      </article>
+      <article class="hub-card">
+        <h3>Climatizaci&oacute;n eficiente en la Costa Blanca</h3>
+        <p>Consejos para viviendas en zonas de costa, humedad, calor prolongado y uso intensivo.</p>
       </article>
     </div>
     <div class="hub-cta">

@@ -47,12 +47,12 @@ Notas:
 - Metodo, Quienes somos, Zona, FAQ y Contacto vuelven a ser las anclas principales del header.
 - Servicios, Zonas y Guias quedan accesibles desde el footer ES y desde enlaces contextuales de la home.
 - Ciudades queda consolidado en `/es/zonas/`, sin item propio en header.
-- Blog sigue vivo como `/es/blog/` y se muestra como `Guias`; no entra en sitemap mientras no tenga articulos reales.
+- La ruta tecnica `/es/blog/` sigue viva, pero el concepto visible es `Guias`; no entra en sitemap mientras no tenga guias reales publicadas.
 - Reformas sigue vivo, pero sale de la navegacion principal por foco de climatizacion.
 - El selector de idioma usa URLs relativas al host actual; no salta a produccion.
 - La home conserva sus secciones originales y el menu enlaza a `#metodo`, `#nosotros`, `#zona`, `#faq` y `#contacto`.
 - Los hubs usan un hero compacto para que el contenido principal aparezca antes sin cambiar la estetica base.
-- El footer ES enlaza a `/es/servicios/`, `/es/zonas/`, `/es/blog/`, `/es/#contacto` y WhatsApp.
+- El footer ES enlaza solo a `/es/servicios/`, `/es/zonas/` y `/es/blog/`.
 
 ## Sitemap
 
@@ -89,7 +89,7 @@ No se tocaron snapshots ni idiomas extranjeros para estas mejoras.
 
 ## Rutas no implementadas
 
-No se crearon articulos de blog.
+No se crearon guias ni articulos reales.
 
 No se crearon landings individuales de servicio como:
 
@@ -126,7 +126,7 @@ Se retiro de la navegacion principal y se mantiene como decision pendiente segun
 - Validacion de que los hubs no generan hreflang a idiomas sin equivalente real
 - Validacion de que el cuerpo HTML no contiene enlaces visibles `href="https://masqueclima.es..."`
 - Validacion de header principal en home, hubs, landing P1, reformas, EN y NO
-- Validacion de footer ES con Servicios, Zonas, Guias, Contacto y WhatsApp
+- Validacion de footer ES con Servicios, Zonas y Guias, sin Contacto ni WhatsApp
 - Validacion de selector de idioma con URLs relativas (`/en/`, `/no/`, etc.)
 - Validacion de copy visible sin terminos internos como `landing`, `hub`, `P1`, `URL`, `placeholder`, `sitemap` o `contenido fino`
 - `bash -lc 'find ... | xargs ... php -l'` no pudo ejecutarse porque no hay `/bin/bash` disponible en este entorno; se ejecuto validacion PowerShell equivalente.
@@ -147,6 +147,6 @@ Comprobacion realizada antes de desplegar estos cambios: dev sigue sirviendo la 
 ## Riesgos pendientes
 
 - Los hubs aun no estan en sitemap; decision pendiente tras validar despliegue.
-- `/es/blog/` es un indice preparado, pero los articulos reales siguen pendientes.
+- `/es/blog/` es un indice de Guias, pero las guias reales siguen pendientes.
 - Las landings P1 mejoran metadatos/enlaces, pero el cuerpo base sigue siendo parecido entre ciudades.
 - Reformas sigue vivo y fuera del sitemap; requiere decision comercial/SEO posterior.

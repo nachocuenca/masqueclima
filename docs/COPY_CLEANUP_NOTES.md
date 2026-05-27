@@ -72,21 +72,24 @@ Listado: localidades donde se realizan instalaciones, mantenimiento y reparacion
 
 ### `/es/blog/`
 
-Enfoque: `Guias`, no blog vacio.
+Enfoque: `Guias`, no blog generico.
 
-H1: `Guias de climatizacion y aire acondicionado`
+H1: `Guias de climatizacion, aerotermia y aire acondicionado`
 
 Subtitulo: consejos practicos para elegir, mantener y aprovechar mejor el sistema de climatizacion en la Costa Blanca.
 
-Seccion visible: `Proximas guias`
+Seccion visible: `Biblioteca de guias utiles`
+
+Intro: guias basadas en dudas reales sobre consumo, potencia necesaria, mantenimiento, bomba de calor, aerotermia, instalacion en viviendas, apartamentos turisticos y comunidades.
 
 Tarjetas visibles sin enlace:
 
-- Cuanto cuesta instalar aire acondicionado
-- Que potencia necesita tu vivienda
-- Mantenimiento antes del verano
+- Aerotermia y bomba de calor: cuando merece la pena
+- Que potencia de aire acondicionado necesita una vivienda
+- Mantenimiento del aire acondicionado antes del verano
 - Aire acondicionado para apartamentos turisticos
-- Split o conductos: que sistema elegir
+- Split, multisplit o conductos: que sistema elegir
+- Climatizacion eficiente en la Costa Blanca
 
 No se crean articulos, slugs falsos ni contenido fino. La pagina queda accesible como Guias, pero fuera del sitemap hasta publicar guias reales.
 
@@ -117,8 +120,8 @@ Footer ES:
 - Servicios
 - Zonas
 - Guias
-- Contacto
-- WhatsApp
+
+El footer ES no incluye Contacto ni WhatsApp para no duplicar acciones ya presentes en hero, popup, formulario, seccion de contacto y boton flotante.
 
 Enlaces contextuales ES en home:
 
