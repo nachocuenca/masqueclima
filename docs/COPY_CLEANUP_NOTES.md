@@ -37,7 +37,6 @@ Se valido localmente que no aparezcan en texto visible:
 - `se publicaran solo cuando`
 - `contenido fino`
 - `placeholder`
-- `proximas guias`
 
 ## Copy final de paginas nuevas
 
@@ -48,6 +47,10 @@ Enfoque: servicios reales de climatizacion.
 H1: `Servicios de climatizacion en Benidorm y Marina Baixa`
 
 Subtitulo: instalacion, mantenimiento y reparacion de aire acondicionado, calefaccion y energia para viviendas, apartamentos turisticos, comunidades y negocios.
+
+Seccion principal: `Soluciones de climatizacion`
+
+Intro: se explica que se trabaja con equipos split, multisplit, conductos y bomba de calor, revisando vivienda o local antes de recomendar una solucion.
 
 Servicios visibles:
 
@@ -75,7 +78,17 @@ H1: `Guias de climatizacion y aire acondicionado`
 
 Subtitulo: consejos practicos para elegir, mantener y aprovechar mejor el sistema de climatizacion en la Costa Blanca.
 
-No se crean articulos, slugs falsos ni contenido fino. La pagina queda accesible, pero fuera del sitemap hasta publicar guias reales.
+Seccion visible: `Proximas guias`
+
+Tarjetas visibles sin enlace:
+
+- Cuanto cuesta instalar aire acondicionado
+- Que potencia necesita tu vivienda
+- Mantenimiento antes del verano
+- Aire acondicionado para apartamentos turisticos
+- Split o conductos: que sistema elegir
+
+No se crean articulos, slugs falsos ni contenido fino. La pagina queda accesible como Guias, pero fuera del sitemap hasta publicar guias reales.
 
 ## Navegacion
 
@@ -83,18 +96,23 @@ Menu ES visible:
 
 - Inicio
 - Metodo
-- Nosotros
 - Servicios
 - Zonas
 - FAQ
 - Guias
 - Contacto
 
+`#nosotros` se conserva en la home, pero sale del menu principal para mantener una navegacion mas ligera.
+
 No aparecen en el menu principal:
 
 - Ciudades
 - Reformas integrales
 - Blog como etiqueta
+
+## Hero de hubs
+
+Los hubs `/es/servicios/`, `/es/zonas/` y `/es/blog/` usan un hero compacto con la misma imagen y estetica base de la web. La home mantiene su hero grande.
 
 ## Pendiente
 

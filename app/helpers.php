@@ -85,7 +85,6 @@ if (!function_exists('primary_nav_items')) {
             return [
                 ['label' => 'Inicio', 'href' => '/es/'],
                 ['label' => 'Método', 'href' => '/es/#metodo'],
-                ['label' => 'Nosotros', 'href' => '/es/#nosotros'],
                 ['label' => 'Servicios', 'href' => '/es/servicios/'],
                 ['label' => 'Zonas', 'href' => '/es/zonas/'],
                 ['label' => 'FAQ', 'href' => '/es/#faq'],

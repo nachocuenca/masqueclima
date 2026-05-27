@@ -244,13 +244,13 @@ function patch_snapshot_contact_anchor(string $html): string {
 }
 
 function patch_snapshot_footer_guides_link(string $html, string $lang): string {
-  if ($lang !== 'es' || str_contains($html, 'footer-guides-link')) {
+  if ($lang !== 'es' || str_contains($html, 'footer-main-links')) {
     return $html;
   }
 
   return preg_replace(
     '/(<footer class="bg-dark text-white py-4">[\s\S]*?<div class="container text-center">)/',
-    '$1' . "\n" . '    <p class="mb-1 footer-guides-link"><a class="text-white" href="/es/blog/">Guías</a></p>',
+    '$1' . "\n" . '    <p class="mb-1 footer-main-links"><a class="text-white" href="/es/servicios/">Servicios</a> | <a class="text-white" href="/es/zonas/">Zonas</a> | <a class="text-white" href="/es/blog/">Gu&iacute;as</a></p>',
     $html,
     1
   ) ?? $html;
@@ -519,7 +519,7 @@ function es_hub_jsonld(string $path, string $name): string {
 
 function hub_intro(string $h1, string $text): string {
   return <<<HTML
-<section class="hero hub-hero" id="inicio">
+<section class="hero hub-hero hero--compact" id="inicio">
   <div class="hero-bg">
     <img class="hero-img" src="/assets/img/hero1.webp" alt="+QUECLIMA climatizaci&oacute;n en Alicante" width="1920" height="1080" fetchpriority="high" decoding="async">
   </div>
@@ -538,8 +538,10 @@ HTML;
 function hub_styles(): string {
   return <<<HTML
 <style>
-  .hub-hero{min-height:58svh;}
-  .hub-section{padding:4.5rem 0;background:#fff;}
+  .hero.hub-hero.hero--compact{min-height:420px;}
+  .hero.hub-hero.hero--compact h1{font-size:3rem;}
+  .hero.hub-hero.hero--compact p{max-width:760px;}
+  .hub-section{padding:3.5rem 0;background:#fff;}
   .hub-section.alt{background:#f7faff;}
   .hub-kicker{color:#0074e8;font-weight:800;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em;margin-bottom:.6rem;}
   .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:1.5rem;}
@@ -551,8 +553,7 @@ function hub_styles(): string {
   .hub-pill:hover{border-color:#0074e8;color:#0074e8;background:#f4f9ff;}
   .hub-cta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.75rem;}
   .hub-muted{color:#5c6b7c;line-height:1.75;}
-  .blog-soon{display:inline-flex;border-radius:999px;background:#eef6ff;color:#07549e;font-weight:800;font-size:.82rem;padding:.28rem .6rem;margin-bottom:.75rem;}
-  @media (max-width:700px){.hub-section{padding:3rem 0}.hub-hero{min-height:64svh}}
+  @media (max-width:700px){.hero.hub-hero.hero--compact{min-height:360px}.hero.hub-hero.hero--compact h1{font-size:2rem}.hub-section{padding:2.6rem 0}}
 </style>
 HTML;
 }
@@ -570,18 +571,18 @@ function hub_services_body(): string {
 <section class="hub-section" aria-labelledby="servicios-principales">
   <div class="container">
     <p class="hub-kicker">Servicios</p>
-    <h2 class="section-title" id="servicios-principales">Soluciones principales</h2>
-    <p class="hub-muted">Trabajamos con equipos split, multisplit, sistemas por conductos y bomba de calor. Antes de instalar revisamos potencia, ubicaci&oacute;n, drenajes, ruido, consumo y mantenimiento futuro.</p>
+    <h2 class="section-title" id="servicios-principales">Soluciones de climatizaci&oacute;n</h2>
+    <p class="hub-muted">Trabajamos con equipos split, multisplit, conductos y bomba de calor. Antes de instalar revisamos la vivienda o el local para recomendar una soluci&oacute;n eficiente y ajustada al uso real.</p>
     <div class="hub-grid">
       <article class="hub-card">
         <h3>Instalaci&oacute;n de aire acondicionado</h3>
         <p>Instalamos equipos split, multisplit y conductos con visita previa, c&aacute;lculo de potencia y puesta en marcha cuidada.</p>
-        <a class="btn btn-primary js-track" data-ev="cta_quote_service_install" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Pedir presupuesto</a>
+        <a class="btn btn-primary js-track" data-ev="cta_quote_service_install" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Pide presupuesto</a>
       </article>
       <article class="hub-card">
         <h3>Mantenimiento de climatizaci&oacute;n</h3>
         <p>Revisamos filtros, bater&iacute;as, desag&uuml;es y unidades exteriores para alargar la vida del equipo y reducir consumo.</p>
-        <a class="btn btn-primary js-track" data-ev="cta_quote_service_maintenance" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Solicitar revisi&oacute;n</a>
+        <a class="btn btn-primary js-track" data-ev="cta_quote_service_maintenance" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Programar revisi&oacute;n</a>
       </article>
       <article class="hub-card">
         <h3>Reparaci&oacute;n de aire acondicionado</h3>
@@ -591,7 +592,7 @@ function hub_services_body(): string {
       <article class="hub-card">
         <h3>Calefacci&oacute;n y bomba de calor</h3>
         <p>Soluciones eficientes para invierno y entretiempo, con equipos silenciosos y control por zonas cuando la vivienda lo necesita.</p>
-        <a class="btn btn-primary js-track" data-ev="cta_quote_service_heatpump" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Valorar opciones</a>
+        <a class="btn btn-primary js-track" data-ev="cta_quote_service_heatpump" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Valorar sistema</a>
       </article>
       <article class="hub-card">
         <h3>Energ&iacute;a solar t&eacute;rmica</h3>
@@ -660,7 +661,7 @@ function hub_zones_body(): string {
   <div class="container">
     <p class="hub-kicker">Cobertura</p>
     <h2 class="section-title" id="zonas-listado">Localidades donde prestamos servicio</h2>
-    <p class="hub-muted">Estas son algunas de las zonas donde realizamos instalaciones, mantenimiento y reparaciones de climatizaci&oacute;n.</p>
+    <p class="hub-muted">Realizamos instalaciones, mantenimiento y reparaciones de climatizaci&oacute;n en estas localidades y alrededores.</p>
     <div class="hub-links">
       {$items}
     </div>
@@ -693,20 +694,28 @@ function hub_blog_body(): string {
 <section class="hub-section" aria-labelledby="blog-plan">
   <div class="container">
     <p class="hub-kicker">Gu&iacute;as</p>
-    <h2 class="section-title" id="blog-plan">Consejos que estamos preparando</h2>
-    <p class="hub-muted">Estamos preparando gu&iacute;as &uacute;tiles sobre instalaci&oacute;n, mantenimiento y ahorro energ&eacute;tico. Mientras tanto, puedes consultarnos directamente y te orientamos seg&uacute;n tu vivienda o negocio.</p>
+    <h2 class="section-title" id="blog-plan">Pr&oacute;ximas gu&iacute;as</h2>
+    <p class="hub-muted">Estamos preparando contenidos &uacute;tiles basados en las dudas m&aacute;s habituales de nuestros clientes.</p>
     <div class="hub-grid">
       <article class="hub-card">
-        <h3>Cu&aacute;nto cuesta instalar aire acondicionado en Alicante</h3>
+        <h3>&iquest;Cu&aacute;nto cuesta instalar aire acondicionado?</h3>
         <p>Factores que influyen en el precio: tipo de equipo, distancia de instalaci&oacute;n, potencia y caracter&iacute;sticas de la vivienda.</p>
       </article>
       <article class="hub-card">
-        <h3>Qu&eacute; potencia de aire acondicionado necesito</h3>
+        <h3>Qu&eacute; potencia necesita tu vivienda</h3>
         <p>Una orientaci&oacute;n sencilla sobre frigor&iacute;as, metros cuadrados, aislamiento, orientaci&oacute;n y uso real de cada estancia.</p>
       </article>
       <article class="hub-card">
-        <h3>Mantenimiento de aire acondicionado en zonas de costa</h3>
+        <h3>Mantenimiento antes del verano</h3>
         <p>Recomendaciones para salitre, filtros, bater&iacute;as, drenajes y revisiones antes de temporada alta.</p>
+      </article>
+      <article class="hub-card">
+        <h3>Aire acondicionado para apartamentos tur&iacute;sticos</h3>
+        <p>Consejos para elegir equipos fiables, silenciosos y f&aacute;ciles de usar en viviendas con alta rotaci&oacute;n.</p>
+      </article>
+      <article class="hub-card">
+        <h3>Split o conductos: qu&eacute; sistema elegir</h3>
+        <p>Diferencias pr&aacute;cticas entre sistemas seg&uacute;n distribuci&oacute;n, presupuesto, reforma disponible y nivel de confort.</p>
       </article>
     </div>
     <div class="hub-cta">

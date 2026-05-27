@@ -26,7 +26,6 @@ Menu ES:
 
 - Inicio
 - Metodo
-- Nosotros
 - Servicios
 - Zonas
 - FAQ
@@ -43,12 +42,13 @@ Elementos retirados del menu principal:
 
 Notas:
 
-- Metodo y Quienes somos siguen existiendo como secciones de la home.
+- Metodo y Quienes somos siguen existiendo como secciones de la home. `#nosotros` se conserva, aunque sale del menu principal para que la navegacion no quede apretada.
 - Ciudades queda consolidado en `/es/zonas/`.
 - Blog sigue vivo como `/es/blog/` y se muestra como `Guias`; no entra en sitemap mientras no tenga articulos reales.
 - Reformas sigue vivo, pero sale de la navegacion principal por foco de climatizacion.
 - El selector de idioma usa URLs relativas al host actual; no salta a produccion.
-- La home conserva sus secciones originales y el menu vuelve a enlazar a `#metodo`, `#nosotros`, `#faq` y `#contacto`.
+- La home conserva sus secciones originales y el menu enlaza a `#metodo`, `#faq` y `#contacto`; `#nosotros` queda disponible para enlaces internos futuros.
+- Los hubs usan un hero compacto para que el contenido principal aparezca antes sin cambiar la estetica base.
 
 ## Sitemap
 
@@ -144,4 +144,4 @@ Comprobacion realizada antes de desplegar estos cambios: dev sigue sirviendo la 
 - Los hubs aun no estan en sitemap; decision pendiente tras validar despliegue.
 - `/es/blog/` es un indice preparado, pero los articulos reales siguen pendientes.
 - Las landings P1 mejoran metadatos/enlaces, pero el cuerpo base sigue siendo parecido entre ciudades.
-- Reformas sigue enlazado y fuera del sitemap; requiere decision comercial/SEO posterior.
+- Reformas sigue vivo y fuera del sitemap; requiere decision comercial/SEO posterior.

@@ -88,8 +88,9 @@ Estado Fase P1:
 - No se anadieron al sitemap en esta fase.
 - Las landings P1 enlazan hacia `/es/servicios/` y `/es/zonas/`.
 - El indice `/es/blog/` no enlaza a articulos inexistentes; muestra temas futuros sin URLs publicables.
-- El menu principal ES queda como Inicio, Metodo, Nosotros, Servicios, Zonas, FAQ, Guias y Contacto.
+- El menu principal ES queda como Inicio, Metodo, Servicios, Zonas, FAQ, Guias y Contacto.
 - Ciudades y reformas quedan fuera del menu principal; Blog se muestra como Guias y no entra en sitemap.
+- La seccion `#nosotros` se conserva en la home, pero no se muestra en el menu principal para evitar saturacion.
 
 ## Tratamiento de `/es/zonas/`
 

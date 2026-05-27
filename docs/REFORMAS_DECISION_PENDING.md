@@ -19,8 +19,8 @@ Reformas existe como grupo vivo de URLs en 6 idiomas y responde 200 en dev.
 ## Donde aparece
 
 - Existe en `app/snapshots/` como 6 snapshots.
-- Esta enlazado desde la navegacion de los snapshots.
-- Se detecto enlace a reformas en todos los snapshots revisados.
+- Estaba enlazado desde la navegacion original de los snapshots.
+- Tras el ajuste de navegacion P1, el menu comun ya no muestra Reformas.
 - No aparece en `public/sitemap.xml`.
 - No aparece en el sitemap servido por dev.
 
