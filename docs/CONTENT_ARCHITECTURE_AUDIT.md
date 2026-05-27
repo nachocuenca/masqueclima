@@ -187,11 +187,22 @@ Justificacion: coinciden con demanda comercial local, aparecen ya en la arquitec
 - Las rutas de servicio existen como contenido de repo, pero no son rutas vivas.
 - Cualquier cambio de URL en ciudades seria innecesario y arriesgado.
 
+## Estado tras Fase P1
+
+Implementado en rama, pendiente de despliegue a dev:
+
+- `/es/servicios/` como hub ES listo con title, description, canonical y BreadcrumbList.
+- `/es/zonas/` como hub ES listo con listado de las 20 URLs actuales de ciudad.
+- `/es/blog/` como indice ES sin articulos publicados ni placeholders enlazables.
+- Las landings P1 ES reciben title/description unicos y un bloque de enlaces a `/es/servicios/`, `/es/zonas/` y zonas cercanas.
+- No se han creado equivalentes EN/DE/NL/RU/NO para los hubs.
+- No se ha tocado `/no/`, reformas ni el popup/formulario.
+- No se ha modificado `public/sitemap.xml`; los hubs deben anadirse solo despues de validar contenido y despliegue.
+
 ## Segunda fase propuesta
 
-1. Crear los hubs `/es/servicios/`, `/es/zonas/` y `/es/blog/` sin mover URLs actuales.
-2. Mejorar contenido y metadatos de las 5 landings prioritarias.
-3. Crear 3 landings de servicio transaccionales iniciales.
-4. Publicar 3-5 articulos de blog P1 que enlacen a servicios y ciudades.
-5. Decidir el futuro de reformas con datos de Search Console/leads.
-6. Replicar mejoras a EN/NO donde haya demanda real, manteniendo `/no/`.
+1. Desplegar y validar los hubs P1 en dev antes de tocar sitemap.
+2. Crear 3 landings de servicio transaccionales iniciales.
+3. Publicar 3-5 articulos de blog P1 que enlacen a servicios y ciudades.
+4. Decidir el futuro de reformas con datos de Search Console/leads.
+5. Replicar mejoras a EN/NO donde haya demanda real, manteniendo `/no/`.

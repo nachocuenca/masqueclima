@@ -82,6 +82,13 @@ Cuando se creen rutas nuevas:
 - No quitar `/no/` del selector ni del sitemap.
 - Mantener canonicals absolutos a la URL final de produccion.
 
+Estado Fase P1:
+
+- Los hubs `/es/servicios/`, `/es/zonas/` y `/es/blog/` se sirven en espanol desde el front controller.
+- No se anadieron al sitemap en esta fase.
+- Las landings P1 enlazan hacia `/es/servicios/` y `/es/zonas/`.
+- El indice `/es/blog/` no enlaza a articulos inexistentes; muestra temas futuros sin URLs publicables.
+
 ## Tratamiento de `/es/zonas/`
 
 Debe ser hub y listado:
