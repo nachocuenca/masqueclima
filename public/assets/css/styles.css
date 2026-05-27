@@ -128,7 +128,7 @@ a.cta-button{
 a.cta-button:hover{
   transform:translateY(-1px);
   box-shadow:0 6px 24px rgba(0,0,0,.24);
-  background:#ff953e;
+  background:#005fc0;
 }
 .hero .cta-group a.cta-whatsapp,
 a.cta-button.cta-whatsapp{
@@ -280,7 +280,28 @@ a.cta-button.cta-whatsapp:hover{
   background:var(--accent);color:#fff;padding:.9rem 2rem;border:none;border-radius:8px;
   font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s;width:100%;
 }
-.submit-btn:hover{background:#ff953e;transform:translateY(-2px);}
+.submit-btn:hover{background:#005fc0;transform:translateY(-2px);}
+
+.btn-primary{
+  background-color:var(--accent);
+  border-color:var(--accent);
+}
+.btn-primary:hover,
+.btn-primary:focus{
+  background-color:#005fc0;
+  border-color:#0057ad;
+}
+.faq .home-context-links .btn{
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.78);
+  color:#fff;
+}
+.faq .home-context-links .btn:hover,
+.faq .home-context-links .btn:focus{
+  background:#fff;
+  border-color:#fff;
+  color:#12324f;
+}
 
 /* ---------------------------
    Opiniones / Footer

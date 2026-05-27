@@ -150,3 +150,22 @@ Comprobacion realizada antes de desplegar estos cambios: dev sigue sirviendo la 
 - `/es/blog/` es un indice de Guias, pero las guias reales siguen pendientes.
 - Las landings P1 mejoran metadatos/enlaces, pero el cuerpo base sigue siendo parecido entre ciudades.
 - Reformas sigue vivo y fuera del sitemap; requiere decision comercial/SEO posterior.
+
+## Pulido UX y conversion
+
+- Los hubs `/es/servicios/`, `/es/zonas/` y `/es/blog/` usan hero compacto y centrado.
+- Los botones azules mantienen hover azul; el hover naranja queda eliminado.
+- Las tarjetas de servicios se maquetan como columnas flex para alinear el CTA al fondo.
+- `/es/zonas/` incorpora un mapa SVG ligero de Marina Baixa como apoyo visual.
+- Los hubs cierran con una caja final reutilizable de `Solicita tu presupuesto` antes del footer.
+- El boton contextual de Guias en FAQ usa estilo claro para integrarse mejor sobre el bloque oscuro.
+
+## Siguiente fase recomendada
+
+No implementado todavia. Cuando se apruebe la siguiente fase, crear paginas SEO especificas de servicio:
+
+- `/es/servicios/instalacion-aire-acondicionado/`
+- `/es/servicios/mantenimiento-climatizacion/`
+- `/es/servicios/reparacion-aire-acondicionado/`
+- `/es/servicios/aerotermia-bomba-calor/`
+- `/es/servicios/energia-solar-termica/`

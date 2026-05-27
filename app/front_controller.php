@@ -489,8 +489,9 @@ function render_es_legacy_shell(array $page, string $path, string $body): string
   $interactiveTail = legacy_es_interactive_main_tail($base, $mainStart + strlen($mainOpen), $mainEnd);
   $tail = substr($base, $mainEnd);
   $headAndHeader = patch_es_hub_head($headAndHeader, $page, $path);
+  $finalCta = final_budget_cta_html('es');
 
-  return $headAndHeader . "\n" . $body . "\n" . $interactiveTail . "\n" . $tail;
+  return $headAndHeader . "\n" . $body . "\n" . $finalCta . "\n" . $interactiveTail . "\n" . $tail;
 }
 
 function legacy_es_interactive_main_tail(string $base, int $mainContentStart, int $mainEnd): string {
@@ -511,13 +512,84 @@ function legacy_es_interactive_main_tail(string $base, int $mainContentStart, in
   return '';
 }
 
+function final_budget_cta_html(string $lang): string {
+  if ($lang !== 'es') {
+    return '';
+  }
+
+  return <<<HTML
+<style>
+  .budget-panel.budget-panel--final{background:#f7f9fc;padding:2.75rem 0;}
+  .budget-panel.budget-panel--final .box{background:rgba(255,255,255,.96);backdrop-filter:saturate(180%) blur(10px);-webkit-backdrop-filter:saturate(180%) blur(10px);border:1px solid rgba(0,0,0,.06);border-radius:16px;box-shadow:0 12px 34px rgba(0,0,0,.10);padding:2.5rem 2.25rem;}
+  .budget-panel.budget-panel--final .grid{display:grid;grid-template-columns:1.35fr 1fr;gap:2.25rem;align-items:center;}
+  .budget-panel.budget-panel--final h2{margin:0 0 .6rem;font-weight:900;letter-spacing:-.02em;color:var(--main,#111);}
+  .budget-panel.budget-panel--final p{margin:0;color:#3b4a5a;opacity:.95;line-height:1.75;}
+  .budget-panel.budget-panel--final .bullets{margin:1.1rem 0 0;padding:0;list-style:none;color:#425264;}
+  .budget-panel.budget-panel--final .bullets li{margin:.35rem 0;display:flex;gap:.6rem;align-items:flex-start;}
+  .budget-panel.budget-panel--final .bullets .dot{width:.5rem;height:.5rem;margin-top:.55rem;border-radius:50%;background:#c9d7e6;flex:0 0 auto;}
+  .budget-panel.budget-panel--final .cta-stack{display:flex;flex-direction:column;gap:.75rem;}
+  .budget-panel.budget-panel--final .cta-btn2{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.9rem 1.05rem;border-radius:10px;font-weight:700;text-decoration:none!important;background:transparent;border:2px solid;box-shadow:none;transition:transform .15s ease,background-color .15s ease,color .15s ease,border-color .15s ease;}
+  .budget-panel.budget-panel--final .cta-btn2 svg{width:20px;height:20px;flex:0 0 auto;}
+  .budget-panel.budget-panel--final .cta-outline-blue{color:var(--accent,#0074e8);border-color:var(--accent,#0074e8);}
+  .budget-panel.budget-panel--final .cta-outline-blue:hover{background:rgba(0,116,232,.06);transform:translateY(-1px);}
+  .budget-panel.budget-panel--final .cta-outline-dark{color:#1b2a3a;border-color:#d7e0ea;}
+  .budget-panel.budget-panel--final .cta-outline-dark:hover{background:rgba(24,32,45,.045);transform:translateY(-1px);}
+  .budget-panel.budget-panel--final .cta-outline-wa{color:var(--wa,#25d366);border-color:var(--wa,#25d366);}
+  .budget-panel.budget-panel--final .cta-outline-wa:hover{background:rgba(37,211,102,.08);transform:translateY(-1px);}
+  .budget-panel.budget-panel--final .cta-note{margin-top:.9rem;font-size:.9rem;color:#667789;text-align:center;}
+  @media (max-width:991.98px){.budget-panel.budget-panel--final{padding:3.25rem 0}.budget-panel.budget-panel--final .box{padding:2rem 1.35rem}.budget-panel.budget-panel--final .grid{grid-template-columns:1fr;gap:1.5rem}}
+</style>
+<section class="budget-panel budget-panel--final" id="presupuesto">
+  <div class="container">
+    <div class="box">
+      <div class="grid">
+        <div>
+          <h2>Solicita tu presupuesto</h2>
+          <p>Instalaci&oacute;n, mantenimiento o reparaci&oacute;n. Te asesoramos con una propuesta clara y honesta.</p>
+          <ul class="bullets" aria-hidden="true">
+            <li><span class="dot"></span><span>Respuesta r&aacute;pida y sin compromiso</span></li>
+            <li><span class="dot"></span><span>Servicio en Benidorm y Marina Baixa</span></li>
+            <li><span class="dot"></span><span>Trabajo profesional con garant&iacute;a real</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="cta-stack">
+            <a class="cta-btn2 cta-outline-blue js-track" data-ev="cta_quote_final" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote" aria-controls="quoteModal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+                <path d="m3 7 9 6 9-6"></path>
+              </svg>
+              <span>Enviar formulario</span>
+            </a>
+            <a class="cta-btn2 cta-outline-dark js-track" data-ev="cta_call_final" href="tel:+34613026600" aria-label="Llamar por tel&eacute;fono">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.86.31 1.7.56 2.5a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.58-1.08a2 2 0 0 1 2.11-.45c.8.25 1.64.44 2.5.56A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span>Llamar +34 613 02 66 00</span>
+            </a>
+            <a class="cta-btn2 cta-outline-wa js-track" data-ev="cta_whatsapp_final" href="https://wa.me/34613026600" target="_blank" rel="noopener" aria-label="Escr&iacute;benos por WhatsApp">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M.057 24l1.687-6.163a11.867 11.867 0 1 1 4.279 4.29L.057 24Zm6.597-3.807.39.232a9.868 9.868 0 1 0-3.63-3.63l.232.39-.99 3.62 3.998-1.612ZM8.85 7.845c-.176-.392-.362-.4-.53-.407-.137-.006-.294-.006-.451-.006a.868.868 0 0 0-.626.294c-.215.23-.827.807-.827 1.968s.846 2.282.964 2.44c.118.157 1.63 2.618 4.02 3.563.562.227 1 .363 1.341.465.563.179 1.075.153 1.48.093.451-.068 1.39-.567 1.586-1.115.196-.548.196-1.018.137-1.115-.059-.098-.215-.157-.451-.274-.235-.118-1.39-.685-1.604-.763-.215-.078-.373-.117-.53.118-.157.235-.607.763-.744.92-.137.157-.274.176-.51.059-.235-.118-.993-.366-1.89-1.17-.699-.622-1.172-1.39-1.309-1.625-.137-.235-.014-.362.104-.48.107-.106.235-.274.353-.411.117-.137.156-.235.235-.392.078-.157.039-.294-.02-.411-.059-.118-.51-1.246-.716-1.706Z"></path>
+              </svg>
+              <span>Escr&iacute;benos por WhatsApp</span>
+            </a>
+          </div>
+          <div class="cta-note">Elige c&oacute;mo prefieres que te contactemos. Respuesta r&aacute;pida.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+HTML;
+}
+
 function render_es_minimal_shell(array $page, string $path, string $body): string {
   $canonical = 'https://masqueclima.es' . $path;
   return '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' .
     '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">' .
     '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">' .
     '<link rel="stylesheet" href="/assets/css/styles.css">' . es_hub_jsonld($path, $page['breadcrumb']) . '</head><body><main id="main-content">' .
-    $body . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
+    $body . final_budget_cta_html('es') . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
 function patch_es_hub_head(string $html, array $page, string $path): string {
@@ -584,22 +656,44 @@ HTML;
 function hub_styles(): string {
   return <<<HTML
 <style>
-  .hero.hub-hero.hero--compact{min-height:420px;}
-  .hero.hub-hero.hero--compact h1{font-size:3rem;}
-  .hero.hub-hero.hero--compact p{max-width:760px;}
+  .hero.hub-hero.hero--compact{min-height:380px;padding:6.75rem 0 3rem;display:flex;align-items:center;text-align:center;}
+  .hero.hub-hero.hero--compact .container{max-width:960px;margin:0 auto;}
+  .hero.hub-hero.hero--compact h1{font-size:3rem;line-height:1.12;margin:0 auto .85rem;}
+  .hero.hub-hero.hero--compact p{max-width:760px;margin:0 auto;color:#eef5fb;line-height:1.65;font-size:1.08rem;}
+  .hero.hub-hero.hero--compact .cta-group{margin-top:1.25rem;}
   .hub-section{padding:3.5rem 0;background:#fff;}
   .hub-section.alt{background:#f7faff;}
+  .hub-section .container>.section-title,.hub-section .container>.hub-kicker{text-align:center;}
+  .hub-section .container>.hub-muted{max-width:860px;margin-left:auto;margin-right:auto;text-align:center;}
   .hub-kicker{color:#0074e8;font-weight:800;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em;margin-bottom:.6rem;}
-  .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:1.5rem;}
-  .hub-card{border:1px solid #e7edf5;border-radius:14px;background:#fff;padding:22px;box-shadow:0 5px 18px rgba(15,23,42,.06);}
+  .hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:1.5rem;align-items:stretch;}
+  .hub-grid.services-grid{grid-template-columns:repeat(5,minmax(0,1fr));}
+  .hub-grid.guides-grid{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .hub-card{border:1px solid #e7edf5;border-radius:14px;background:#fff;padding:22px;box-shadow:0 5px 18px rgba(15,23,42,.06);display:flex;flex-direction:column;height:100%;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;}
+  .hub-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(15,23,42,.09);border-color:#d6e6f6;}
   .hub-card h2,.hub-card h3{font-size:1.12rem;font-weight:800;margin:0 0 .7rem;color:#142033;}
-  .hub-card p{color:#425466;line-height:1.65;margin-bottom:1rem;}
-  .hub-links{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem;}
+  .hub-card p{color:#425466;line-height:1.65;margin-bottom:1rem;flex:1;}
+  .hub-card .btn{align-self:center;margin-top:auto;min-width:160px;}
+  .hub-links{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-top:1rem;}
   .hub-pill{border:1px solid #dbe7f5;border-radius:999px;padding:.45rem .72rem;text-decoration:none;color:#12324f;background:#fff;font-weight:700;font-size:.92rem;}
   .hub-pill:hover{border-color:#0074e8;color:#0074e8;background:#f4f9ff;}
-  .hub-cta{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.75rem;}
+  .hub-cta{margin-top:1.4rem;display:flex;flex-wrap:wrap;justify-content:center;gap:.75rem;}
   .hub-muted{color:#5c6b7c;line-height:1.75;}
-  @media (max-width:700px){.hero.hub-hero.hero--compact{min-height:360px}.hero.hub-hero.hero--compact h1{font-size:2rem}.hub-section{padding:2.6rem 0}}
+  .service-zones-panel,.zone-layout{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;margin-top:1.75rem;}
+  .service-zones-copy,.mini-map-card,.zone-map-card,.zone-list-card{background:#fff;border:1px solid #e4edf8;border-radius:16px;box-shadow:0 8px 24px rgba(15,23,42,.06);padding:24px;}
+  .mini-map-card,.zone-map-card{background:linear-gradient(180deg,#f8fbff 0%,#eef7ff 100%);}
+  .marina-map{width:100%;height:auto;display:block;}
+  .marina-map .sea{fill:#dff3ff;}
+  .marina-map .coast{fill:none;stroke:#7db6e8;stroke-width:3;stroke-linecap:round;}
+  .marina-map .route{fill:none;stroke:#c7d9ec;stroke-width:2;stroke-dasharray:5 7;stroke-linecap:round;}
+  .marina-map .zone-shape{fill:#eaf4ff;stroke:#0074e8;stroke-width:1.5;transition:fill .16s ease,stroke .16s ease,transform .16s ease;}
+  .marina-map .map-label{font-size:12px;font-weight:800;fill:#12324f;opacity:.82;pointer-events:none;transition:opacity .16s ease,fill .16s ease;}
+  .marina-map .map-zone:hover .zone-shape,.marina-map .map-zone:focus .zone-shape{fill:#bfe0ff;stroke:#005fc0;}
+  .marina-map .map-zone:hover .map-label,.marina-map .map-zone:focus .map-label{fill:#005fc0;opacity:1;}
+  .zone-list-card .hub-muted{text-align:center;}
+  @media (max-width:1100px){.hub-grid.services-grid{grid-template-columns:repeat(3,minmax(0,1fr));}.hub-grid.guides-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media (max-width:900px){.service-zones-panel,.zone-layout{grid-template-columns:1fr}.mini-map-card{order:-1}}
+  @media (max-width:700px){.hero.hub-hero.hero--compact{min-height:330px;padding:6rem 0 2.4rem}.hero.hub-hero.hero--compact h1{font-size:2rem}.hero.hub-hero.hero--compact p{font-size:1rem}.hub-section{padding:2.6rem 0}.hub-grid.services-grid,.hub-grid.guides-grid{grid-template-columns:1fr}.service-zones-copy,.mini-map-card,.zone-map-card,.zone-list-card{padding:18px}}
 </style>
 HTML;
 }
@@ -619,7 +713,7 @@ function hub_services_body(): string {
     <p class="hub-kicker">Servicios</p>
     <h2 class="section-title" id="servicios-principales">Soluciones de climatizaci&oacute;n</h2>
     <p class="hub-muted">Trabajamos con equipos split, multisplit, conductos y bomba de calor. Antes de instalar revisamos la vivienda o el local para recomendar una soluci&oacute;n eficiente y ajustada al uso real.</p>
-    <div class="hub-grid">
+    <div class="hub-grid services-grid">
       <article class="hub-card">
         <h3>Instalaci&oacute;n de aire acondicionado</h3>
         <p>Instalamos equipos split, multisplit y conductos con visita previa, c&aacute;lculo de potencia y puesta en marcha cuidada.</p>
@@ -652,14 +746,46 @@ function hub_services_body(): string {
   <div class="container">
     <p class="hub-kicker">Zonas destacadas</p>
     <h2 class="section-title" id="zonas-destacadas">Servicio local en la Marina Baixa</h2>
-    <p class="hub-muted">Trabajamos a diario en Benidorm, Altea, Calpe, Finestrat y La Nuc&iacute;a, y tambi&eacute;n nos desplazamos a otras localidades cercanas.</p>
-    <div class="hub-links">
-      <a class="hub-pill" href="/es/aire-acondicionado-benidorm/">Aire acondicionado en Benidorm</a>
-      <a class="hub-pill" href="/es/aire-acondicionado-altea/">Aire acondicionado en Altea</a>
-      <a class="hub-pill" href="/es/aire-acondicionado-calpe/">Aire acondicionado en Calpe</a>
-      <a class="hub-pill" href="/es/aire-acondicionado-finestrat/">Aire acondicionado en Finestrat</a>
-      <a class="hub-pill" href="/es/aire-acondicionado-la-nucia/">Aire acondicionado en La Nuc&iacute;a</a>
-      <a class="hub-pill" href="/es/zonas/">Ver todas las zonas</a>
+    <div class="service-zones-panel">
+      <div class="service-zones-copy">
+        <p class="hub-muted">Trabajamos a diario en Benidorm, Altea, Calpe, Finestrat y La Nuc&iacute;a, y tambi&eacute;n nos desplazamos a otras localidades cercanas.</p>
+        <div class="hub-links">
+          <a class="hub-pill" href="/es/aire-acondicionado-benidorm/">Aire acondicionado en Benidorm</a>
+          <a class="hub-pill" href="/es/aire-acondicionado-altea/">Aire acondicionado en Altea</a>
+          <a class="hub-pill" href="/es/aire-acondicionado-calpe/">Aire acondicionado en Calpe</a>
+          <a class="hub-pill" href="/es/aire-acondicionado-finestrat/">Aire acondicionado en Finestrat</a>
+          <a class="hub-pill" href="/es/aire-acondicionado-la-nucia/">Aire acondicionado en La Nuc&iacute;a</a>
+          <a class="hub-pill" href="/es/zonas/">Todas las zonas</a>
+        </div>
+      </div>
+      <div class="mini-map-card" aria-label="Esquema de cobertura en la Marina Baixa">
+        <svg class="marina-map" viewBox="0 0 420 260" role="img" aria-labelledby="mini-map-title">
+          <title id="mini-map-title">Cobertura principal en la Marina Baixa</title>
+          <path class="sea" d="M255 0h165v260H220c34-43 43-80 34-120-8-36-2-82 1-140Z"></path>
+          <path class="coast" d="M260 18c-32 36-24 69-12 102 13 36 6 75-28 116"></path>
+          <path class="route" d="M78 172c45-32 83-47 136-56 40-7 70-23 98-55"></path>
+          <g class="map-zone" tabindex="0">
+            <circle class="zone-shape" cx="200" cy="150" r="32"></circle>
+            <text class="map-label" x="200" y="154" text-anchor="middle">Benidorm</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <circle class="zone-shape" cx="245" cy="94" r="28"></circle>
+            <text class="map-label" x="245" y="98" text-anchor="middle">Altea</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <circle class="zone-shape" cx="312" cy="58" r="28"></circle>
+            <text class="map-label" x="312" y="62" text-anchor="middle">Calpe</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <circle class="zone-shape" cx="145" cy="128" r="28"></circle>
+            <text class="map-label" x="145" y="132" text-anchor="middle">Finestrat</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <circle class="zone-shape" cx="178" cy="82" r="30"></circle>
+            <text class="map-label" x="178" y="86" text-anchor="middle">La Nuc&iacute;a</text>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 </section>
@@ -708,12 +834,47 @@ function hub_zones_body(): string {
     <p class="hub-kicker">Cobertura</p>
     <h2 class="section-title" id="zonas-listado">Localidades donde prestamos servicio</h2>
     <p class="hub-muted">Realizamos instalaciones, mantenimiento y reparaciones de climatizaci&oacute;n en estas localidades y alrededores.</p>
-    <div class="hub-links">
-      {$items}
-    </div>
-    <div class="hub-cta">
-      <a class="btn btn-primary js-track" data-ev="cta_quote_zones" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Pedir presupuesto</a>
-      <a class="btn btn-outline-primary" href="/es/servicios/">Ver servicios</a>
+    <div class="zone-layout">
+      <div class="zone-map-card">
+        <svg class="marina-map" viewBox="0 0 520 340" role="img" aria-labelledby="zone-map-title zone-map-desc">
+          <title id="zone-map-title">Mapa esquem&aacute;tico de servicio en Marina Baixa</title>
+          <desc id="zone-map-desc">Las zonas principales se iluminan al pasar el cursor.</desc>
+          <path class="sea" d="M350 0h170v340H312c48-63 59-112 47-164-12-49-13-104-9-176Z"></path>
+          <path class="coast" d="M350 20c-38 45-35 82-18 130 17 51 5 103-38 166"></path>
+          <path class="route" d="M88 222c62-44 114-66 184-78 48-8 92-33 130-78"></path>
+          <path class="route" d="M126 104c44 24 93 35 151 34"></path>
+          <g class="map-zone" tabindex="0">
+            <path class="zone-shape" d="M237 178c31-7 58 12 60 43 1 31-24 54-55 49-27-5-47-28-43-55 3-20 17-32 38-37Z"></path>
+            <text class="map-label" x="249" y="226" text-anchor="middle">Benidorm</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <path class="zone-shape" d="M296 105c31-12 61 4 67 35 5 31-17 57-49 56-28-1-51-21-52-48-1-20 12-35 34-43Z"></path>
+            <text class="map-label" x="313" y="153" text-anchor="middle">Altea</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <path class="zone-shape" d="M382 50c26-11 54 3 61 30 7 28-12 53-41 54-26 1-49-17-51-41-2-19 10-34 31-43Z"></path>
+            <text class="map-label" x="397" y="91" text-anchor="middle">Calpe</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <path class="zone-shape" d="M150 158c29-14 62-1 72 29 10 29-8 58-39 62-28 4-54-12-61-38-5-21 6-41 28-53Z"></path>
+            <text class="map-label" x="172" y="207" text-anchor="middle">Finestrat</text>
+          </g>
+          <g class="map-zone" tabindex="0">
+            <path class="zone-shape" d="M197 77c29-12 59 2 68 31 8 28-11 55-41 57-27 2-52-16-57-42-3-20 8-37 30-46Z"></path>
+            <text class="map-label" x="218" y="119" text-anchor="middle">La Nuc&iacute;a</text>
+          </g>
+          <text class="map-label" x="440" y="292" text-anchor="middle">Costa Blanca</text>
+        </svg>
+      </div>
+      <div class="zone-list-card">
+        <p class="hub-muted">Selecciona una localidad para ver la p&aacute;gina local correspondiente.</p>
+        <div class="hub-links zone-chip-grid">
+          {$items}
+        </div>
+        <div class="hub-cta">
+          <a class="btn btn-primary js-track" data-ev="cta_quote_zones" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Pedir presupuesto</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -742,7 +903,7 @@ function hub_blog_body(): string {
     <p class="hub-kicker">Gu&iacute;as</p>
     <h2 class="section-title" id="blog-plan">Biblioteca de gu&iacute;as &uacute;tiles</h2>
     <p class="hub-muted">Estamos preparando gu&iacute;as &uacute;tiles basadas en dudas reales de clientes: consumo, potencia necesaria, mantenimiento, bomba de calor, aerotermia, instalaci&oacute;n en viviendas, apartamentos tur&iacute;sticos y comunidades.</p>
-    <div class="hub-grid">
+    <div class="hub-grid guides-grid">
       <article class="hub-card">
         <h3>Aerotermia y bomba de calor: cu&aacute;ndo merece la pena</h3>
         <p>Una gu&iacute;a para entender cu&aacute;ndo una bomba de calor puede mejorar el confort y reducir el consumo.</p>
@@ -767,11 +928,6 @@ function hub_blog_body(): string {
         <h3>Climatizaci&oacute;n eficiente en la Costa Blanca</h3>
         <p>Consejos para viviendas en zonas de costa, humedad, calor prolongado y uso intensivo.</p>
       </article>
-    </div>
-    <div class="hub-cta">
-      <a class="btn btn-primary js-track" data-ev="cta_quote_blog" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Resolver una duda</a>
-      <a class="btn btn-outline-primary" href="/es/servicios/">Ver servicios</a>
-      <a class="btn btn-outline-primary" href="/es/zonas/">Ver zonas</a>
     </div>
   </div>
 </section>
