@@ -65,6 +65,40 @@ if (!function_exists('flag_url')) {
     }
 }
 
+if (!function_exists('localized_hub_url')) {
+    function localized_hub_url(string $lang, string $hub): ?string {
+        $paths = [
+            'es' => [
+                'services' => '/es/servicios/',
+                'zones' => '/es/zonas/',
+            ],
+        ];
+
+        return $paths[$lang][$hub] ?? null;
+    }
+}
+
+if (!function_exists('primary_nav_items')) {
+    function primary_nav_items(string $lang): array {
+        $items = [
+            ['label' => t('nav.home', 'Inicio'), 'href' => lang_url($lang)],
+        ];
+
+        if ($services = localized_hub_url($lang, 'services')) {
+            $items[] = ['label' => t('nav.services', 'Servicios'), 'href' => $services];
+        }
+
+        if ($zones = localized_hub_url($lang, 'zones')) {
+            $items[] = ['label' => t('nav.zones', 'Zonas'), 'href' => $zones];
+        }
+
+        $items[] = ['label' => t('nav.faq', 'FAQ'), 'href' => lang_url($lang) . '#faq'];
+        $items[] = ['label' => t('nav.contact', 'Contacto'), 'href' => lang_url($lang) . '#contacto'];
+
+        return $items;
+    }
+}
+
 if (!function_exists('meta_title')) {
     function meta_title(): string {
         $lang = $GLOBALS['current_lang'] ?? config('brand.default_lang', 'es');

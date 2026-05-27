@@ -88,6 +88,8 @@ Estado Fase P1:
 - No se anadieron al sitemap en esta fase.
 - Las landings P1 enlazan hacia `/es/servicios/` y `/es/zonas/`.
 - El indice `/es/blog/` no enlaza a articulos inexistentes; muestra temas futuros sin URLs publicables.
+- El menu principal queda reducido a Inicio, Servicios, Zonas, FAQ y Contacto.
+- Blog y reformas quedan fuera del menu principal hasta tener estrategia propia.
 
 ## Tratamiento de `/es/zonas/`
 

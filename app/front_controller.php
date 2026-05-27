@@ -141,6 +141,10 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
     $html = str_replace('</head>', $jsonLd . "\n</head>", $html);
   }
 
+  $html = patch_snapshot_primary_nav($html, $lang);
+  $html = patch_snapshot_remove_city_navigation_extras($html);
+  $html = patch_snapshot_contact_anchor($html);
+
   $html = patch_es_p1_location_page($html, $path, $lang);
 
   $html = patch_snapshot_home_hero($html, $path, $lang);
@@ -194,6 +198,48 @@ function snapshot_whatsapp_label(string $lang): string {
   $label = function_exists('t') ? t('cta.whatsapp', $fallback) : $fallback;
 
   return is_string($label) && $label !== '' && $label !== 'cta.whatsapp' ? $label : $fallback;
+}
+
+function patch_snapshot_primary_nav(string $html, string $lang): string {
+  $items = primary_nav_items($lang);
+  $nav = '';
+  foreach ($items as $item) {
+    $nav .= '            <li class="nav-item"><a class="nav-link" href="' .
+      e((string) $item['href']) .
+      '">' .
+      e((string) $item['label']) .
+      '</a></li>' .
+      "\n";
+  }
+
+  return preg_replace(
+    '/(<ul class="navbar-nav main-menu mx-lg-auto">\s*)[\s\S]*?(\s*<\/ul>)/',
+    '$1' . "\n" . rtrim($nav) . "\n          " . '$2',
+    $html,
+    1
+  ) ?? $html;
+}
+
+function patch_snapshot_remove_city_navigation_extras(string $html): string {
+  return preg_replace(
+    '/\s*<!-- Offcanvas de ciudades[\s\S]*?<\/script>\s*(?=<main id="main-content">)/',
+    "\n",
+    $html,
+    1
+  ) ?? $html;
+}
+
+function patch_snapshot_contact_anchor(string $html): string {
+  if (str_contains($html, 'id="contacto"') || !str_contains($html, 'id="presupuesto"')) {
+    return $html;
+  }
+
+  return preg_replace(
+    '/(<section\b[^>]*\bid="presupuesto"[^>]*>)/i',
+    '<span id="contacto" class="visually-hidden"></span>' . "\n" . '$1',
+    $html,
+    1
+  ) ?? $html;
 }
 
 function patch_snapshot_body_links(string $body, string $lang): string {
@@ -383,7 +429,6 @@ function render_es_legacy_shell(array $page, string $path, string $body): string
   $interactiveTail = legacy_es_interactive_main_tail($base, $mainStart + strlen($mainOpen), $mainEnd);
   $tail = substr($base, $mainEnd);
   $headAndHeader = patch_es_hub_head($headAndHeader, $page, $path);
-  $headAndHeader = patch_es_hub_nav($headAndHeader);
 
   return $headAndHeader . "\n" . $body . "\n" . $interactiveTail . "\n" . $tail;
 }
@@ -430,24 +475,6 @@ function patch_es_hub_head(string $html, array $page, string $path): string {
   $html = str_replace('</head>', es_hub_jsonld($path, $page['breadcrumb']) . "\n</head>", $html);
 
   return $html;
-}
-
-function patch_es_hub_nav(string $html): string {
-  if (str_contains($html, '/es/servicios/')) {
-    return $html;
-  }
-
-  $links = "\n" .
-    '            <li class="nav-item"><a class="nav-link" href="/es/servicios/">Servicios</a></li>' . "\n" .
-    '            <li class="nav-item"><a class="nav-link" href="/es/zonas/">Zonas</a></li>' . "\n" .
-    '            <li class="nav-item"><a class="nav-link" href="/es/blog/">Blog</a></li>';
-
-  return preg_replace(
-    '/(<li class="nav-item"><a class="nav-link" href="https:\/\/masqueclima\.es\/#faq">FAQ<\/a><\/li>)/',
-    '$1' . $links,
-    $html,
-    1
-  ) ?? $html;
 }
 
 function es_hub_jsonld(string $path, string $name): string {

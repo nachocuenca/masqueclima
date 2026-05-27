@@ -15,6 +15,40 @@ Rutas nuevas servidas por `app/front_controller.php`:
 
 Las rutas reutilizan la carcasa legacy del snapshot ES: header, footer, estilos, modal de presupuesto, formulario, WhatsApp flotante y scripts existentes.
 
+## Navegacion principal
+
+Se unifico el menu principal desde una funcion comun en `app/helpers.php`:
+
+- `primary_nav_items()`
+- `localized_hub_url()`
+
+Menu ES:
+
+- Inicio
+- Servicios
+- Zonas
+- FAQ
+- Contacto
+- Selector de idioma
+
+En idiomas sin hub real de servicios/zonas no se inventan rutas extranjeras. El menu muestra home, FAQ y contacto, manteniendo el selector de idioma.
+
+Elementos retirados del menu principal:
+
+- Metodo
+- Quienes somos
+- Ciudades
+- Blog
+- Reformas integrales
+
+Notas:
+
+- Metodo y Quienes somos siguen existiendo como secciones de la home.
+- Ciudades queda consolidado en `/es/zonas/`.
+- Blog sigue vivo como `/es/blog/`, pero no entra en menu principal ni sitemap mientras no tenga articulos reales.
+- Reformas sigue vivo, pero sale de la navegacion principal por foco de climatizacion.
+- El selector de idioma usa URLs relativas al host actual; no salta a produccion.
+
 ## Sitemap
 
 No se modifico `public/sitemap.xml`.
@@ -64,7 +98,7 @@ Quedan para fase posterior.
 
 Reformas no se elimino, no se redirigio, no se noindexo y no se anadio al sitemap.
 
-Se mantiene como decision pendiente segun `docs/REFORMAS_DECISION_PENDING.md`.
+Se retiro de la navegacion principal y se mantiene como decision pendiente segun `docs/REFORMAS_DECISION_PENDING.md`.
 
 ## Validaciones locales ejecutadas
 
@@ -86,6 +120,8 @@ Se mantiene como decision pendiente segun `docs/REFORMAS_DECISION_PENDING.md`.
 - Validacion de que los hubs incluyen `quoteModal`, `contact-submit.php` y `btn-whatsapp-pulse`
 - Validacion de que los hubs no generan hreflang a idiomas sin equivalente real
 - Validacion de que el cuerpo HTML no contiene enlaces visibles `href="https://masqueclima.es..."`
+- Validacion de menu principal en home, hubs, landing P1, reformas, EN y NO
+- Validacion de selector de idioma con URLs relativas (`/en/`, `/no/`, etc.)
 
 ## Pendiente de validacion tras despliegue a dev
 

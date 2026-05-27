@@ -51,6 +51,27 @@ No aplicar ahora:
 - No anadir al sitemap todavia.
 - No quitar enlaces sin una decision comercial/SEO.
 
+## Estado tras ajuste de navegacion P1
+
+Reformas se elimina de la navegacion principal por foco comercial en climatizacion.
+
+La URL sigue viva para auditoria posterior:
+
+- `/es/reformas-integrales-benidorm/`
+- `/en/benidorm-renovations/`
+- `/de/renovierungen-benidorm/`
+- `/nl/verbouwingen-benidorm/`
+- `/ru/remont-benidorm/`
+- `/no/oppussing-benidorm/`
+
+Decision mantenida:
+
+- No borrar.
+- No redirigir.
+- No anadir al sitemap.
+- No convertir en blog.
+- Reabrir decision cuando exista proyecto/web especifico de reformas.
+
 ## Opciones para fase posterior
 
 | Opcion | Cuando elegirla | Accion |
