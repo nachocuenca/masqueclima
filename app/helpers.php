@@ -65,6 +65,25 @@ if (!function_exists('flag_url')) {
     }
 }
 
+if (!function_exists('render_partial')) {
+    function render_partial(string $name, array $data = []): string {
+        if (!preg_match('/\A[a-z0-9_-]+\z/', $name)) {
+            return '';
+        }
+
+        $base = realpath(__DIR__ . '/../views/partials');
+        $file = realpath(__DIR__ . '/../views/partials/' . $name . '.php');
+        if ($base === false || $file === false || !str_starts_with($file, $base . DIRECTORY_SEPARATOR)) {
+            return '';
+        }
+
+        ob_start();
+        extract($data, EXTR_SKIP);
+        include $file;
+        return (string) ob_get_clean();
+    }
+}
+
 if (!function_exists('localized_hub_url')) {
     function localized_hub_url(string $lang, string $hub): ?string {
         $paths = [

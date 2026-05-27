@@ -160,6 +160,14 @@ Comprobacion realizada antes de desplegar estos cambios: dev sigue sirviendo la 
 - Los hubs cierran con una caja final reutilizable de `Solicita tu presupuesto` antes del footer.
 - El boton contextual de Guias en FAQ usa estilo claro para integrarse mejor sobre el bloque oscuro.
 
+## Refactor tecnico de partials legacy
+
+- Se extrajeron bloques visuales grandes de `app/front_controller.php` a partials reutilizables en `views/partials/`.
+- La CTA final, el hero compacto, los estilos de hubs, las tarjetas de servicios, el visual de zonas y las tarjetas de Guias se renderizan ahora con partials.
+- Se anadio `render_partial()` en `app/helpers.php` con restriccion de nombre y comprobacion de ruta dentro de `views/partials/`.
+- No se modificaron rutas, sitemap, copy visible ni comportamiento de popup/WhatsApp.
+- Detalle tecnico en `docs/LEGACY_PARTIALS_REFACTOR_NOTES.md`.
+
 ## Siguiente fase recomendada
 
 No implementado todavia. Cuando se apruebe la siguiente fase, crear paginas SEO especificas de servicio:
