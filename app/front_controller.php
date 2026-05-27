@@ -144,6 +144,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_snapshot_primary_nav($html, $lang);
   $html = patch_snapshot_remove_city_navigation_extras($html);
   $html = patch_snapshot_contact_anchor($html);
+  $html = patch_snapshot_footer_guides_link($html, $lang);
 
   $html = patch_es_p1_location_page($html, $path, $lang);
 
@@ -237,6 +238,19 @@ function patch_snapshot_contact_anchor(string $html): string {
   return preg_replace(
     '/(<section\b[^>]*\bid="presupuesto"[^>]*>)/i',
     '<span id="contacto" class="visually-hidden"></span>' . "\n" . '$1',
+    $html,
+    1
+  ) ?? $html;
+}
+
+function patch_snapshot_footer_guides_link(string $html, string $lang): string {
+  if ($lang !== 'es' || str_contains($html, 'footer-guides-link')) {
+    return $html;
+  }
+
+  return preg_replace(
+    '/(<footer class="bg-dark text-white py-4">[\s\S]*?<div class="container text-center">)/',
+    '$1' . "\n" . '    <p class="mb-1 footer-guides-link"><a class="text-white" href="/es/blog/">Guías</a></p>',
     $html,
     1
   ) ?? $html;
@@ -384,7 +398,7 @@ function render_es_hub_page(string $path): ?string {
       'title' => 'Gu&iacute;as de climatizaci&oacute;n y aire acondicionado | +QUECLIMA',
       'description' => 'Gu&iacute;as pr&aacute;cticas sobre aire acondicionado, potencia, mantenimiento, ahorro y sistemas de climatizaci&oacute;n en la Costa Blanca.',
       'h1' => 'Gu&iacute;as de climatizaci&oacute;n y aire acondicionado',
-      'breadcrumb' => 'Blog',
+      'breadcrumb' => 'Gu&iacute;as',
     ],
   ];
 
@@ -546,7 +560,7 @@ HTML;
 function hub_services_body(): string {
   $intro = hub_intro(
     'Servicios de climatizaci&oacute;n en Benidorm y Marina Baixa',
-    'Instalamos, mantenemos y reparamos sistemas de climatizaci&oacute;n para viviendas, apartamentos tur&iacute;sticos, comunidades y negocios en Benidorm, Marina Baixa y provincia de Alicante.'
+    'Instalamos, mantenemos y reparamos sistemas de aire acondicionado, calefacci&oacute;n y energ&iacute;a para viviendas, apartamentos tur&iacute;sticos, comunidades y negocios.'
   );
   $styles = hub_styles();
 
@@ -561,27 +575,27 @@ function hub_services_body(): string {
     <div class="hub-grid">
       <article class="hub-card">
         <h3>Instalaci&oacute;n de aire acondicionado</h3>
-        <p>Montaje certificado de equipos 1x1, multisplit y conductos, con visita t&eacute;cnica, c&aacute;lculo de potencia y puesta en marcha.</p>
+        <p>Instalamos equipos split, multisplit y conductos con visita previa, c&aacute;lculo de potencia y puesta en marcha cuidada.</p>
         <a class="btn btn-primary js-track" data-ev="cta_quote_service_install" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Pedir presupuesto</a>
       </article>
       <article class="hub-card">
         <h3>Mantenimiento de climatizaci&oacute;n</h3>
-        <p>Limpieza, revisi&oacute;n de presiones, desag&uuml;es, filtros y unidades exteriores para reducir aver&iacute;as y consumo en temporada.</p>
+        <p>Revisamos filtros, bater&iacute;as, desag&uuml;es y unidades exteriores para alargar la vida del equipo y reducir consumo.</p>
         <a class="btn btn-primary js-track" data-ev="cta_quote_service_maintenance" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Solicitar revisi&oacute;n</a>
       </article>
       <article class="hub-card">
         <h3>Reparaci&oacute;n de aire acondicionado</h3>
-        <p>Diagn&oacute;stico de equipos que no enfr&iacute;an, hacen ruido, pierden agua o muestran errores. Revisamos si conviene reparar o sustituir.</p>
+        <p>Atendemos equipos que no enfr&iacute;an, hacen ruido, pierden agua o muestran errores, con diagn&oacute;stico claro antes de reparar.</p>
         <a class="btn btn-primary js-track" data-ev="cta_quote_service_repair" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Consultar aver&iacute;a</a>
       </article>
       <article class="hub-card">
         <h3>Calefacci&oacute;n y bomba de calor</h3>
-        <p>Sistemas eficientes para invierno y entretiempo, con zonificaci&oacute;n y equipos de bajo consumo para viviendas y chalets.</p>
+        <p>Soluciones eficientes para invierno y entretiempo, con equipos silenciosos y control por zonas cuando la vivienda lo necesita.</p>
         <a class="btn btn-primary js-track" data-ev="cta_quote_service_heatpump" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Valorar opciones</a>
       </article>
       <article class="hub-card">
-        <h3>Energ&iacute;a solar</h3>
-        <p>Asesoramiento en soluciones solares y apoyo energ&eacute;tico cuando encaja con el consumo de la vivienda o el negocio.</p>
+        <h3>Energ&iacute;a solar t&eacute;rmica</h3>
+        <p>Valoramos apoyo solar para agua caliente y eficiencia energ&eacute;tica cuando encaja con el uso de la vivienda o el negocio.</p>
         <a class="btn btn-primary js-track" data-ev="cta_quote_service_solar" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">Pedir estudio</a>
       </article>
     </div>
@@ -591,7 +605,7 @@ function hub_services_body(): string {
   <div class="container">
     <p class="hub-kicker">Zonas destacadas</p>
     <h2 class="section-title" id="zonas-destacadas">Servicio local en la Marina Baixa</h2>
-    <p class="hub-muted">Priorizamos Benidorm, Altea, Calpe, Finestrat y La Nuc&iacute;a por volumen de demanda y cercan&iacute;a, manteniendo cobertura en el resto de zonas existentes.</p>
+    <p class="hub-muted">Trabajamos a diario en Benidorm, Altea, Calpe, Finestrat y La Nuc&iacute;a, y tambi&eacute;n nos desplazamos a otras localidades cercanas.</p>
     <div class="hub-links">
       <a class="hub-pill" href="/es/aire-acondicionado-benidorm/">Aire acondicionado en Benidorm</a>
       <a class="hub-pill" href="/es/aire-acondicionado-altea/">Aire acondicionado en Altea</a>
@@ -608,7 +622,7 @@ HTML;
 function hub_zones_body(): string {
   $intro = hub_intro(
     'Servicio de climatizaci&oacute;n por zonas en Alicante',
-    '+QUECLIMA presta servicio desde Benidorm hacia Marina Baixa, Costa Blanca norte y provincia de Alicante, conservando las landings locales actuales para cada ciudad.'
+    'Trabajamos desde Benidorm para la Marina Baixa, Costa Blanca norte y provincia de Alicante, con desplazamiento r&aacute;pido y asesoramiento cercano.'
   );
   $styles = hub_styles();
   $zones = [
@@ -645,8 +659,8 @@ function hub_zones_body(): string {
 <section class="hub-section" aria-labelledby="zonas-listado">
   <div class="container">
     <p class="hub-kicker">Cobertura</p>
-    <h2 class="section-title" id="zonas-listado">Zonas con landing local activa</h2>
-    <p class="hub-muted">Este hub agrupa las URLs locales existentes sin cambiarlas. Las paginas de ciudad siguen siendo landings transaccionales para instalaci&oacute;n, mantenimiento y reparaci&oacute;n de climatizaci&oacute;n.</p>
+    <h2 class="section-title" id="zonas-listado">Localidades donde prestamos servicio</h2>
+    <p class="hub-muted">Estas son algunas de las zonas donde realizamos instalaciones, mantenimiento y reparaciones de climatizaci&oacute;n.</p>
     <div class="hub-links">
       {$items}
     </div>
@@ -659,8 +673,8 @@ function hub_zones_body(): string {
 <section class="hub-section alt" aria-labelledby="zonas-contexto">
   <div class="container">
     <p class="hub-kicker">Prioridad local</p>
-    <h2 class="section-title" id="zonas-contexto">Benidorm, Marina Baixa y Alicante</h2>
-    <p class="hub-muted">Las primeras mejoras de contenido se concentran en Benidorm, Altea, Calpe, Finestrat y La Nuc&iacute;a. Son zonas con demanda activa y necesidades distintas: apartamentos tur&iacute;sticos, costa con salitre, obra nueva, chalets y viviendas de dos plantas.</p>
+    <h2 class="section-title" id="zonas-contexto">Benidorm, Marina Baixa y Costa Blanca norte</h2>
+    <p class="hub-muted">Cada zona tiene necesidades distintas: apartamentos tur&iacute;sticos en Benidorm, viviendas cerca del mar en Altea y Calpe, obra nueva en Finestrat o chalets en La Nuc&iacute;a. Adaptamos la soluci&oacute;n a cada vivienda y a cada uso.</p>
   </div>
 </section>
 HTML;
@@ -669,7 +683,7 @@ HTML;
 function hub_blog_body(): string {
   $intro = hub_intro(
     'Gu&iacute;as de climatizaci&oacute;n y aire acondicionado',
-    'Indice editorial preparado para publicar gu&iacute;as utiles sobre instalaci&oacute;n, mantenimiento, potencia, ahorro y sistemas de climatizaci&oacute;n. Los articulos se publicar&aacute;n solo cuando tengan contenido completo.'
+    'Consejos pr&aacute;cticos para elegir, mantener y aprovechar mejor tu sistema de climatizaci&oacute;n en la Costa Blanca.'
   );
   $styles = hub_styles();
 
@@ -678,22 +692,19 @@ function hub_blog_body(): string {
 {$intro}
 <section class="hub-section" aria-labelledby="blog-plan">
   <div class="container">
-    <p class="hub-kicker">Pr&oacute;ximas gu&iacute;as</p>
-    <h2 class="section-title" id="blog-plan">Temas P1 preparados</h2>
-    <p class="hub-muted">Estos temas no enlazan a articulos todavia para evitar contenido fino o placeholders indexables. El indice queda listo para crecer cuando cada guia tenga contenido real.</p>
+    <p class="hub-kicker">Gu&iacute;as</p>
+    <h2 class="section-title" id="blog-plan">Consejos que estamos preparando</h2>
+    <p class="hub-muted">Estamos preparando gu&iacute;as &uacute;tiles sobre instalaci&oacute;n, mantenimiento y ahorro energ&eacute;tico. Mientras tanto, puedes consultarnos directamente y te orientamos seg&uacute;n tu vivienda o negocio.</p>
     <div class="hub-grid">
       <article class="hub-card">
-        <span class="blog-soon">Pr&oacute;ximamente</span>
         <h3>Cu&aacute;nto cuesta instalar aire acondicionado en Alicante</h3>
-        <p>Guia de precios, factores de instalaci&oacute;n, equipos y casos habituales en viviendas de la Costa Blanca.</p>
+        <p>Factores que influyen en el precio: tipo de equipo, distancia de instalaci&oacute;n, potencia y caracter&iacute;sticas de la vivienda.</p>
       </article>
       <article class="hub-card">
-        <span class="blog-soon">Pr&oacute;ximamente</span>
         <h3>Qu&eacute; potencia de aire acondicionado necesito</h3>
-        <p>Orientaci&oacute;n sobre frigor&iacute;as, metros cuadrados, aislamiento, orientaci&oacute;n y uso real de la vivienda.</p>
+        <p>Una orientaci&oacute;n sencilla sobre frigor&iacute;as, metros cuadrados, aislamiento, orientaci&oacute;n y uso real de cada estancia.</p>
       </article>
       <article class="hub-card">
-        <span class="blog-soon">Pr&oacute;ximamente</span>
         <h3>Mantenimiento de aire acondicionado en zonas de costa</h3>
         <p>Recomendaciones para salitre, filtros, bater&iacute;as, drenajes y revisiones antes de temporada alta.</p>
       </article>

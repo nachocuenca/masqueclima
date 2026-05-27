@@ -53,9 +53,9 @@ No aplicar ahora:
 
 ## Estado tras ajuste de navegacion P1
 
-Reformas se elimina de la navegacion principal por foco comercial en climatizacion.
+Reformas se elimina de la navegacion principal porque esta web queda centrada en climatizacion.
 
-La URL sigue viva para auditoria posterior:
+La URL sigue viva temporalmente para no romper enlaces y poder auditarla despues:
 
 - `/es/reformas-integrales-benidorm/`
 - `/en/benidorm-renovations/`

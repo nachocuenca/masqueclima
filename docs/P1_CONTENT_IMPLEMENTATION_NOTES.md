@@ -25,29 +25,30 @@ Se unifico el menu principal desde una funcion comun en `app/helpers.php`:
 Menu ES:
 
 - Inicio
+- Metodo
+- Nosotros
 - Servicios
 - Zonas
 - FAQ
+- Guias
 - Contacto
 - Selector de idioma
 
-En idiomas sin hub real de servicios/zonas no se inventan rutas extranjeras. El menu muestra home, FAQ y contacto, manteniendo el selector de idioma.
+En idiomas sin hub real de servicios/zonas/guias no se inventan rutas extranjeras. El menu muestra home, Metodo, FAQ y contacto, manteniendo el selector de idioma.
 
 Elementos retirados del menu principal:
 
-- Metodo
-- Quienes somos
 - Ciudades
-- Blog
 - Reformas integrales
 
 Notas:
 
 - Metodo y Quienes somos siguen existiendo como secciones de la home.
 - Ciudades queda consolidado en `/es/zonas/`.
-- Blog sigue vivo como `/es/blog/`, pero no entra en menu principal ni sitemap mientras no tenga articulos reales.
+- Blog sigue vivo como `/es/blog/` y se muestra como `Guias`; no entra en sitemap mientras no tenga articulos reales.
 - Reformas sigue vivo, pero sale de la navegacion principal por foco de climatizacion.
 - El selector de idioma usa URLs relativas al host actual; no salta a produccion.
+- La home conserva sus secciones originales y el menu vuelve a enlazar a `#metodo`, `#nosotros`, `#faq` y `#contacto`.
 
 ## Sitemap
 
@@ -122,6 +123,8 @@ Se retiro de la navegacion principal y se mantiene como decision pendiente segun
 - Validacion de que el cuerpo HTML no contiene enlaces visibles `href="https://masqueclima.es..."`
 - Validacion de menu principal en home, hubs, landing P1, reformas, EN y NO
 - Validacion de selector de idioma con URLs relativas (`/en/`, `/no/`, etc.)
+- Validacion de copy visible sin terminos internos como `landing`, `hub`, `P1`, `URL`, `placeholder`, `sitemap` o `contenido fino`
+- `bash -lc 'find ... | xargs ... php -l'` no pudo ejecutarse porque no hay `/bin/bash` disponible en este entorno; se ejecuto validacion PowerShell equivalente.
 
 ## Pendiente de validacion tras despliegue a dev
 

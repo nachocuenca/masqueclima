@@ -71,6 +71,7 @@ if (!function_exists('localized_hub_url')) {
             'es' => [
                 'services' => '/es/servicios/',
                 'zones' => '/es/zonas/',
+                'guides' => '/es/blog/',
             ],
         ];
 
@@ -80,8 +81,22 @@ if (!function_exists('localized_hub_url')) {
 
 if (!function_exists('primary_nav_items')) {
     function primary_nav_items(string $lang): array {
+        if ($lang === 'es') {
+            return [
+                ['label' => 'Inicio', 'href' => '/es/'],
+                ['label' => 'Método', 'href' => '/es/#metodo'],
+                ['label' => 'Nosotros', 'href' => '/es/#nosotros'],
+                ['label' => 'Servicios', 'href' => '/es/servicios/'],
+                ['label' => 'Zonas', 'href' => '/es/zonas/'],
+                ['label' => 'FAQ', 'href' => '/es/#faq'],
+                ['label' => 'Guías', 'href' => '/es/blog/'],
+                ['label' => 'Contacto', 'href' => '/es/#contacto'],
+            ];
+        }
+
         $items = [
             ['label' => t('nav.home', 'Inicio'), 'href' => lang_url($lang)],
+            ['label' => t('nav.method', 'Metodo'), 'href' => lang_url($lang) . '#metodo'],
         ];
 
         if ($services = localized_hub_url($lang, 'services')) {
@@ -90,6 +105,10 @@ if (!function_exists('primary_nav_items')) {
 
         if ($zones = localized_hub_url($lang, 'zones')) {
             $items[] = ['label' => t('nav.zones', 'Zonas'), 'href' => $zones];
+        }
+
+        if ($guides = localized_hub_url($lang, 'guides')) {
+            $items[] = ['label' => t('nav.guides', 'Guias'), 'href' => $guides];
         }
 
         $items[] = ['label' => t('nav.faq', 'FAQ'), 'href' => lang_url($lang) . '#faq'];

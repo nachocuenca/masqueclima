@@ -193,8 +193,9 @@ Implementado en rama, pendiente de despliegue a dev:
 
 - `/es/servicios/` como hub ES listo con title, description, canonical y BreadcrumbList.
 - `/es/zonas/` como hub ES listo con listado de las 20 URLs actuales de ciudad.
-- `/es/blog/` como indice ES sin articulos publicados ni placeholders enlazables.
+- `/es/blog/` como seccion `Guias`, sin articulos publicados ni slugs falsos.
 - Las landings P1 ES reciben title/description unicos y un bloque de enlaces a `/es/servicios/`, `/es/zonas/` y zonas cercanas.
+- El menu principal ES queda unificado: Inicio, Metodo, Nosotros, Servicios, Zonas, FAQ, Guias y Contacto.
 - No se han creado equivalentes EN/DE/NL/RU/NO para los hubs.
 - No se ha tocado `/no/`, reformas ni el popup/formulario.
 - No se ha modificado `public/sitemap.xml`; los hubs deben anadirse solo despues de validar contenido y despliegue.
