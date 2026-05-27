@@ -1,63 +1,228 @@
 <?php $variant = $variant ?? 'full'; ?>
+<?php
+/*
+ * Marina Baixa / Costa Blanca Norte — SVG map
+ * Coordinate system (shared by both variants):
+ *   ViewBox: 0 0 600 420
+ *   lon [-0.28, +0.07]  → x = (lon + 0.28) / 0.35 * 600
+ *   lat [38.73, 38.47]  → y = (38.73 - lat)  / 0.26 * 420
+ *
+ * Key positions (approximate real coordinates):
+ *   Benidorm      252,310   Villajoyosa  83,354
+ *   Altea         390,212   Calpe       552,139
+ *   Finestrat     174,282   La Nucía    263,177
+ *   Alfaz del Pi  324,244   Albir       343,233
+ *   Polop         233,155   Callosa     281,110
+ *   Tàrbena       357, 42   Orxeta      121,264
+ *   Sella          78,231   Relleu       41,279
+ *   Benimantell   198, 92   Guadalest   149, 69
+ *   Confrides     157, 36   Beniardà    167, 80
+ *   Bolulla       255, 72   Benifato    191, 62
+ */
+$land   = 'M 0 0 L 600 0 L 600 112'
+        . ' C 590 124 572 134 552 139'
+        . ' C 522 145 496 153 470 166'
+        . ' C 440 181 414 196 390 212'
+        . ' C 376 220 362 228 350 237'
+        . ' C 334 249 318 263 302 275'
+        . ' C 282 290 262 306 245 310'
+        . ' C 226 314 210 316 185 318'
+        . ' C 140 322 90 328 83 354'
+        . ' C 76 378 70 400 60 420'
+        . ' L 0 420 Z';
+$coast  = 'M 60 420'
+        . ' C 70 400 76 378 83 354'
+        . ' C 90 328 140 322 185 318'
+        . ' C 210 316 226 314 245 310'
+        . ' C 262 306 282 290 302 275'
+        . ' C 318 263 334 249 350 237'
+        . ' C 362 228 376 220 390 212'
+        . ' C 414 196 440 181 470 166'
+        . ' C 496 153 522 145 552 139'
+        . ' C 572 134 590 124 600 112';
+$mtn    = 'M 0 0 L 380 0 L 355 58 L 290 82 L 242 112'
+        . ' L 198 148 L 162 190 L 130 242 L 104 298'
+        . ' L 78 355 L 44 400 L 0 420 Z';
+?>
 <?php if ($variant === 'mini'): ?>
-<div class="mini-map-card" aria-label="Esquema de cobertura en la Marina Baixa">
-  <svg class="marina-map" viewBox="0 0 420 260" role="img" aria-labelledby="mini-map-title">
-    <title id="mini-map-title">Cobertura principal en la Marina Baixa</title>
-    <path class="sea" d="M255 0h165v260H220c34-43 43-80 34-120-8-36-2-82 1-140Z"></path>
-    <path class="coast" d="M260 18c-32 36-24 69-12 102 13 36 6 75-28 116"></path>
-    <path class="route" d="M78 172c45-32 83-47 136-56 40-7 70-23 98-55"></path>
-    <g class="map-zone" tabindex="0">
-      <circle class="zone-shape" cx="200" cy="150" r="32"></circle>
-      <text class="map-label" x="200" y="154" text-anchor="middle">Benidorm</text>
-    </g>
-    <g class="map-zone" tabindex="0">
-      <circle class="zone-shape" cx="245" cy="94" r="28"></circle>
-      <text class="map-label" x="245" y="98" text-anchor="middle">Altea</text>
-    </g>
-    <g class="map-zone" tabindex="0">
-      <circle class="zone-shape" cx="312" cy="58" r="28"></circle>
-      <text class="map-label" x="312" y="62" text-anchor="middle">Calpe</text>
-    </g>
-    <g class="map-zone" tabindex="0">
-      <circle class="zone-shape" cx="145" cy="128" r="28"></circle>
-      <text class="map-label" x="145" y="132" text-anchor="middle">Finestrat</text>
-    </g>
-    <g class="map-zone" tabindex="0">
-      <circle class="zone-shape" cx="178" cy="82" r="30"></circle>
-      <text class="map-label" x="178" y="86" text-anchor="middle">La Nuc&iacute;a</text>
-    </g>
+<div class="mini-map-card" aria-label="Cobertura principal en la Marina Baixa, Costa Blanca norte">
+  <svg class="mc-map-svg" viewBox="120 100 450 295" role="img"
+       aria-labelledby="mc-mini-title mc-mini-desc">
+    <title id="mc-mini-title">Mapa de cobertura — Marina Baixa, Costa Blanca Norte</title>
+    <desc id="mc-mini-desc">Localidades costeras e interiores donde Masqueclima presta servicio.</desc>
+
+    <!-- Base geography -->
+    <rect width="600" height="420" class="mc-sea"/>
+    <path class="mc-land" d="<?php echo $land; ?>"/>
+    <path class="mc-mtn"  d="<?php echo $mtn;  ?>"/>
+    <path class="mc-coast-line" d="<?php echo $coast; ?>"/>
+
+    <!-- Sea label -->
+    <text class="mc-sea-label" x="565" y="370" text-anchor="end">Mar Mediterr&#225;neo</text>
+
+    <!-- Localidades principales -->
+    <a href="/es/aire-acondicionado-benidorm/" class="mc-zone mc-zone-main" aria-label="Aire acondicionado en Benidorm">
+      <circle class="mc-dot mc-dot-main" cx="252" cy="310" r="11"/>
+      <text class="mc-label mc-label-main" x="268" y="329">Benidorm</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-finestrat/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Finestrat">
+      <circle class="mc-dot" cx="174" cy="282" r="7"/>
+      <text class="mc-label mc-label-visible" x="167" y="278" text-anchor="end">Finestrat</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-la-nucia/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en La Nuc&#237;a">
+      <circle class="mc-dot" cx="263" cy="177" r="7"/>
+      <text class="mc-label mc-label-visible" x="256" y="174" text-anchor="end">La Nuc&#237;a</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-alfaz-del-pi/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Alfaz del Pi">
+      <circle class="mc-dot" cx="324" cy="244" r="7"/>
+      <text class="mc-label mc-label-visible" x="317" y="241" text-anchor="end">Alfaz del Pi</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-altea/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Altea">
+      <circle class="mc-dot" cx="390" cy="212" r="7"/>
+      <text class="mc-label mc-label-visible" x="390" y="203" text-anchor="middle">Altea</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-calpe/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Calpe">
+      <circle class="mc-dot" cx="552" cy="139" r="7"/>
+      <text class="mc-label mc-label-visible" x="544" y="132" text-anchor="end">Calpe</text>
+    </a>
   </svg>
 </div>
 <?php else: ?>
-<div class="zone-map-card">
-  <svg class="marina-map" viewBox="0 0 520 340" role="img" aria-labelledby="zone-map-title zone-map-desc">
-    <title id="zone-map-title">Mapa esquem&aacute;tico de servicio en Marina Baixa</title>
-    <desc id="zone-map-desc">Las zonas principales se iluminan al pasar el cursor.</desc>
-    <path class="sea" d="M350 0h170v340H312c48-63 59-112 47-164-12-49-13-104-9-176Z"></path>
-    <path class="coast" d="M350 20c-38 45-35 82-18 130 17 51 5 103-38 166"></path>
-    <path class="route" d="M88 222c62-44 114-66 184-78 48-8 92-33 130-78"></path>
-    <path class="route" d="M126 104c44 24 93 35 151 34"></path>
-    <g class="map-zone" tabindex="0">
-      <path class="zone-shape" d="M237 178c31-7 58 12 60 43 1 31-24 54-55 49-27-5-47-28-43-55 3-20 17-32 38-37Z"></path>
-      <text class="map-label" x="249" y="226" text-anchor="middle">Benidorm</text>
+<div class="zone-map-card" aria-label="Mapa de cobertura en la Marina Baixa y Costa Blanca norte">
+  <svg class="mc-map-svg mc-map-full" viewBox="0 0 600 420" role="img"
+       aria-labelledby="mc-full-title mc-full-desc">
+    <title id="mc-full-title">Mapa de servicio — Marina Baixa, Costa Blanca Norte</title>
+    <desc id="mc-full-desc">Localidades de la Marina Baixa donde Masqueclima instala y mantiene climatizaci&#243;n. Pasa el rat&#243;n para explorar.</desc>
+
+    <!-- Base geography -->
+    <rect width="600" height="420" class="mc-sea"/>
+    <path class="mc-land" d="<?php echo $land; ?>"/>
+    <path class="mc-mtn"  d="<?php echo $mtn;  ?>"/>
+    <path class="mc-coast-line" d="<?php echo $coast; ?>"/>
+
+    <!-- Decorative mountain peaks (interior sierra) -->
+    <g class="mc-peaks" aria-hidden="true">
+      <path d="M 128 97 L 139 74 L 150 97 Z"/>
+      <path d="M 152 83 L 165 57 L 178 83 Z"/>
+      <path d="M 108 130 L 119 108 L 130 130 Z"/>
+      <path d="M 172 68 L 182 47 L 192 68 Z"/>
+      <path d="M 84 182 L 94 162 L 104 182 Z"/>
+      <path d="M 60 238 L 70 218 L 80 238 Z"/>
     </g>
-    <g class="map-zone" tabindex="0">
-      <path class="zone-shape" d="M296 105c31-12 61 4 67 35 5 31-17 57-49 56-28-1-51-21-52-48-1-20 12-35 34-43Z"></path>
-      <text class="map-label" x="313" y="153" text-anchor="middle">Altea</text>
-    </g>
-    <g class="map-zone" tabindex="0">
-      <path class="zone-shape" d="M382 50c26-11 54 3 61 30 7 28-12 53-41 54-26 1-49-17-51-41-2-19 10-34 31-43Z"></path>
-      <text class="map-label" x="397" y="91" text-anchor="middle">Calpe</text>
-    </g>
-    <g class="map-zone" tabindex="0">
-      <path class="zone-shape" d="M150 158c29-14 62-1 72 29 10 29-8 58-39 62-28 4-54-12-61-38-5-21 6-41 28-53Z"></path>
-      <text class="map-label" x="172" y="207" text-anchor="middle">Finestrat</text>
-    </g>
-    <g class="map-zone" tabindex="0">
-      <path class="zone-shape" d="M197 77c29-12 59 2 68 31 8 28-11 55-41 57-27 2-52-16-57-42-3-20 8-37 30-46Z"></path>
-      <text class="map-label" x="218" y="119" text-anchor="middle">La Nuc&iacute;a</text>
-    </g>
-    <text class="map-label" x="440" y="292" text-anchor="middle">Costa Blanca</text>
+
+    <!-- Region labels -->
+    <text class="mc-sea-label" x="555" y="365" text-anchor="end">Mar Mediterr&#225;neo</text>
+    <text class="mc-region-label" x="480" y="112" text-anchor="end">Costa Blanca Norte</text>
+
+    <!-- ── SECONDARY localities (rendered first, below primaries) ── -->
+
+    <a href="/es/aire-acondicionado-relleu/" class="mc-zone mc-zone-secondary" aria-label="Relleu">
+      <circle class="mc-dot-sm" cx="41" cy="279" r="5"/>
+      <text class="mc-label mc-label-hover" x="50" y="282">Relleu</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-sella/" class="mc-zone mc-zone-secondary" aria-label="Sella">
+      <circle class="mc-dot-sm" cx="78" cy="231" r="5"/>
+      <text class="mc-label mc-label-hover" x="87" y="234">Sella</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-orxeta/" class="mc-zone mc-zone-secondary" aria-label="Orxeta">
+      <circle class="mc-dot-sm" cx="121" cy="264" r="5"/>
+      <text class="mc-label mc-label-hover" x="130" y="267">Orxeta</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-guadalest/" class="mc-zone mc-zone-secondary" aria-label="Guadalest">
+      <circle class="mc-dot-sm" cx="149" cy="69" r="5"/>
+      <text class="mc-label mc-label-hover" x="141" y="65" text-anchor="end">Guadalest</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-confrides/" class="mc-zone mc-zone-secondary" aria-label="Confrides">
+      <circle class="mc-dot-sm" cx="157" cy="36" r="5"/>
+      <text class="mc-label mc-label-hover" x="166" y="34">Confrides</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-beniarda/" class="mc-zone mc-zone-secondary" aria-label="Beniard&#224;">
+      <circle class="mc-dot-sm" cx="167" cy="80" r="5"/>
+      <text class="mc-label mc-label-hover" x="176" y="83">Beniard&#224;</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-benifato/" class="mc-zone mc-zone-secondary" aria-label="Benifato">
+      <circle class="mc-dot-sm" cx="191" cy="62" r="5"/>
+      <text class="mc-label mc-label-hover" x="200" y="58">Benifato</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-benimantell/" class="mc-zone mc-zone-secondary" aria-label="Benimantell">
+      <circle class="mc-dot-sm" cx="198" cy="92" r="5"/>
+      <text class="mc-label mc-label-hover" x="207" y="95">Benimantell</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-bolulla/" class="mc-zone mc-zone-secondary" aria-label="Bolulla">
+      <circle class="mc-dot-sm" cx="255" cy="72" r="5"/>
+      <text class="mc-label mc-label-hover" x="264" y="75">Bolulla</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-tarbena/" class="mc-zone mc-zone-secondary" aria-label="T&#224;rbena">
+      <circle class="mc-dot-sm" cx="357" cy="42" r="5"/>
+      <text class="mc-label mc-label-hover" x="357" y="55" text-anchor="middle">T&#224;rbena</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-polop/" class="mc-zone mc-zone-secondary" aria-label="Polop">
+      <circle class="mc-dot-sm" cx="233" cy="155" r="5"/>
+      <text class="mc-label mc-label-hover" x="224" y="151" text-anchor="end">Polop</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-callosa-den-sarria/" class="mc-zone mc-zone-secondary" aria-label="Callosa d&#39;en Sarri&#224;">
+      <circle class="mc-dot-sm" cx="281" cy="110" r="5"/>
+      <text class="mc-label mc-label-hover" x="290" y="113">Callosa</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-albir/" class="mc-zone mc-zone-secondary" aria-label="Albir">
+      <circle class="mc-dot-sm" cx="343" cy="233" r="5"/>
+      <text class="mc-label mc-label-hover" x="352" y="243">Albir</text>
+    </a>
+
+    <!-- ── PRIMARY localities ── -->
+
+    <a href="/es/aire-acondicionado-villajoyosa/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Villajoyosa">
+      <circle class="mc-dot" cx="83" cy="354" r="7"/>
+      <text class="mc-label mc-label-visible" x="75" y="368" text-anchor="end">Villajoyosa</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-finestrat/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Finestrat">
+      <circle class="mc-dot" cx="174" cy="282" r="7"/>
+      <text class="mc-label mc-label-visible" x="167" y="278" text-anchor="end">Finestrat</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-la-nucia/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en La Nuc&#237;a">
+      <circle class="mc-dot" cx="263" cy="177" r="7"/>
+      <text class="mc-label mc-label-visible" x="256" y="174" text-anchor="end">La Nuc&#237;a</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-alfaz-del-pi/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Alfaz del Pi">
+      <circle class="mc-dot" cx="324" cy="244" r="7"/>
+      <text class="mc-label mc-label-visible" x="317" y="241" text-anchor="end">Alfaz del Pi</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-altea/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Altea">
+      <circle class="mc-dot" cx="390" cy="212" r="7"/>
+      <text class="mc-label mc-label-visible" x="390" y="203" text-anchor="middle">Altea</text>
+    </a>
+
+    <a href="/es/aire-acondicionado-calpe/" class="mc-zone mc-zone-primary" aria-label="Aire acondicionado en Calpe">
+      <circle class="mc-dot" cx="552" cy="139" r="7"/>
+      <text class="mc-label mc-label-visible" x="544" y="132" text-anchor="end">Calpe</text>
+    </a>
+
+    <!-- Benidorm — base principal, rendered last (on top) -->
+    <a href="/es/aire-acondicionado-benidorm/" class="mc-zone mc-zone-main" aria-label="Aire acondicionado en Benidorm — sede principal">
+      <circle class="mc-dot mc-dot-main" cx="252" cy="310" r="11"/>
+      <text class="mc-label mc-label-main" x="268" y="329">Benidorm</text>
+    </a>
   </svg>
 </div>
 <?php endif; ?>

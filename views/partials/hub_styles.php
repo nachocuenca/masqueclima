@@ -37,4 +37,71 @@
   @media (max-width:1100px){.hub-grid.services-grid{grid-template-columns:repeat(3,minmax(0,1fr));}.hub-grid.guides-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
   @media (max-width:900px){.service-zones-panel,.zone-layout{grid-template-columns:1fr}.mini-map-card{order:-1}}
   @media (max-width:700px){.hero.hub-hero.hero--compact{min-height:330px;padding:6rem 0 2.4rem}.hero.hub-hero.hero--compact h1{font-size:2rem}.hero.hub-hero.hero--compact p{font-size:1rem}.hub-section{padding:2.6rem 0}.hub-grid.services-grid,.hub-grid.guides-grid{grid-template-columns:1fr}.service-zones-copy,.mini-map-card,.zone-map-card,.zone-list-card{padding:18px}}
+
+  /* =============================================
+     MC-MAP — Marina Baixa SVG (Costa Blanca)
+     ============================================= */
+
+  /* SVG canvas */
+  .mc-map-svg{width:100%;height:auto;display:block;border-radius:10px;overflow:hidden;}
+  .mc-map-full{max-height:380px;}
+
+  /* Geography layers */
+  .mc-sea{fill:#c4e4f6;}
+  .mc-land{fill:#f0ebe2;}
+  .mc-mtn{fill:#d6e0cc;opacity:.55;}
+  .mc-coast-line{fill:none;stroke:#78aed0;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+
+  /* Mountain peak decorations */
+  .mc-peaks path{fill:#b8a880;opacity:.45;stroke:#a0906a;stroke-width:.5;}
+  .mc-peaks{pointer-events:none;}
+
+  /* Region / sea labels */
+  .mc-sea-label{font-size:10px;fill:#2a6080;font-style:italic;opacity:.65;pointer-events:none;font-family:inherit;}
+  .mc-region-label{font-size:9px;fill:#1e4f70;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.6;pointer-events:none;font-family:inherit;}
+
+  /* Zone groups */
+  .mc-zone{outline:none;}
+  a.mc-zone{cursor:pointer;}
+  a.mc-zone:focus{outline:2px solid #0074e8;outline-offset:2px;border-radius:4px;}
+
+  /* Primary dot (secondary localities) */
+  .mc-dot-sm{fill:#5e9bbf;stroke:#fff;stroke-width:1.5;transition:fill .14s ease;}
+  .mc-zone-secondary:hover .mc-dot-sm,
+  .mc-zone-secondary:focus .mc-dot-sm{fill:#0074e8;}
+
+  /* Primary dot (main localities) */
+  .mc-dot{fill:#0074e8;stroke:#fff;stroke-width:2;transition:fill .16s ease;}
+  .mc-zone-primary:hover .mc-dot,
+  .mc-zone-primary:focus .mc-dot{fill:#004fa3;}
+
+  /* Benidorm — featured dot */
+  .mc-dot-main{fill:#00387a;stroke:#fff;stroke-width:2.5;transition:fill .16s ease;}
+  .mc-zone-main:hover .mc-dot-main,
+  .mc-zone-main:focus .mc-dot-main{fill:#0056b3;}
+
+  /* Labels — base */
+  .mc-label{font-family:inherit;pointer-events:none;}
+
+  /* Always-visible labels (primary localities) */
+  .mc-label-visible{font-size:12px;fill:#1a2e45;font-weight:700;opacity:.88;transition:fill .16s ease;}
+  .mc-zone-primary:hover .mc-label-visible,
+  .mc-zone-primary:focus .mc-label-visible{fill:#003d80;opacity:1;}
+
+  /* Benidorm label */
+  .mc-label-main{font-size:13px;fill:#0a1e35;font-weight:800;opacity:1;transition:fill .16s ease;}
+  .mc-zone-main:hover .mc-label-main,
+  .mc-zone-main:focus .mc-label-main{fill:#003d80;}
+
+  /* Hover-only labels (secondary localities) */
+  .mc-label-hover{font-size:10.5px;fill:#1a2e45;font-weight:600;opacity:0;transition:opacity .15s ease;}
+  .mc-zone-secondary:hover .mc-label-hover,
+  .mc-zone-secondary:focus .mc-label-hover{opacity:1;}
+
+  /* Responsive: on small screens the map shrinks gracefully */
+  @media (max-width:520px){
+    .mc-map-full{max-height:260px;}
+    .mc-label-visible{font-size:10px;}
+    .mc-label-main{font-size:11px;}
+  }
 </style>
