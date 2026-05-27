@@ -9,7 +9,7 @@ $GLOBALS['__view_name__'] = $view ?? 'home';
 
   <title><?php echo e(meta_title()); ?></title>
   <meta name="description" content="<?php echo e(meta_description()); ?>">
-  <link rel="canonical" href="<?php echo e(lang_url($GLOBALS['current_lang'] ?? 'es')); ?>">
+  <link rel="canonical" href="<?php echo e(seo_lang_url($GLOBALS['current_lang'] ?? 'es')); ?>">
   <?php print_hreflang(); ?>
 
   <!-- OG/Twitter -->
@@ -17,7 +17,7 @@ $GLOBALS['__view_name__'] = $view ?? 'home';
   <meta property="og:title" content="<?php echo e(meta_title()); ?>">
   <meta property="og:description" content="<?php echo e(meta_description()); ?>">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="<?php echo e(lang_url($GLOBALS['current_lang'] ?? 'es')); ?>">
+  <meta property="og:url" content="<?php echo e(seo_lang_url($GLOBALS['current_lang'] ?? 'es')); ?>">
   <meta property="og:image" content="<?php echo e(base_url().asset('img/og.jpg')); ?>">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="<?php echo e(meta_title()); ?>">

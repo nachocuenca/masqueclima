@@ -11,7 +11,21 @@ if (!function_exists('asset')) {
 
 if (!function_exists('base_url')) {
     function base_url(): string {
-        $cfg = config('brand.domain');
+        return canonical_base_url();
+    }
+}
+
+if (!function_exists('canonical_base_url')) {
+    function canonical_base_url(): string {
+        $cfg = getenv('CANONICAL_BASE_URL') ?: config('brand.domain');
+        if ($cfg) return rtrim($cfg, '/');
+        return 'https://masqueclima.es';
+    }
+}
+
+if (!function_exists('runtime_base_url')) {
+    function runtime_base_url(): string {
+        $cfg = getenv('APP_BASE_URL') ?: config('app.base_url');
         if ($cfg) return rtrim($cfg, '/');
         $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
@@ -19,18 +33,29 @@ if (!function_exists('base_url')) {
     }
 }
 
+if (!function_exists('internal_url')) {
+    function internal_url(string $path): string {
+        $path = '/' . ltrim($path, '/');
+        return preg_replace('#/+#', '/', $path) ?: '/';
+    }
+}
+
 if (!function_exists('lang_url')) {
-    function lang_url(string $lang): string {
-        $base = rtrim(base_url(), '/');
-        $def  = config('brand.default_lang', 'es');
-        if ($lang === $def) return $base . '/';
-        return $base . '/' . $lang . '/';
+    function lang_url(string $lang, bool $absolute = false): string {
+        $path = '/' . rawurlencode($lang) . '/';
+        return $absolute ? runtime_base_url() . $path : $path;
+    }
+}
+
+if (!function_exists('seo_lang_url')) {
+    function seo_lang_url(string $lang): string {
+        return canonical_base_url() . '/' . rawurlencode($lang) . '/';
     }
 }
 
 if (!function_exists('lang_switch_url')) {
     function lang_switch_url(string $lang): string {
-        return lang_url($lang) . '?setlang=' . rawurlencode($lang);
+        return lang_url($lang);
     }
 }
 
@@ -61,15 +86,15 @@ if (!function_exists('print_hreflang')) {
         $langs = config('brand.langs', ['es']);
         $def   = config('brand.default_lang', 'es');
         foreach ($langs as $l) {
-            echo '<link rel="alternate" hreflang="'.e($l).'" href="'.e(lang_url($l)).'">' . "\n";
+            echo '<link rel="alternate" hreflang="'.e($l).'" href="'.e(seo_lang_url($l)).'">' . "\n";
         }
-        echo '<link rel="alternate" hreflang="x-default" href="'.e(lang_url($def)).'">' . "\n";
+        echo '<link rel="alternate" hreflang="x-default" href="'.e(seo_lang_url($def)).'">' . "\n";
     }
 }
 
 if (!function_exists('print_og_locales')) {
     function print_og_locales(): void {
-        $map = ['es'=>'es_ES','en'=>'en_GB','de'=>'de_DE','nl'=>'nl_NL','ru'=>'ru_RU'];
+        $map = ['es'=>'es_ES','en'=>'en_GB','de'=>'de_DE','nl'=>'nl_NL','ru'=>'ru_RU','no'=>'nb_NO'];
         $langs = config('brand.langs', ['es']);
         $def   = config('brand.default_lang', 'es');
         $defLoc = $map[$def] ?? 'es_ES';
@@ -88,7 +113,7 @@ if (!function_exists('print_jsonld')) {
         $lang   = $GLOBALS['current_lang'] ?? config('brand.default_lang', 'es');
         $brand  = config('brand.name', '+QUECLIMA');
         $logo   = base_url() . asset('img/masqueclimalogo_.png');
-        $url    = lang_url($lang);
+        $url    = seo_lang_url($lang);
         $phone  = config('brand.phone');
         $langs  = config('brand.langs', ['es']);
 
@@ -97,7 +122,7 @@ if (!function_exists('print_jsonld')) {
             '@context' => 'https://schema.org',
             '@type'    => 'Organization',
             'name'     => $brand,
-            'url'      => base_url() . '/',
+            'url'      => seo_lang_url(config('brand.default_lang', 'es')),
             'logo'     => $logo,
         ];
         if ($same = config('brand.sameAs', [])) $org['sameAs'] = $same;
@@ -125,7 +150,7 @@ if (!function_exists('print_jsonld')) {
         $site = [
             '@context' => 'https://schema.org',
             '@type'    => 'WebSite',
-            'url'      => base_url() . '/',
+            'url'      => seo_lang_url(config('brand.default_lang', 'es')),
             'potentialAction' => [
                 '@type'       => 'SearchAction',
                 'target'      => base_url() . '/search?q={search_term_string}',

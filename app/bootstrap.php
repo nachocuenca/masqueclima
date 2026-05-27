@@ -1,10 +1,34 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 
+if (!function_exists('load_env_file')) {
+  function load_env_file(string $path): void {
+    if (!is_file($path) || !is_readable($path)) {
+      return;
+    }
+    foreach (file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
+      $line = trim($line);
+      if ($line === '' || str_starts_with($line, '#') || !str_contains($line, '=')) {
+        continue;
+      }
+      [$key, $value] = array_map('trim', explode('=', $line, 2));
+      if ($key === '' || getenv($key) !== false) {
+        continue;
+      }
+      $value = trim($value, "\"'");
+      putenv($key . '=' . $value);
+      $_ENV[$key] = $value;
+      $_SERVER[$key] = $value;
+    }
+  }
+}
+
+load_env_file(__DIR__ . '/../.env');
+
 // Cargar configuración base (config.php) y helpers
 if (!isset($GLOBALS['config'])) {
   $GLOBALS['config'] = [
-    'brand' => ['langs'=>['es','en','de','nl','ru'], 'default_lang'=>'es'],
+    'brand' => ['langs'=>['es','en','de','nl','ru','no'], 'default_lang'=>'es'],
     'app'   => ['base_url'=>'', 'ga4_id'=>'', 'env'=>'production'],
   ];
 }

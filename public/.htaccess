@@ -18,13 +18,20 @@ AddDefaultCharset utf-8
 
 RewriteEngine On
 
+# Root is redirected to the canonical Spanish home.
+RewriteRule ^$ /es/ [R=301,L]
+
+# Serve sitemap/robots and contact endpoint directly when present.
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(sitemap\.xml|robots\.txt|contact-submit\.php)$ - [L]
+
 # Permitir archivos/directorios existentes
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
 # Idiomas válidos
-RewriteRule ^(es|en|de|nl|ru)/?$ index.php [L,QSA]
+RewriteRule ^(es|en|de|nl|ru|no)(/.*)?$ index.php [L,QSA]
 
 # Fallback
 RewriteRule ^ index.php [L,QSA]

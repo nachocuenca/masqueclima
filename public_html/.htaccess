@@ -1,12 +1,22 @@
 RewriteEngine On
 
-# Permitir archivos/directorios existentes
+# Root is not indexable content. The Spanish home is canonical.
+RewriteRule ^$ /es/ [R=301,L]
+
+# Serve app-level robots/sitemap/contact endpoint if they are not copied to public_html.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(robots\.txt|sitemap\.xml|contact-submit\.php)$ masqueclima/public/$1 [L]
+
+# Map static assets to the deployed app before directory passthrough.
+RewriteRule ^(assets|img|video)/(.*)$ masqueclima/public/$1/$2 [L]
+
+# Language homes and live routes must always reach PHP, even if stale folders exist.
+RewriteRule ^(es|en|de|nl|ru|no)(/.*)?$ masqueclima/public/index.php [QSA,L]
+
+# Allow existing files/directories, except the domain root handled above.
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Mapear assets a la aplicación
-RewriteRule ^(assets|img|video)/(.*)$ masqueclima/public/$1/$2 [L]
-
-# Enrutar todo lo demás al front controller evitando bucles
+# Route everything else to the front controller, avoiding internal loops.
 RewriteRule ^(?!masqueclima/).* masqueclima/public/index.php [QSA,L]

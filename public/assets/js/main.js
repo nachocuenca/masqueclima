@@ -68,6 +68,34 @@
     }
   });
 
+  // ---- Hero background video ----
+  document.addEventListener('DOMContentLoaded', function () {
+    var desktop = !window.matchMedia || window.matchMedia('(min-width: 992px)').matches;
+
+    document.querySelectorAll('.hero-video').forEach(function (video) {
+      var show = function () { video.classList.add('is-ready'); };
+      var source = video.querySelector('source[data-src]');
+
+      video.addEventListener('loadeddata', show, { once: true });
+      video.addEventListener('canplay', show, { once: true });
+
+      if (!desktop) return;
+
+      if (source && !source.src) source.src = source.getAttribute('data-src') || '';
+      video.muted = true;
+      video.autoplay = true;
+      video.playsInline = true;
+
+      try {
+        video.load();
+        var play = video.play();
+        if (play && play.catch) play.catch(function () {});
+      } catch (_) {}
+
+      setTimeout(show, 1000);
+    });
+  });
+
   // ---- Swiper: carrusel de marcas (robusto) ----
   (function initBrandSwiper(attempt) {
     attempt = attempt || 0;

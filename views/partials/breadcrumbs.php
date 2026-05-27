@@ -1,6 +1,6 @@
 <?php
 $lang     = $GLOBALS['current_lang'] ?? 'es';
-$baseUrl  = lang_url($lang, '/'); // con barra final
+$baseUrl  = lang_url($lang); // con barra final
 $uriPath  = trim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/');
 
 // quitar prefijo idioma si existe

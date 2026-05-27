@@ -2,19 +2,32 @@
 <?php
 // Helper para imprimir traducciones SOLO si existen.
 // Si una clave falta, devuelve cadena vacía (no muestra "clave.sinquedar").
-$TT = function(string $key): string {
-  $v = t($key);
-  return $v === $key ? '' : e($v);
+$TT = function(string $key, string $fallback = ''): string {
+  $v = t($key, $fallback);
+  return $v === $key ? e($fallback) : e($v);
 };
 ?>
 
 <!-- =======================
      HERO
 ======================= -->
-<section class="hero" id="inicio">
+<section class="hero" id="inicio" aria-label="Hero">
   <div class="hero-bg">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="<?= asset('img/hero.jpg'); ?>">
-      <source src="<?= asset('img/0_Air_Conditioner_Remote_Control_3840x2160.mp4'); ?>" type="video/mp4">
+    <picture>
+      <source type="image/webp"
+        srcset="<?= asset('img/hero1.webp'); ?> 640w,
+                <?= asset('img/hero1.webp'); ?> 960w,
+                <?= asset('img/hero1.webp'); ?> 1280w,
+                <?= asset('img/hero1.webp'); ?> 1920w"
+        sizes="(max-width:480px) 440px,(max-width:768px) 720px,100vw">
+      <img class="hero-img"
+           src="<?= asset('img/hero1.jpg'); ?>"
+           alt=""
+           width="1920" height="1080"
+           decoding="async" loading="eager" fetchpriority="high">
+    </picture>
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="<?= asset('img/hero1.jpg'); ?>">
+      <source data-src="<?= asset('img/hero.mp4'); ?>" type='video/mp4; codecs="avc1.640028"'>
     </video>
   </div>
   <div class="container">
@@ -22,8 +35,8 @@ $TT = function(string $key): string {
     <p><?php echo $TT('hero.subtitle'); ?></p>
     <div class="cta-group">
       <a href="#contacto" class="cta-button js-track" data-ev="cta_quote"><?php echo $TT('cta.quote'); ?></a>
-      <a href="https://wa.me/34613026600" class="cta-button cta-whatsapp js-track" data-ev="cta_whatsapp" target="_blank" rel="noopener">
-        <?php echo $TT('cta.whatsapp'); ?>
+      <a href="https://wa.me/34613026600" class="cta-button cta-whatsapp js-track" data-ev="cta_whatsapp_hero" target="_blank" rel="noopener" aria-label="<?php echo $TT('cta.whatsapp', 'WhatsApp'); ?>">
+        <?php echo $TT('cta.whatsapp', 'WhatsApp'); ?>
       </a>
     </div>
   </div>

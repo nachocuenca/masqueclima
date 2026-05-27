@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+
+.next/
+node_modules/
+logs/
+storage/logs/
+*.log
+*.tmp
+*.cache
+*.tsbuildinfo
+.php-server.pid
+
+.DS_Store
+Thumbs.db

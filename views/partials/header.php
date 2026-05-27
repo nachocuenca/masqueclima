@@ -43,12 +43,12 @@ $render_flags = function($classes = '', $show_active_disabled = true) use ($lang
       <div class="collapse navbar-collapse justify-content-center flex-grow-1 order-2" id="navbarNav">
         <div class="mobile-panel"><!-- estilizada sólo en móvil -->
           <ul class="navbar-nav main-menu mx-lg-auto">
-            <li class="nav-item"><a class="nav-link" href="#inicio"><?php echo e(t('nav.home')); ?></a></li>
-            <li class="nav-item"><a class="nav-link" href="#metodo"><?php echo e(t('nav.method')); ?></a></li>
-            <li class="nav-item"><a class="nav-link" href="#nosotros"><?php echo e(t('nav.about')); ?></a></li>
-            <li class="nav-item"><a class="nav-link" href="#zona"><?php echo e(t('nav.coverage')); ?></a></li>
-            <li class="nav-item"><a class="nav-link" href="#faq"><?php echo e(t('nav.faq')); ?></a></li>
-            <li class="nav-item"><a class="nav-link" href="#contacto"><?php echo e(t('nav.contact')); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo e(lang_url($lang)); ?>#inicio"><?php echo e(t('nav.home')); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo e(lang_url($lang)); ?>#metodo"><?php echo e(t('nav.method')); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo e(lang_url($lang)); ?>#nosotros"><?php echo e(t('nav.about')); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo e(lang_url($lang)); ?>#zona"><?php echo e(t('nav.coverage')); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo e(lang_url($lang)); ?>#faq"><?php echo e(t('nav.faq')); ?></a></li>
+            <li class="nav-item"><a class="nav-link" href="<?php echo e(lang_url($lang)); ?>#contacto"><?php echo e(t('nav.contact')); ?></a></li>
           </ul>
 
           <!-- Banderas en móvil (en línea) -->

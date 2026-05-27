@@ -8,7 +8,7 @@ return [
     'email' => 'info@masqueclima.es',
     'area' => 'Provincia de Alicante, España',
     'default_lang' => 'es',
-    'langs' => ['es','en','de','nl','ru'],
+    'langs' => ['es','en','de','nl','ru','no'],
   ],
   'seo' => [
     'title' => [
@@ -17,6 +17,7 @@ return [
       'de' => 'Klimaanlagen: Installation & Wartung | +QUECLIMA',
       'nl' => 'Airconditioning: Installatie & Onderhoud | +QUECLIMA',
       'ru' => 'Климатические системы: монтаж и обслуживание | +QUECLIMA',
+      'no' => 'Klimaanlegg og varmepumper – montering & service | +QUECLIMA',
     ],
     'description' => [
       'es' => 'Expertos en aire acondicionado, calefacción y energía solar en Alicante. Instalación, mantenimiento y reparación con 3 años de garantía.',
@@ -24,10 +25,11 @@ return [
       'de' => 'Experten für Klimaanlagen, Heizung und Solarthermie in Alicante. Installation, Wartung und Reparatur mit 3 Jahren Garantie.',
       'nl' => 'Experts in airco, verwarming en zonne-energie in Alicante. Installatie, onderhoud en reparatie met 3 jaar garantie.',
       'ru' => 'Эксперты по кондиционированию, отоплению и солнечным системам в Аликанте. Монтаж, обслуживание и ремонт с 3‑летней гарантией.',
+      'no' => 'Eksperter på klimaanlegg, oppvarming og solvarme i Alicante. Montering, service og reparasjon med 3 års garanti.',
     ]
   ],
   'smtp' => [
-    'host' => getenv('SMTP_HOST') ?: null,
+    'host' => getenv('SMTP_HOST') ?: 'masqueclima.es',
     'port' => getenv('SMTP_PORT') ?: 587,
     'user' => getenv('SMTP_USER') ?: null,
     'pass' => getenv('SMTP_PASS') ?: null,
