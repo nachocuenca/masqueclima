@@ -178,6 +178,15 @@ Comprobacion realizada antes de desplegar estos cambios: dev sigue sirviendo la 
 - Se anadio JSON-LD `Service` junto con `BreadcrumbList` para estas paginas.
 - No se tocaron sitemap, header, footer, rutas extranjeras, popup ni WhatsApp.
 
+## Conexion del pack visual WebP
+
+- Se conectaron heroes WebP reales para `/es/servicios/`, `/es/zonas/`, `/es/blog/` y las cinco paginas SEO de servicios.
+- El preload del hero en hubs y paginas de servicio apunta ahora al WebP real de cada pagina cuando existe.
+- Las paginas de servicio usan una imagen interna de apoyo mediante `views/partials/image_text_block.php`.
+- Los heroes mantienen fallback a `/assets/img/hero1.webp` si falta un asset configurado.
+- Se configuraron posiciones iniciales de imagen por pagina para evitar cortes agresivos.
+- No se tocaron sitemap, header, footer, popup ni WhatsApp.
+
 ## Siguiente fase recomendada
 
 Tras validar esta fase, revisar si las paginas de servicio deben entrar en sitemap y si conviene enlazarlas desde landings P1 con anchors naturales:

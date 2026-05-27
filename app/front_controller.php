@@ -436,6 +436,10 @@ function render_es_hub_page(string $path): ?string {
       'description' => 'Instalaci&oacute;n, mantenimiento y reparaci&oacute;n de aire acondicionado, bomba de calor y energ&iacute;a solar en Benidorm, Marina Baixa y Alicante.',
       'h1' => 'Servicios de climatizaci&oacute;n en Benidorm y Marina Baixa',
       'breadcrumb' => 'Servicios',
+      'hero_image' => '/assets/img/heroes/hub-servicios-climatizacion.webp',
+      'hero_alt' => 'Servicios de climatizaci&oacute;n en Benidorm y Marina Baixa',
+      'visual_slot' => 'hub-servicios-hero',
+      'image_position' => 'center center',
     ],
     '/es/zonas/' => [
       'slug' => 'zonas',
@@ -443,6 +447,10 @@ function render_es_hub_page(string $path): ?string {
       'description' => 'Cobertura local de climatizaci&oacute;n en Benidorm, Altea, Calpe, Finestrat, La Nuc&iacute;a y otras zonas de Alicante.',
       'h1' => 'Servicio de climatizaci&oacute;n por zonas en Alicante',
       'breadcrumb' => 'Zonas',
+      'hero_image' => '/assets/img/heroes/hub-zonas-marina-baixa.webp',
+      'hero_alt' => 'Servicio de climatizaci&oacute;n por zonas en Alicante',
+      'visual_slot' => 'hub-zonas-hero',
+      'image_position' => 'center center',
     ],
     '/es/blog/' => [
       'slug' => 'blog',
@@ -450,6 +458,10 @@ function render_es_hub_page(string $path): ?string {
       'description' => 'Gu&iacute;as pr&aacute;cticas sobre climatizaci&oacute;n, aerotermia, bomba de calor, mantenimiento, consumo e instalaci&oacute;n en la Costa Blanca.',
       'h1' => 'Gu&iacute;as de climatizaci&oacute;n, aerotermia y aire acondicionado',
       'breadcrumb' => 'Gu&iacute;as',
+      'hero_image' => '/assets/img/heroes/hub-guias-climatizacion.webp',
+      'hero_alt' => 'Gu&iacute;as de climatizaci&oacute;n y aire acondicionado',
+      'visual_slot' => 'hub-guias-hero',
+      'image_position' => 'center center',
     ],
   ];
 
@@ -459,9 +471,9 @@ function render_es_hub_page(string $path): ?string {
 
   $page = $pages[$path];
   $body = match ($page['slug']) {
-    'servicios' => hub_services_body(),
-    'zonas' => hub_zones_body(),
-    'blog' => hub_blog_body(),
+    'servicios' => hub_services_body($page),
+    'zonas' => hub_zones_body($page),
+    'blog' => hub_blog_body($page),
     default => '',
   };
 
@@ -566,9 +578,34 @@ function patch_es_hub_head(string $html, array $page, string $path): string {
   $html = preg_replace('/<meta property="og:url" content="[^"]*">/i', '<meta property="og:url" content="' . $canonical . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
+  $html = patch_es_hub_hero_preload($html, $page);
   $html = str_replace('</head>', es_page_jsonld($path, $page) . "\n</head>", $html);
 
   return $html;
+}
+
+function patch_es_hub_hero_preload(string $html, array $page): string {
+  $hero = $page['hero_image'] ?? null;
+  if (!public_asset_exists(is_string($hero) ? $hero : null)) {
+    return $html;
+  }
+
+  $hero = (string) $hero;
+  $html = preg_replace(
+    '/\s*<link rel="preload" as="image" href="\/assets\/img\/hero\.jpg"[^>]*>\s*/i',
+    "\n",
+    $html,
+    1
+  ) ?? $html;
+
+  $preload = '<link rel="preload" as="image" href="' . e($hero) . '" imagesizes="100vw" fetchpriority="high">';
+
+  return preg_replace(
+    '/\s*<!-- Preload hero responsive[\s\S]*?<link rel="preload" as="image"[\s\S]*?fetchpriority="high">\s*/i',
+    "\n  " . $preload . "\n",
+    $html,
+    1
+  ) ?? $html;
 }
 
 function es_page_jsonld(string $path, array $page): string {
@@ -652,18 +689,29 @@ function es_hub_jsonld(string $path, string $name): string {
     '</script>';
 }
 
-function hub_intro(string $h1, string $text): string {
-  return render_partial('hub_hero', ['h1' => $h1, 'text' => $text]);
+function hub_intro(string $h1, string $text, array $visual = []): string {
+  return render_partial('hub_hero', array_merge(['h1' => $h1, 'text' => $text], $visual));
 }
 
 function hub_styles(): string {
   return render_partial('hub_styles');
 }
 
-function hub_services_body(): string {
+function hub_visual_options(array $page): array {
+  return [
+    'hero_image' => $page['hero_image'] ?? null,
+    'hero_alt' => $page['hero_alt'] ?? ($page['h1'] ?? '+QUECLIMA climatizaci&oacute;n en Alicante'),
+    'visual_slot' => $page['visual_slot'] ?? '',
+    'overlay' => $page['hero_overlay'] ?? 'soft',
+    'image_position' => $page['image_position'] ?? 'center center',
+  ];
+}
+
+function hub_services_body(array $page): string {
   $intro = hub_intro(
     'Servicios de climatizaci&oacute;n en Benidorm y Marina Baixa',
-    'Instalamos, mantenemos y reparamos sistemas de aire acondicionado, calefacci&oacute;n y energ&iacute;a para viviendas, apartamentos tur&iacute;sticos, comunidades y negocios.'
+    'Instalamos, mantenemos y reparamos sistemas de aire acondicionado, calefacci&oacute;n y energ&iacute;a para viviendas, apartamentos tur&iacute;sticos, comunidades y negocios.',
+    hub_visual_options($page)
   );
   $styles = hub_styles();
   $serviceCards = render_partial('service_cards');
@@ -703,10 +751,11 @@ function hub_services_body(): string {
 HTML;
 }
 
-function hub_zones_body(): string {
+function hub_zones_body(array $page): string {
   $intro = hub_intro(
     'Servicio de climatizaci&oacute;n por zonas en Alicante',
-    'Trabajamos desde Benidorm para la Marina Baixa, Costa Blanca norte y provincia de Alicante, con desplazamiento r&aacute;pido y asesoramiento cercano.'
+    'Trabajamos desde Benidorm para la Marina Baixa, Costa Blanca norte y provincia de Alicante, con desplazamiento r&aacute;pido y asesoramiento cercano.',
+    hub_visual_options($page)
   );
   $styles = hub_styles();
   $zoneMap = render_partial('zone_visual');
@@ -770,10 +819,11 @@ function hub_zones_body(): string {
 HTML;
 }
 
-function hub_blog_body(): string {
+function hub_blog_body(array $page): string {
   $intro = hub_intro(
     'Gu&iacute;as de climatizaci&oacute;n, aerotermia y aire acondicionado',
-    'Consejos pr&aacute;cticos para elegir, mantener y aprovechar mejor tu sistema de climatizaci&oacute;n en la Costa Blanca.'
+    'Consejos pr&aacute;cticos para elegir, mantener y aprovechar mejor tu sistema de climatizaci&oacute;n en la Costa Blanca.',
+    hub_visual_options($page)
   );
   $styles = hub_styles();
   $guideCards = render_partial('guide_cards');

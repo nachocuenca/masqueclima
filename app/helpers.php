@@ -65,6 +65,21 @@ if (!function_exists('flag_url')) {
     }
 }
 
+if (!function_exists('public_asset_exists')) {
+    function public_asset_exists(?string $path): bool {
+        if (!is_string($path) || $path === '') {
+            return false;
+        }
+
+        $cleanPath = parse_url($path, PHP_URL_PATH);
+        if (!is_string($cleanPath) || !str_starts_with($cleanPath, '/assets/') || str_contains($cleanPath, '..')) {
+            return false;
+        }
+
+        return is_file(__DIR__ . '/../public' . $cleanPath);
+    }
+}
+
 if (!function_exists('render_partial')) {
     function render_partial(string $name, array $data = []): string {
         if (!preg_match('/\A[a-z0-9_-]+\z/', $name)) {

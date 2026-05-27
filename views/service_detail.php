@@ -9,12 +9,22 @@ $priorityZones = [
 ];
 ?>
 <?= hub_styles() ?>
-<?= hub_intro((string) $service['h1'], (string) $service['subtitle']) ?>
+<?= hub_intro((string) $service['h1'], (string) $service['subtitle'], hub_visual_options($service)) ?>
 <section class="hub-section service-detail" aria-labelledby="service-overview">
   <div class="container">
-    <p class="hub-kicker">Servicio</p>
-    <h2 class="section-title" id="service-overview"><?= $service['intro_title'] ?></h2>
-    <p class="hub-muted"><?= $service['intro'] ?></p>
+    <?php if (!empty($service['support_image']) && is_array($service['support_image'])): ?>
+      <?= render_partial('image_text_block', [
+        'image' => $service['support_image'],
+        'eyebrow' => 'Servicio',
+        'title' => $service['intro_title'],
+        'title_id' => 'service-overview',
+        'text' => $service['intro'],
+      ]) ?>
+    <?php else: ?>
+      <p class="hub-kicker">Servicio</p>
+      <h2 class="section-title" id="service-overview"><?= $service['intro_title'] ?></h2>
+      <p class="hub-muted"><?= $service['intro'] ?></p>
+    <?php endif; ?>
     <div class="service-detail-grid">
       <article class="service-detail-card">
         <h3><?= $service['bullets_title'] ?></h3>
