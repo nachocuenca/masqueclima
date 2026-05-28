@@ -2,6 +2,7 @@
 $lang       = $GLOBALS['current_lang'] ?? 'es';
 $langs      = $GLOBALS['config']['brand']['langs'] ?? ['es'];
 $lang_names = [
+  'no' => 'Norsk',
   'es' => 'Español', 'en' => 'English', 'de' => 'Deutsch', 'nl' => 'Nederlands', 'ru' => 'Русский',
 ];
 
