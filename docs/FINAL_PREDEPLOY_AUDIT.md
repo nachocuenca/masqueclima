@@ -11,10 +11,11 @@ La rama esta coherente a nivel de routing principal, PHP, encoding, metadatos, s
 
 - Hreflang ausente en hubs y servicios renderizados dinamicamente.
 - Banner de cookies heredado en espanol en paginas no-ES.
+- P1 `/politica-de-cookies` enlazado desde el banner y anteriormente en 404.
 
-No hay P0 abiertos. Hay un P1 abierto: `/politica-de-cookies` esta enlazada desde el banner de cookies y devuelve 404. No se corrigio porque no existe pagina legal destino en el repo y estaba prohibido crear paginas nuevas o inventar URLs.
+No hay P0/P1 tecnicos abiertos tras activar `/politica-de-cookies`. La pagina legal es prudente y debe revisarse legalmente antes de produccion/Nicalia.
 
-Veredicto: apto para commit/revision dev con P1 documentado. No apto para subida final a Nicalia hasta resolver el 404 legal de cookies y actualizar sitemap.
+Veredicto: apto para commit/revision dev. No apto para subida final a Nicalia hasta revisar legalmente la politica de cookies y actualizar sitemap segun alcance aprobado.
 
 ## 2. Estado git
 
@@ -205,10 +206,10 @@ Fuente: 36 paginas principales.
 
 ```text
 Unique internal links checked: 195
-Bad internal links: 1
+Bad internal links: 1 en auditoria original; `/politica-de-cookies` corregido posteriormente.
 ```
 
-Unico enlace roto:
+Enlace roto detectado en auditoria original:
 
 ```text
 /politica-de-cookies -> 404
@@ -216,11 +217,12 @@ Unico enlace roto:
 
 Origen: banner de cookies en homes, hubs y servicios auditados.
 
-No se corrigio porque:
+Estado posterior:
 
-- No existe pagina legal equivalente en repo.
-- Crear una pagina nueva estaba prohibido.
-- Cambiar el destino sin contenido legal confirmado seria arriesgado.
+- `/politica-de-cookies` devuelve 200 OK.
+- `/es/politica-de-cookies/` devuelve 200 OK como alias seguro.
+- Canonical: `https://masqueclima.es/politica-de-cookies`.
+- Requiere revision legal final antes de produccion/Nicalia.
 
 ## 11. Resultado formulario/modal
 
@@ -266,7 +268,7 @@ P0:
 
 P1:
 
-- `/politica-de-cookies` enlazado desde banner de cookies devuelve 404. Bloquea subida final a Nicalia hasta que se restaure, cree por via autorizada o se cambie a un destino legal aprobado.
+- Ninguno abierto tras activar `/politica-de-cookies`.
 
 P2:
 
@@ -285,10 +287,11 @@ P2:
 2. `app/front_controller.php`
    - Inserta hreflang contextual en hubs/servicios ES y multiidioma, incluyendo shells minimos.
    - Localiza banner de cookies heredado para EN/DE/NL/RU/NO.
+   - Activa `/politica-de-cookies` y `/es/politica-de-cookies/` con canonical unico.
 
 ## 15. Pendientes antes de Nicalia
 
-1. Resolver `/politica-de-cookies` 404 con decision legal.
+1. Revision legal final de `/politica-de-cookies`.
 2. Actualizar `public/sitemap.xml` cuando se apruebe incluir hubs/servicios.
 3. Decidir si se fuerza redirect slash canonico.
 4. Limpiar contenido no renderizado de guias multiidioma.
@@ -296,9 +299,9 @@ P2:
 
 ## 16. Recomendacion final
 
-Apto para commit/revision dev de esta rama, con P1 documentado.
+Apto para commit/revision dev de esta rama.
 
-No apto para deploy final a Nicalia hasta resolver el 404 de `/politica-de-cookies` y actualizar sitemap segun alcance aprobado.
+No apto para deploy final a Nicalia hasta revision legal de `/politica-de-cookies` y actualizacion de sitemap segun alcance aprobado.
 
 Confirmaciones:
 

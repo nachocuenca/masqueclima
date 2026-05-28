@@ -35,6 +35,15 @@ if ($lang !== null) {
   $GLOBALS['current_lang'] = $lang;
 }
 
+if (is_cookie_policy_path($path)) {
+  $GLOBALS['current_lang'] = 'es';
+  $html = render_cookie_policy_page();
+  $html = patch_snapshot_html($html, '/politica-de-cookies/', 'es');
+  header('Content-Type: text/html; charset=UTF-8');
+  echo $html;
+  exit;
+}
+
 $hubHtml = render_es_hub_page($path);
 if ($hubHtml !== null) {
   $html = patch_snapshot_html($hubHtml, $path, 'es');
@@ -728,6 +737,125 @@ function snapshot_feedback_script(): string {
   return '<script>document.addEventListener("DOMContentLoaded",function(){var el=document.getElementById("' .
     $modal .
     '");if(el&&window.bootstrap){new bootstrap.Modal(el).show();}});</script>';
+}
+
+function is_cookie_policy_path(string $path): bool {
+  return in_array($path, ['/politica-de-cookies/', '/es/politica-de-cookies/'], true);
+}
+
+function cookie_policy_page_meta(): array {
+  return [
+    'title' => 'Pol&iacute;tica de cookies | +QUECLIMA',
+    'description' => 'Informaci&oacute;n sobre el uso de cookies t&eacute;cnicas, de sesi&oacute;n y de terceros en la web de +QUECLIMA.',
+    'canonical' => 'https://masqueclima.es/politica-de-cookies',
+  ];
+}
+
+function render_cookie_policy_page(): string {
+  $page = cookie_policy_page_meta();
+  $body = cookie_policy_body();
+
+  return render_cookie_policy_shell($page, $body);
+}
+
+function render_cookie_policy_shell(array $page, string $body): string {
+  $homeSnapshot = snapshot_file_for_path('/es/');
+  if ($homeSnapshot === null) {
+    return render_cookie_policy_minimal_shell($page, $body);
+  }
+
+  $base = file_get_contents($homeSnapshot);
+  if ($base === false) {
+    return render_cookie_policy_minimal_shell($page, $body);
+  }
+
+  $mainOpen = '<main id="main-content">';
+  $mainStart = strpos($base, $mainOpen);
+  if ($mainStart === false) {
+    return render_cookie_policy_minimal_shell($page, $body);
+  }
+
+  $mainEnd = strpos($base, '</main>', $mainStart);
+  if ($mainEnd === false) {
+    return render_cookie_policy_minimal_shell($page, $body);
+  }
+
+  $headAndHeader = substr($base, 0, $mainStart + strlen($mainOpen));
+  $interactiveTail = legacy_es_interactive_main_tail($base, $mainStart + strlen($mainOpen), $mainEnd);
+  $tail = substr($base, $mainEnd);
+  $headAndHeader = patch_cookie_policy_head($headAndHeader, $page);
+
+  return $headAndHeader . "\n" . $body . "\n" . $interactiveTail . "\n" . $tail;
+}
+
+function render_cookie_policy_minimal_shell(array $page, string $body): string {
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+    . '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">'
+    . '<link rel="canonical" href="' . $page['canonical'] . '">'
+    . '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">'
+    . '<link rel="stylesheet" href="/assets/css/styles.css"></head><body><main id="main-content">'
+    . $body . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
+}
+
+function patch_cookie_policy_head(string $html, array $page): string {
+  $html = preg_replace('/<html\b[^>]*>/i', '<html lang="es">', $html, 1) ?? $html;
+  $html = preg_replace('/<title>.*?<\/title>/is', '<title>' . $page['title'] . '</title>', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="description" content="[^"]*">/i', '<meta name="description" content="' . $page['description'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<link rel="canonical" href="[^"]*">/i', '<link rel="canonical" href="' . $page['canonical'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<!-- Hreflang -->\s*(?:<link rel="alternate"[^>]+>\s*)+/i', '', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:title" content="[^"]*">/i', '<meta property="og:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:description" content="[^"]*">/i', '<meta property="og:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:url" content="[^"]*">/i', '<meta property="og:url" content="' . $page['canonical'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
+
+  return $html;
+}
+
+function cookie_policy_body(): string {
+  return <<<HTML
+<section class="legal-page" aria-labelledby="cookie-policy-title">
+  <style>
+    .legal-page{padding:7.5rem 0 3.5rem;background:#fff;}
+    .legal-page .legal-wrap{max-width:880px;margin:0 auto;}
+    .legal-page h1{font-size:2.35rem;line-height:1.16;margin:0 0 1rem;color:#102033;font-weight:900;}
+    .legal-page h2{font-size:1.25rem;margin:2rem 0 .75rem;color:#142033;font-weight:800;}
+    .legal-page p,.legal-page li{color:#425466;line-height:1.75;}
+    .legal-page ul{padding-left:1.2rem;}
+    .legal-page .legal-date{margin-top:2rem;color:#667789;font-size:.95rem;}
+    @media (max-width:700px){.legal-page{padding:6.5rem 0 2.75rem}.legal-page h1{font-size:2rem}}
+  </style>
+  <div class="container">
+    <div class="legal-wrap">
+      <h1 id="cookie-policy-title">Pol&iacute;tica de cookies</h1>
+      <p>Esta pol&iacute;tica explica de forma general c&oacute;mo puede utilizar cookies la web de +QUECLIMA y c&oacute;mo puedes gestionarlas desde tu navegador.</p>
+
+      <h2>Qu&eacute; son las cookies</h2>
+      <p>Las cookies son peque&ntilde;os archivos que una web puede guardar en el dispositivo del usuario para recordar informaci&oacute;n t&eacute;cnica, facilitar la navegaci&oacute;n o permitir determinadas funciones.</p>
+
+      <h2>Qu&eacute; cookies puede usar esta web</h2>
+      <p>La web puede utilizar cookies t&eacute;cnicas necesarias para su funcionamiento, cookies de sesi&oacute;n asociadas a formularios o preferencias b&aacute;sicas, y cookies de terceros cuando se cargan servicios externos.</p>
+
+      <h2>Cookies t&eacute;cnicas necesarias</h2>
+      <p>Estas cookies permiten que la web funcione correctamente, mantener una sesi&oacute;n temporal, recordar preferencias b&aacute;sicas como el idioma o proteger formularios frente a env&iacute;os no autorizados.</p>
+
+      <h2>Cookies de sesi&oacute;n y formularios</h2>
+      <p>Al usar formularios o ventanas de solicitud de presupuesto, la web puede generar identificadores temporales de sesi&oacute;n para validar el env&iacute;o y mejorar la seguridad. Estas cookies no se utilizan para elaborar perfiles comerciales.</p>
+
+      <h2>Servicios de terceros</h2>
+      <p>Algunas p&aacute;ginas pueden cargar contenidos o servicios de terceros, como mapas embebidos, anal&iacute;tica web o widgets externos. Estos proveedores pueden establecer sus propias cookies conforme a sus respectivas pol&iacute;ticas.</p>
+
+      <h2>C&oacute;mo gestionar o bloquear cookies</h2>
+      <p>Puedes permitir, bloquear o eliminar cookies desde la configuraci&oacute;n de tu navegador. Ten en cuenta que bloquear algunas cookies t&eacute;cnicas puede afectar al funcionamiento normal de la web o de sus formularios.</p>
+
+      <h2>Contacto</h2>
+      <p>Para cualquier consulta sobre esta pol&iacute;tica, puedes contactar con +QUECLIMA a trav&eacute;s de los medios de contacto disponibles en la web.</p>
+
+      <p class="legal-date">Fecha de &uacute;ltima actualizaci&oacute;n: 28 de mayo de 2026.</p>
+    </div>
+  </div>
+</section>
+HTML;
 }
 
 function render_es_hub_page(string $path): ?string {

@@ -416,5 +416,6 @@ Estado SEO final:
 
 Pendientes antes de Nicalia:
 
-- P1: `/politica-de-cookies` esta enlazada y devuelve 404. Requiere decision legal/URL autorizada.
+- P1 corregido: `/politica-de-cookies` esta activa con 200 OK y canonical `https://masqueclima.es/politica-de-cookies`.
+- Pendiente legal: revisar el contenido de `/politica-de-cookies` antes de produccion/Nicalia.
 - P2: sitemap desfasado; faltan hubs y servicios multiidioma. No se modifico por instruccion.
