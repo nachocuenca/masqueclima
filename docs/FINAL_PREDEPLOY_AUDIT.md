@@ -258,7 +258,7 @@ Sitemap:
 - No incluye hubs/servicios nuevos multiidioma.
 - No se modifico por instruccion expresa.
 
-Pendiente antes de Nicalia: regenerar o actualizar sitemap con hubs/servicios cuando se decida el alcance final.
+**ACTUALIZADO 2026-05-28:** Sitemap regenerado con 174 URLs. Ver `docs/SITEMAP_HREFLANG_FINAL_AUDIT.md`.
 
 ## 13. Problemas P0/P1/P2
 
@@ -268,11 +268,11 @@ P0:
 
 P1:
 
-- Ninguno abierto tras activar `/politica-de-cookies`.
+- Ninguno abierto.
 
 P2:
 
-- Sitemap desfasado: faltan hubs y servicios multiidioma.
+- ~~Sitemap desfasado: faltan hubs y servicios multiidioma.~~ **CERRADO** — sitemap actualizado a 174 URLs (6 homes + 18 hubs + 30 servicios + 120 localidades).
 - Variantes sin slash (`/es`, `/en`, `/es/servicios`) sirven 200 en PHP local con canonical a slash. Valorar redirect canonico antes de produccion si Nicalia no lo fuerza.
 - Contenido de `app/content/guides/*` no-ES sigue en castellano aunque no este renderizado en hubs actuales.
 - Comentario legacy largo en `app/content/services/de.php` con contenido antiguo en castellano. No renderiza.
@@ -292,16 +292,17 @@ P2:
 ## 15. Pendientes antes de Nicalia
 
 1. Revision legal final de `/politica-de-cookies`.
-2. Actualizar `public/sitemap.xml` cuando se apruebe incluir hubs/servicios.
+2. ~~Actualizar `public/sitemap.xml`~~ **CERRADO** — sitemap actualizado a 174 URLs.
 3. Decidir si se fuerza redirect slash canonico.
 4. Limpiar contenido no renderizado de guias multiidioma.
 5. Ejecutar revision visual real en navegador contra el entorno dev final.
+6. Validacion visual pre-Nicalia (formulario, modal, hero images, selector idioma).
 
 ## 16. Recomendacion final
 
-Apto para commit/revision dev de esta rama.
+**Apto para commit de `public/sitemap.xml` y docs.**
 
-No apto para deploy final a Nicalia hasta revision legal de `/politica-de-cookies` y actualizacion de sitemap segun alcance aprobado.
+No apto para deploy final a Nicalia hasta revision visual y revision legal de `/politica-de-cookies`.
 
 Confirmaciones:
 

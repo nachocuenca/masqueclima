@@ -126,8 +126,8 @@ Nota: Los hubs eliminan el bloque hreflang del snapshot base (son páginas solo 
 | # | Problema | Recomendación |
 |---|---|---|
 | P2-1 | Nav principal ES no incluye Servicios/Zonas/Guías (solo anclas de home) | Evaluar añadir cuando se confirme la IA del site |
-| P2-2 | `/es/blog/` no está en sitemap.xml | Añadir cuando haya al menos 1 guía publicada |
-| P2-3 | Servicios no están en sitemap.xml | Añadir en siguiente versión de sitemap |
+| P2-2 | ~~`/es/blog/` no está en sitemap.xml~~ | **CERRADO** — `/es/blog/` y todos los hubs en sitemap (174 URLs) |
+| P2-3 | ~~Servicios no están en sitemap.xml~~ | **CERRADO** — 30 servicios multiidioma añadidos al sitemap |
 | P2-4 | Hreflang para hubs y servicios (páginas solo-ES) | No aplica hreflang para páginas monolingüe — correcto omitirlo |
 | P2-5 | No hay `LocalBusiness` JSON-LD con `address` o `geo` | Añadir solo si se tiene dirección física verificable |
 | P2-6 | `og:image` específica por página de servicio | Crear imágenes 1200×630 para cada servicio |
@@ -160,7 +160,7 @@ Nota: Los hubs eliminan el bloque hreflang del snapshot base (son páginas solo 
 | Mejorar title/meta home ES para local SEO | Requiere editar snapshot — riesgo de regresión visual y conversión | P1 |
 | Añadir `og:image` por servicio/hub | No hay imágenes 1200×630 preparadas | P1 |
 | Añadir Servicios/Zonas/Guías al nav ES | Cambio de layout — no en scope | P2 |
-| Sitemap nuevo con servicios y zonas | Requiere aprobación + validación completa | P2 |
+| ~~Sitemap nuevo con servicios y zonas~~ | **IMPLEMENTADO** 2026-05-28 — 174 URLs (6 homes + 18 hubs + 30 servicios + 120 localidades) | ~~P2~~ |
 | Noindex en reformas | Requiere decisión de negocio | P2 |
 | LocalBusiness con geo/address | No hay datos verificados | P2 |
 
@@ -236,7 +236,7 @@ NO incluir en sitemap:
 | Riesgo | Severidad | Mitigación |
 |---|---|---|
 | `APP_ENV` no configurado como `production` en Nicalia → noindex activo en prod | CRÍTICO | Verificar `.env` en servidor Nicalia antes de go-live |
-| Sitemap actual no incluye servicios ni zonas ES | ALTO | Regenerar sitemap antes de go-live |
+| ~~Sitemap actual no incluye servicios ni zonas ES~~ | **RESUELTO** 2026-05-28 | sitemap.xml → 174 URLs |
 | Snapshots con title genérico para reformas | MEDIO | Sin enlace = bajo riesgo de indexación involuntaria |
 | og:image genérica en servicios y hubs | BAJO | Afecta solo compartición social, no posicionamiento |
 | Hreflang x-default en snapshots apuntaba a `/` (sin idioma) | RESUELTO | El front-controller lo parchea en runtime |
@@ -249,7 +249,7 @@ NO incluir en sitemap:
 ### Técnico
 - [ ] `APP_ENV=production` configurado en servidor
 - [ ] Noindex NO aparece en versión producción (verificar con curl/browser)
-- [ ] Sitemap actualizado con todas las URLs indexables
+- [x] Sitemap actualizado con todas las URLs indexables (174 URLs — 2026-05-28)
 - [ ] Robots.txt correcto (sin bloqueos involuntarios)
 - [ ] Formulario de contacto funciona en producción (SMTP configurado)
 - [ ] WhatsApp FAB visible y funcional
@@ -263,7 +263,7 @@ NO incluir en sitemap:
 - [ ] Sitemap enviado a GSC
 - [ ] No hay errores 404 en URLs indexadas previamente
 - [ ] Mapa de redirecciones preparado si alguna URL cambia respecto a legacy
-- [ ] Reformas NO aparecen en sitemap
+- [x] Reformas NO aparecen en sitemap ✅
 - [ ] `og:image` accesible públicamente (`masqueclima.es/assets/img/og.jpg`)
 
 ### Contenido
@@ -418,4 +418,4 @@ Pendientes antes de Nicalia:
 
 - P1 corregido: `/politica-de-cookies` esta activa con 200 OK y canonical `https://masqueclima.es/politica-de-cookies`.
 - Pendiente legal: revisar el contenido de `/politica-de-cookies` antes de produccion/Nicalia.
-- P2: sitemap desfasado; faltan hubs y servicios multiidioma. No se modifico por instruccion.
+- ~~P2: sitemap desfasado; faltan hubs y servicios multiidioma.~~ **CERRADO 2026-05-28** — sitemap.xml actualizado a 174 URLs.
