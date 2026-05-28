@@ -148,6 +148,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_snapshot_home_context_links($html, $path, $lang);
 
   $html = patch_es_p1_location_page($html, $path, $lang);
+  $html = patch_locality_hero_image($html, $path, $lang);
 
   $html = patch_snapshot_home_hero($html, $path, $lang);
 
@@ -840,6 +841,81 @@ function hub_blog_body(array $page): string {
   </div>
 </section>
 HTML;
+}
+
+function locality_hero_map(): array {
+  return [
+    'albir'              => '/assets/img/localidades/heroes/hero-localidad-albir.webp',
+    'alfaz-del-pi'       => '/assets/img/localidades/heroes/hero-localidad-alfaz-del-pi.webp',
+    'altea'              => '/assets/img/localidades/heroes/hero-localidad-altea.webp',
+    'beniarda'           => '/assets/img/localidades/heroes/hero-localidad-beniarda.webp',
+    'benidorm'           => '/assets/img/localidades/heroes/hero-localidad-benidorm.webp',
+    'benifato'           => '/assets/img/localidades/heroes/hero-localidad-benifato.webp',
+    'benimantell'        => '/assets/img/localidades/heroes/hero-localidad-benimantell.webp',
+    'bolulla'            => '/assets/img/localidades/heroes/hero-localidad-bolulla.webp',
+    'callosa-den-sarria' => '/assets/img/localidades/heroes/hero-localidad-callosa-den-sarria.webp',
+    'calpe'              => '/assets/img/localidades/heroes/hero-localidad-calpe.webp',
+    'confrides'          => '/assets/img/localidades/heroes/hero-localidad-confrides.webp',
+    'finestrat'          => '/assets/img/localidades/heroes/hero-localidad-finestrat.webp',
+    'guadalest'          => '/assets/img/localidades/heroes/hero-localidad-guadalest.webp',
+    'la-nucia'           => '/assets/img/localidades/heroes/hero-localidad-la-nucia.webp',
+    'orxeta'             => '/assets/img/localidades/heroes/hero-localidad-orxeta.webp',
+    'polop'              => '/assets/img/localidades/heroes/hero-localidad-polop.webp',
+    'relleu'             => '/assets/img/localidades/heroes/hero-localidad-relleu.webp',
+    'sella'              => '/assets/img/localidades/heroes/hero-localidad-sella.webp',
+    'tarbena'            => '/assets/img/localidades/heroes/hero-localidad-tarbena.webp',
+    'villajoyosa'        => '/assets/img/localidades/heroes/hero-localidad-villajoyosa.webp',
+  ];
+}
+
+function patch_locality_hero_image(string $html, string $path, string $lang): string {
+  if ($lang !== 'es') {
+    return $html;
+  }
+
+  if (!preg_match('~^/es/aire-acondicionado-([a-z0-9-]+)/$~', $path, $m)) {
+    return $html;
+  }
+
+  $slug = $m[1];
+  $heroMap = locality_hero_map();
+
+  if (!isset($heroMap[$slug])) {
+    return $html;
+  }
+
+  $heroPath = $heroMap[$slug];
+
+  if (!public_asset_exists($heroPath)) {
+    return $html;
+  }
+
+  // Replace src in the hero-img element (handles multiline attribute layout)
+  $html = preg_replace(
+    '/(<img\s[^>]*class="hero-img"[^>]*src=")[^"]*(")/s',
+    '$1' . e($heroPath) . '$2',
+    $html,
+    1
+  ) ?? $html;
+
+  // Remove legacy hero.jpg preload
+  $html = preg_replace(
+    '/\s*<link rel="preload" as="image" href="\/assets\/img\/hero\.jpg"[^>]*>\s*/i',
+    "\n",
+    $html,
+    1
+  ) ?? $html;
+
+  // Replace responsive preload block with specific local hero preload
+  $preload = '<link rel="preload" as="image" href="' . e($heroPath) . '" imagesizes="100vw" fetchpriority="high">';
+  $html = preg_replace(
+    '/\s*<!-- Preload hero responsive[\s\S]*?<link rel="preload" as="image"[\s\S]*?fetchpriority="high">\s*/i',
+    "\n  " . $preload . "\n",
+    $html,
+    1
+  ) ?? $html;
+
+  return $html;
 }
 
 function patch_es_p1_location_page(string $html, string $path, string $lang): string {
