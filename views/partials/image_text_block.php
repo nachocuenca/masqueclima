@@ -14,7 +14,7 @@ $classes = 'image-text-block' . ($reverse ? ' image-text-block--reverse' : '') .
 <div class="<?= e($classes) ?>">
   <div class="image-text-block__media">
     <?php if ($hasImage): ?>
-      <img src="<?= e((string) $src) ?>" alt="<?= e((string) $alt) ?>" width="1600" height="1000" loading="lazy" decoding="async">
+      <img src="<?= e((string) $src) ?>" alt="<?= e((string) $alt) ?>" width="1448" height="1086" loading="lazy" decoding="async">
     <?php else: ?>
       <div class="image-text-block__fallback" aria-hidden="true"></div>
     <?php endif; ?>
