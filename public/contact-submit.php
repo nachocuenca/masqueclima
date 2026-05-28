@@ -23,6 +23,23 @@ if ($csrf === '' || empty($_SESSION['csrf']) || !hash_equals((string) $_SESSION[
   redirect_with_status($returnTo, '0');
 }
 
+// Cloudflare Turnstile verification (when enabled via env vars)
+$turnstileEnabled = filter_var(getenv('TURNSTILE_ENABLED') ?: 'false', FILTER_VALIDATE_BOOLEAN);
+$turnstileSecret  = (string) (getenv('TURNSTILE_SECRET_KEY') ?: '');
+$isProduction     = strtolower((string) (getenv('APP_ENV') ?: 'production')) === 'production';
+
+if ($turnstileEnabled) {
+  if ($turnstileSecret === '') {
+    // Turnstile enabled but secret not configured — fail safe in all environments
+    error_log('Turnstile: TURNSTILE_ENABLED=true but TURNSTILE_SECRET_KEY is not set. Rejecting submission.');
+    redirect_with_status($returnTo, '2');
+  }
+  $tsToken = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
+  if ($tsToken === '' || !verify_turnstile($turnstileSecret, $tsToken, $_SERVER['REMOTE_ADDR'] ?? '')) {
+    redirect_with_status($returnTo, '2');
+  }
+}
+
 $data = [
   'name' => trim((string) ($_POST['name'] ?? '')),
   'phone' => trim((string) ($_POST['phone'] ?? '')),
@@ -89,4 +106,31 @@ function redirect_with_status(string $returnTo, string $status): void {
   $separator = str_contains($path, '?') ? '&' : '?';
   header('Location: ' . $path . $separator . 'sent=' . rawurlencode($status) . $hash, true, 303);
   exit;
+}
+
+function verify_turnstile(string $secret, string $token, string $remoteip): bool {
+  $payload = http_build_query([
+    'secret'   => $secret,
+    'response' => $token,
+    'remoteip' => $remoteip,
+  ]);
+
+  $ctx = stream_context_create([
+    'http' => [
+      'method'        => 'POST',
+      'header'        => "Content-Type: application/x-www-form-urlencoded\r\nContent-Length: " . strlen($payload),
+      'content'       => $payload,
+      'timeout'       => 5,
+      'ignore_errors' => true,
+    ],
+  ]);
+
+  $response = @file_get_contents('https://challenges.cloudflare.com/turnstile/v0/siteverify', false, $ctx);
+  if ($response === false) {
+    error_log('Turnstile: Could not reach Cloudflare siteverify API');
+    return false; // fail safe
+  }
+
+  $data = json_decode($response, true);
+  return is_array($data) && ($data['success'] ?? false) === true;
 }

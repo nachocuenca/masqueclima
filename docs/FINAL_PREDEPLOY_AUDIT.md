@@ -273,10 +273,44 @@ P1:
 P2:
 
 - ~~Sitemap desfasado: faltan hubs y servicios multiidioma.~~ **CERRADO** — sitemap actualizado a 174 URLs (6 homes + 18 hubs + 30 servicios + 120 localidades).
+- ~~Páginas legales ausentes~~ **CERRADO** — 18 páginas legales implementadas (3 tipos × 6 idiomas). Ver `docs/LEGAL_PAGES_IMPLEMENTATION.md`.
+- ~~Cookie banner con URL hardcodeada a /politica-de-cookies~~ **CERRADO** — banner usa URL localizada por idioma.
+- ~~Footer sin enlaces legales~~ **CERRADO** — footer incluye aviso legal · privacidad · cookies por idioma.
 - Variantes sin slash (`/es`, `/en`, `/es/servicios`) sirven 200 en PHP local con canonical a slash. Valorar redirect canonico antes de produccion si Nicalia no lo fuerza.
 - Contenido de `app/content/guides/*` no-ES sigue en castellano aunque no este renderizado en hubs actuales.
 - Comentario legacy largo en `app/content/services/de.php` con contenido antiguo en castellano. No renderiza.
 - No se hizo revision visual con navegador real/Playwright; la validacion visual fue estructural por HTML/CSS.
+- Datos identificativos del titular (NIF/CIF, denominación social, dirección) en páginas legales marcados como pendientes. **Deben completarse antes de Nicalia.**
+
+---
+
+## 14. Actualización sesión 3 — 2026-05-28
+
+### Páginas legales
+
+- **18 páginas legales** implementadas: 3 tipos (cookies, privacidad, aviso legal) × 6 idiomas.
+- Arquitectura: `app/content/legal.php` + funciones de render en `front_controller.php`.
+- `/politica-de-cookies/` → 301 → `/es/politica-de-cookies/` (SEO redirect a canónico).
+- Hreflang completo en todas las páginas legales (7 alternates por página).
+- **Email legal**: `administracion@masqueclima.es` (privacidad + avisos legales, todas las lenguas).
+- **Teléfono**: deliberadamente excluido del texto de páginas legales.
+- **NIF/titular/domicilio**: no incluidos ni inventados. Sujeto a revisión legal antes de Nicalia (puede ser obligatorio por LSSI-CE).
+- No hay placeholders visibles en el sitio. Los datos pendientes están documentados en `docs/LEGAL_PAGES_IMPLEMENTATION.md`.
+- Validación HTTP: todas las URLs devuelven 200. Ver `docs/LEGAL_PAGES_IMPLEMENTATION.md`.
+
+### Turnstile (anti-spam form)
+
+- Cloudflare Turnstile integrado en el modal de presupuesto.
+- **Desactivado por defecto** (`TURNSTILE_ENABLED` no configurado = false).
+- Para activar en producción: configurar `TURNSTILE_ENABLED=true`, `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` en env.
+- Fallos de validación → `?sent=2` → error modal (mismo que CSRF).
+- Ver `docs/TURNSTILE_FORM_PROTECTION.md`.
+
+### Estado PHP lint sesión 3
+
+```text
+PHP LINT OK: 0 errores (app/, views/, public/, public_html/)
+```
 
 ## 14. Cambios corregidos durante la auditoria
 

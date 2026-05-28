@@ -36,9 +36,16 @@ if ($lang !== null) {
 }
 
 if (is_cookie_policy_path($path)) {
-  $GLOBALS['current_lang'] = 'es';
-  $html = render_cookie_policy_page();
-  $html = patch_snapshot_html($html, '/politica-de-cookies/', 'es');
+  // Redirect the legacy non-lang cookie policy path to the canonical ES version
+  header('Location: /es/politica-de-cookies/', true, 301);
+  exit;
+}
+
+$legalHtml = render_legal_page($path);
+if ($legalHtml !== null) {
+  $legalLang = detect_path_lang($path) ?? 'es';
+  $GLOBALS['current_lang'] = $legalLang;
+  $html = patch_snapshot_html($legalHtml, $path, $legalLang);
   header('Content-Type: text/html; charset=UTF-8');
   echo $html;
   exit;
@@ -176,6 +183,16 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $statusScript = snapshot_feedback_script();
   if ($statusScript !== '') {
     $html = str_replace('</body>', $statusScript . "\n</body>", $html);
+  }
+
+  // Inject Cloudflare Turnstile script if enabled
+  $turnstileEnabled = (bool) config('turnstile.enabled', false);
+  $turnstileSiteKey = (string) (config('turnstile.site_key') ?? '');
+  if ($turnstileEnabled && $turnstileSiteKey !== '') {
+    $tsScript = '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>';
+    if (!str_contains($html, 'challenges.cloudflare.com/turnstile')) {
+      $html = str_replace('</body>', $tsScript . "\n</body>", $html);
+    }
   }
 
   $parts = explode('</head>', $html, 2);
@@ -420,6 +437,19 @@ function patch_snapshot_quote_modal(string $html, string $lang): string {
   $modal = preg_replace('/(<button type="submit" class="btn btn-primary btn-lg px-4">)[\s\S]*?(<\/button>)/', '$1' . "\n              " . $labels['submit'] . '            $2', $modal, 1) ?? $modal;
   $modal = preg_replace('/(<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">)[\s\S]*?(<\/button>)/', '$1' . "\n              " . $labels['cancel'] . '            $2', $modal, 1) ?? $modal;
 
+  // Inject Turnstile widget before submit button if enabled and not already present
+  $turnstileEnabled  = (bool) config('turnstile.enabled', false);
+  $turnstileSiteKey  = (string) (config('turnstile.site_key') ?? '');
+  if ($turnstileEnabled && $turnstileSiteKey !== '' && !str_contains($modal, 'cf-turnstile')) {
+    $tsWidget = "\n            <div class=\"cf-turnstile mb-3\" data-sitekey=\"" . e($turnstileSiteKey) . "\" data-theme=\"light\" data-language=\"" . e($lang) . "\"></div>";
+    $modal = preg_replace(
+      '/(<button type="submit" class="btn btn-primary btn-lg px-4">)/',
+      $tsWidget . "\n            $1",
+      $modal,
+      1
+    ) ?? $modal;
+  }
+
   return substr($html, 0, $start) . $modal . substr($html, $end);
 }
 
@@ -478,10 +508,11 @@ function patch_snapshot_cookie_banner(string $html, string $lang): string {
   }
 
   $labels = cookie_banner_labels($lang);
+  $cookieUrl = e(legal_cookie_policy_url($lang));
 
   return preg_replace(
-    '/(<div id="cookie-banner" class="cookie-banner" hidden>\s*<div class="cookie-box">\s*<p>)[\s\S]*?(<a href="\/politica-de-cookies" target="_blank" rel="nofollow">)[\s\S]*?(<\/a>\s*<\/p>\s*<div class="cookie-actions">\s*<button id="cb-reject"[^>]*>)[\s\S]*?(<\/button>\s*<button id="cb-analytics"[^>]*>)[\s\S]*?(<\/button>\s*<button id="cb-accept"[^>]*>)[\s\S]*?(<\/button>)/',
-    '$1' . "\n      " . $labels['message'] . "\n      " . '$2' . $labels['more'] . '$3' . $labels['reject'] . '$4' . $labels['analytics'] . '$5' . $labels['accept'] . '$6',
+    '/(<div id="cookie-banner" class="cookie-banner" hidden>\s*<div class="cookie-box">\s*<p>)[\s\S]*?(<a href="[^"]*" target="_blank" rel="nofollow">)[\s\S]*?(<\/a>\s*<\/p>\s*<div class="cookie-actions">\s*<button id="cb-reject"[^>]*>)[\s\S]*?(<\/button>\s*<button id="cb-analytics"[^>]*>)[\s\S]*?(<\/button>\s*<button id="cb-accept"[^>]*>)[\s\S]*?(<\/button>)/',
+    '$1' . "\n      " . $labels['message'] . "\n      " . '<a href="' . $cookieUrl . '" target="_blank" rel="nofollow">' . $labels['more'] . '$3' . $labels['reject'] . '$4' . $labels['analytics'] . '$5' . $labels['accept'] . '$6',
     $html,
     1
   ) ?? $html;
@@ -536,7 +567,37 @@ function footer_main_links_html(string $lang): string {
     $items[] = '<a class="text-white" href="' . e($guidesUrl) . '">' . e(html_entity_decode((string) $labels['guides'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . '</a>';
   }
 
-  return '<p class="mb-1 footer-main-links">' . implode(' | ', $items) . '</p>';
+  $navRow = '<p class="mb-1 footer-main-links">' . implode(' | ', $items) . '</p>';
+
+  // Legal links row
+  $legalLinks = footer_legal_links_html($lang);
+
+  return $navRow . "\n    " . $legalLinks;
+}
+
+function footer_legal_links_html(string $lang): string {
+  $hreflangMap = legal_hreflang_map();
+  $cookiesUrl  = $hreflangMap['cookies'][$lang]  ?? $hreflangMap['cookies']['es'];
+  $privacyUrl  = $hreflangMap['privacy'][$lang]  ?? $hreflangMap['privacy']['es'];
+  $legalUrl    = $hreflangMap['legal'][$lang]     ?? $hreflangMap['legal']['es'];
+
+  $labels = [
+    'es' => ['legal' => 'Aviso legal',           'privacy' => 'Privacidad',    'cookies' => 'Cookies'],
+    'en' => ['legal' => 'Legal notice',           'privacy' => 'Privacy',       'cookies' => 'Cookies'],
+    'de' => ['legal' => 'Impressum',              'privacy' => 'Datenschutz',   'cookies' => 'Cookies'],
+    'nl' => ['legal' => 'Juridische mededeling',  'privacy' => 'Privacy',       'cookies' => 'Cookies'],
+    'ru' => ['legal' => 'Правовое уведомление',   'privacy' => 'Конфиденциальность', 'cookies' => 'Cookies'],
+    'no' => ['legal' => 'Juridisk varsel',         'privacy' => 'Personvern',    'cookies' => 'Cookies'],
+  ];
+  $l = $labels[$lang] ?? $labels['es'];
+
+  return '<p class="mb-0 footer-legal-links" style="font-size:.8rem;opacity:.7;">'
+    . '<a class="text-white" href="' . e($legalUrl) . '">' . e($l['legal']) . '</a>'
+    . ' &middot; '
+    . '<a class="text-white" href="' . e($privacyUrl) . '">' . e($l['privacy']) . '</a>'
+    . ' &middot; '
+    . '<a class="text-white" href="' . e($cookiesUrl) . '">' . e($l['cookies']) . '</a>'
+    . '</p>';
 }
 
 function patch_snapshot_home_context_links(string $html, string $path, string $lang): string {
@@ -733,14 +794,186 @@ function snapshot_feedback_script(): string {
   if ($sent === null) {
     return '';
   }
+  // sent=1 → success modal, sent=2 → spam/captcha error (also uses errorModal), sent=0 → error
   $modal = $sent === '1' ? 'thanksModal' : 'errorModal';
   return '<script>document.addEventListener("DOMContentLoaded",function(){var el=document.getElementById("' .
     $modal .
     '");if(el&&window.bootstrap){new bootstrap.Modal(el).show();}});</script>';
 }
 
+// ---------------------------------------------------------------------------
+// LEGAL PAGES — render functions
+// ---------------------------------------------------------------------------
+
+function legal_pages(): array {
+  static $cache = null;
+  if ($cache !== null) {
+    return $cache;
+  }
+  $file = __DIR__ . '/content/legal.php';
+  $loaded = is_file($file) ? require $file : [];
+  $cache = is_array($loaded) ? $loaded : [];
+  return $cache;
+}
+
+function legal_page_for_path(string $path): ?array {
+  $pages = legal_pages();
+  return $pages[$path] ?? null;
+}
+
+/**
+ * Cross-language hreflang equivalents for each legal page type.
+ * Returns [lang => absoluteUrl, ...] for all 6 languages of a given type.
+ */
+function legal_hreflang_map(): array {
+  static $map = null;
+  if ($map !== null) {
+    return $map;
+  }
+  $b = 'https://masqueclima.es';
+  $map = [
+    'cookies' => [
+      'es' => $b . '/es/politica-de-cookies/',
+      'en' => $b . '/en/cookie-policy/',
+      'de' => $b . '/de/cookie-richtlinie/',
+      'nl' => $b . '/nl/cookiebeleid/',
+      'ru' => $b . '/ru/cookie-policy/',
+      'no' => $b . '/no/cookie-policy/',
+    ],
+    'privacy' => [
+      'es' => $b . '/es/politica-de-privacidad/',
+      'en' => $b . '/en/privacy-policy/',
+      'de' => $b . '/de/datenschutzerklaerung/',
+      'nl' => $b . '/nl/privacybeleid/',
+      'ru' => $b . '/ru/politika-konfidentsialnosti/',
+      'no' => $b . '/no/personvernerklaering/',
+    ],
+    'legal' => [
+      'es' => $b . '/es/aviso-legal/',
+      'en' => $b . '/en/legal-notice/',
+      'de' => $b . '/de/impressum/',
+      'nl' => $b . '/nl/juridische-mededeling/',
+      'ru' => $b . '/ru/pravovoe-uvedomlenie/',
+      'no' => $b . '/no/juridisk-varsel/',
+    ],
+  ];
+  return $map;
+}
+
+/**
+ * Returns the localized cookie policy URL for a given language.
+ */
+function legal_cookie_policy_url(string $lang): string {
+  $map = legal_hreflang_map()['cookies'];
+  return $map[$lang] ?? $map['es'];
+}
+
+function legal_hreflang_html(string $type): string {
+  $map = legal_hreflang_map();
+  $langs = $map[$type] ?? [];
+  $html = "\n<!-- Hreflang -->\n";
+  foreach ($langs as $lang => $url) {
+    $html .= '<link rel="alternate" hreflang="' . e($lang) . '" href="' . e($url) . '">' . "\n";
+  }
+  // x-default points to ES
+  $xDefault = $langs['es'] ?? '';
+  if ($xDefault !== '') {
+    $html .= '<link rel="alternate" hreflang="x-default" href="' . e($xDefault) . '">' . "\n";
+  }
+  return $html;
+}
+
+function render_legal_page(string $path): ?string {
+  $page = legal_page_for_path($path);
+  if ($page === null) {
+    return null;
+  }
+  $lang = (string) ($page['lang'] ?? 'es');
+  $type = (string) ($page['type'] ?? 'cookies');
+  $body = (string) ($page['body'] ?? '');
+
+  return render_legal_shell($page, $body, $path, $lang, $type);
+}
+
+function render_legal_shell(array $page, string $body, string $path, string $lang, string $type): string {
+  $homeSnapshotPath = '/' . rawurlencode($lang) . '/';
+  $homeSnapshot = snapshot_file_for_path($homeSnapshotPath);
+
+  // Fallback to ES home if lang snapshot missing
+  if ($homeSnapshot === null && $lang !== 'es') {
+    $homeSnapshot = snapshot_file_for_path('/es/');
+  }
+
+  if ($homeSnapshot === null) {
+    return render_legal_minimal_shell($page, $body, $lang, $type);
+  }
+
+  $base = @file_get_contents($homeSnapshot);
+  if ($base === false) {
+    return render_legal_minimal_shell($page, $body, $lang, $type);
+  }
+
+  $mainOpen = '<main id="main-content">';
+  $mainStart = strpos($base, $mainOpen);
+  if ($mainStart === false) {
+    return render_legal_minimal_shell($page, $body, $lang, $type);
+  }
+
+  $mainEnd = strpos($base, '</main>', $mainStart);
+  if ($mainEnd === false) {
+    return render_legal_minimal_shell($page, $body, $lang, $type);
+  }
+
+  $headAndHeader = substr($base, 0, $mainStart + strlen($mainOpen));
+  $interactiveTail = legacy_es_interactive_main_tail($base, $mainStart + strlen($mainOpen), $mainEnd);
+  $tail = substr($base, $mainEnd);
+
+  $headAndHeader = patch_legal_head($headAndHeader, $page, $lang, $type);
+
+  return $headAndHeader . "\n" . $body . "\n" . $interactiveTail . "\n" . $tail;
+}
+
+function render_legal_minimal_shell(array $page, string $body, string $lang, string $type): string {
+  $canonical = (string) ($page['canonical'] ?? 'https://masqueclima.es/' . rawurlencode($lang) . '/');
+  $hreflangHtml = legal_hreflang_html($type);
+  return '<!DOCTYPE html><html lang="' . e($lang) . '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+    . '<title>' . ($page['title'] ?? '') . '</title><meta name="description" content="' . ($page['description'] ?? '') . '">'
+    . '<link rel="canonical" href="' . $canonical . '">'
+    . $hreflangHtml
+    . '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">'
+    . '<link rel="stylesheet" href="/assets/css/styles.css"></head><body><main id="main-content">'
+    . $body . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
+}
+
+function patch_legal_head(string $html, array $page, string $lang, string $type): string {
+  $canonical = (string) ($page['canonical'] ?? '');
+  $title = (string) ($page['title'] ?? '');
+  $description = (string) ($page['description'] ?? '');
+  $hreflangHtml = legal_hreflang_html($type);
+
+  $html = preg_replace('/<html\b[^>]*>/i', '<html lang="' . e($lang) . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<title>.*?<\/title>/is', '<title>' . $title . '</title>', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="description" content="[^"]*">/i', '<meta name="description" content="' . $description . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<link rel="canonical" href="[^"]*">/i', '<link rel="canonical" href="' . $canonical . '">', $html, 1) ?? $html;
+  // Remove existing hreflang block and inject the legal one
+  $html = preg_replace('/<!-- Hreflang -->\s*(?:<link rel="alternate"[^>]+>\s*)+/i', '', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:title" content="[^"]*">/i', '<meta property="og:title" content="' . $title . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:description" content="[^"]*">/i', '<meta property="og:description" content="' . $description . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:url" content="[^"]*">/i', '<meta property="og:url" content="' . $canonical . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $title . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $description . '">', $html, 1) ?? $html;
+  $html = str_replace('</head>', $hreflangHtml . '</head>', $html);
+
+  return $html;
+}
+
+// ---------------------------------------------------------------------------
+// LEGACY cookie policy render (kept for reference; actual rendering via render_legal_page)
+// ---------------------------------------------------------------------------
+
 function is_cookie_policy_path(string $path): bool {
-  return in_array($path, ['/politica-de-cookies/', '/es/politica-de-cookies/'], true);
+  // Only matches the legacy no-lang path; the lang-prefixed path is handled by render_legal_page().
+  return $path === '/politica-de-cookies/';
 }
 
 function cookie_policy_page_meta(): array {

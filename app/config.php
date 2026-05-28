@@ -40,5 +40,10 @@ return [
   'app' => [
     'env' => getenv('APP_ENV') ?: 'production',
     'ga4_id' => getenv('GA4_ID') ?: null
-  ]
+  ],
+  'turnstile' => [
+    'enabled'    => filter_var(getenv('TURNSTILE_ENABLED') ?: 'false', FILTER_VALIDATE_BOOLEAN),
+    'site_key'   => getenv('TURNSTILE_SITE_KEY') ?: null,
+    'secret_key' => getenv('TURNSTILE_SECRET_KEY') ?: null,
+  ],
 ];
