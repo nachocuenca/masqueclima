@@ -11,6 +11,9 @@ return [
     'coverage' => 'Område',
     'faq' => 'FAQ',
     'contact' => 'Kontakt',
+    'services' => 'Tjenester',
+    'zones' => 'Områder',
+    'guides' => 'Guider',
   ],
   'hero' => [
     'title' => 'Profesjonell installasjon og service av klimaanlegg',

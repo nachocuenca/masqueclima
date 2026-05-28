@@ -12,6 +12,9 @@ return [
     'coverage'=>'Area',
     'faq'=>'FAQ',
     'contact'=>'Contact',
+    'services'=>'Services',
+    'zones'=>'Areas',
+    'guides'=>'Guides',
   ],
 
   'hero' => [

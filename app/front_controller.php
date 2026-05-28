@@ -43,6 +43,16 @@ if ($hubHtml !== null) {
   exit;
 }
 
+if ($lang !== null && $lang !== 'es') {
+  $hubHtml = render_lang_hub_page($path, $lang);
+  if ($hubHtml !== null) {
+    $html = patch_snapshot_html($hubHtml, $path, $lang);
+    header('Content-Type: text/html; charset=UTF-8');
+    echo $html;
+    exit;
+  }
+}
+
 $snapshot = snapshot_file_for_path($path);
 if ($snapshot === null) {
   http_response_code(404);
@@ -267,10 +277,27 @@ function footer_main_links_html(string $lang): string {
 
   $home = e(lang_url($lang));
   $faq = e(lang_url($lang) . '#faq');
-  $homeLabel = e(t('nav.home', 'Inicio'));
+  $homeLabel = e(t('nav.home', 'Home'));
   $faqLabel = e(t('nav.faq', 'FAQ'));
 
-  return '<p class="mb-1 footer-main-links"><a class="text-white" href="' . $home . '">' . $homeLabel . '</a> | <a class="text-white" href="' . $faq . '">' . $faqLabel . '</a></p>';
+  $links = '<a class="text-white" href="' . $home . '">' . $homeLabel . '</a>';
+
+  $servicesUrl = localized_hub_url($lang, 'services');
+  $zonesUrl    = localized_hub_url($lang, 'zones');
+  $guidesUrl   = localized_hub_url($lang, 'guides');
+
+  if ($servicesUrl !== null) {
+    $links .= ' | <a class="text-white" href="' . e($servicesUrl) . '">' . e(t('nav.services', 'Services')) . '</a>';
+  }
+  if ($zonesUrl !== null) {
+    $links .= ' | <a class="text-white" href="' . e($zonesUrl) . '">' . e(t('nav.zones', 'Areas')) . '</a>';
+  }
+  if ($guidesUrl !== null) {
+    $links .= ' | <a class="text-white" href="' . e($guidesUrl) . '">' . e(t('nav.guides', 'Guides')) . '</a>';
+  }
+  $links .= ' | <a class="text-white" href="' . $faq . '">' . $faqLabel . '</a>';
+
+  return '<p class="mb-1 footer-main-links">' . $links . '</p>';
 }
 
 function patch_snapshot_home_context_links(string $html, string $path, string $lang): string {
@@ -371,6 +398,47 @@ function snapshot_jsonld(string $path, string $lang): string {
   $phone = (string) config('brand.phone', '+34 613 02 66 00');
   $langs = config('brand.langs', ['es']);
 
+  // Build BreadcrumbList based on path context
+  $breadcrumbItems = [
+    [
+      '@type' => 'ListItem',
+      'position' => 1,
+      'name' => 'Inicio',
+      'item' => $base . '/' . $lang . '/',
+    ],
+  ];
+
+  if (preg_match('~^/es/aire-acondicionado-([a-z0-9-]+)/$~', $path, $m)) {
+    $citySlug = $m[1];
+    // Derive a readable city name from slug
+    $cityName = ucwords(str_replace('-', ' ', $citySlug));
+    $breadcrumbItems[] = [
+      '@type' => 'ListItem',
+      'position' => 2,
+      'name' => 'Aire acondicionado en ' . $cityName,
+      'item' => $url,
+    ];
+  } else {
+    $localityPatterns = [
+      'en' => ['~^/en/air-conditioning-([a-z0-9-]+)/$~', 'Air conditioning in %s'],
+      'de' => ['~^/de/klimaanlage-([a-z0-9-]+)/$~', 'Klimaanlage in %s'],
+      'nl' => ['~^/nl/airco-([a-z0-9-]+)/$~', 'Airco in %s'],
+      'ru' => ['~^/ru/konditsioner-([a-z0-9-]+)/$~', 'Кондиционер в %s'],
+      'no' => ['~^/no/aircondition-([a-z0-9-]+)/$~', 'Aircondition i %s'],
+    ];
+    $locPattern = $localityPatterns[$lang] ?? null;
+    if ($locPattern !== null && preg_match($locPattern[0], $path, $m)) {
+      $citySlug = $m[1];
+      $cityName = ucwords(str_replace('-', ' ', $citySlug));
+      $breadcrumbItems[] = [
+        '@type' => 'ListItem',
+        'position' => 2,
+        'name' => sprintf($locPattern[1], $cityName),
+        'item' => $url,
+      ];
+    }
+  }
+
   $items = [
     [
       '@context' => 'https://schema.org',
@@ -399,12 +467,7 @@ function snapshot_jsonld(string $path, string $lang): string {
     [
       '@context' => 'https://schema.org',
       '@type' => 'BreadcrumbList',
-      'itemListElement' => [[
-        '@type' => 'ListItem',
-        'position' => 1,
-        'name' => 'Home',
-        'item' => $url,
-      ]],
+      'itemListElement' => $breadcrumbItems,
     ],
   ];
 
@@ -552,7 +615,125 @@ function es_service_pages(): array {
   return $pages;
 }
 
-function render_service_detail_body(array $service): string {
+function render_service_detail_body(array $service, string $lang = 'es'): string {
+  $localityPrefix = match($lang) {
+    'en'    => '/en/air-conditioning-',
+    'de'    => '/de/klimaanlage-',
+    'nl'    => '/nl/airco-',
+    'ru'    => '/ru/konditsioner-',
+    'no'    => '/no/aircondition-',
+    default => '/es/aire-acondicionado-',
+  };
+  $priorityZones = [
+    ['Benidorm',         $localityPrefix . 'benidorm/'],
+    ['Altea',            $localityPrefix . 'altea/'],
+    ['Calpe',            $localityPrefix . 'calpe/'],
+    ['Finestrat',        $localityPrefix . 'finestrat/'],
+    ['La Nuc&iacute;a',  $localityPrefix . 'la-nucia/'],
+  ];
+  if ($lang === 'es') {
+    $otherServices = [
+      ['Instalaci&oacute;n de aire acondicionado', '/es/servicios/instalacion-aire-acondicionado/'],
+      ['Mantenimiento de climatizaci&oacute;n',    '/es/servicios/mantenimiento-climatizacion/'],
+      ['Reparaci&oacute;n de aire acondicionado',  '/es/servicios/reparacion-aire-acondicionado/'],
+      ['Aerotermia y bomba de calor',              '/es/servicios/aerotermia-bomba-calor/'],
+      ['Energ&iacute;a solar t&eacute;rmica',      '/es/servicios/energia-solar-termica/'],
+    ];
+  } else {
+    $otherServices = array_values(array_map(
+      fn(array $p): array => [$p['breadcrumb'], $p['path']],
+      lang_service_pages($lang)
+    ));
+  }
+  $servicesHubUrl = localized_hub_url($lang, 'services') ?? '/es/servicios/';
+  $zonesHubUrl    = localized_hub_url($lang, 'zones')    ?? '/es/zonas/';
+  static $uiLabels = [
+    'es' => [
+      'service_kicker'  => 'Servicio',
+      'cta_quote'       => 'Pedir presupuesto',
+      'cta_zones'       => 'Ver zonas de servicio',
+      'process_kicker'  => 'Proceso',
+      'zones_kicker'    => 'Zonas',
+      'zones_title'     => 'Zonas donde prestamos servicio',
+      'all_services'    => 'Todos los servicios',
+      'all_zones'       => 'Todas las zonas',
+      'other_kicker'    => 'Otros servicios',
+      'related_title'   => 'Servicios relacionados',
+      'faq_kicker'      => 'Dudas habituales',
+      'faq_title'       => 'Preguntas frecuentes',
+    ],
+    'en' => [
+      'service_kicker'  => 'Service',
+      'cta_quote'       => 'Get a quote',
+      'cta_zones'       => 'View service areas',
+      'process_kicker'  => 'Process',
+      'zones_kicker'    => 'Areas',
+      'zones_title'     => 'Areas where we work',
+      'all_services'    => 'All services',
+      'all_zones'       => 'All areas',
+      'other_kicker'    => 'Other services',
+      'related_title'   => 'Related services',
+      'faq_kicker'      => 'Common questions',
+      'faq_title'       => 'Frequently asked questions',
+    ],
+    'de' => [
+      'service_kicker'  => 'Leistung',
+      'cta_quote'       => 'Angebot anfordern',
+      'cta_zones'       => 'Servicegebiete ansehen',
+      'process_kicker'  => 'Ablauf',
+      'zones_kicker'    => 'Gebiete',
+      'zones_title'     => 'Gebiete, in denen wir t&auml;tig sind',
+      'all_services'    => 'Alle Leistungen',
+      'all_zones'       => 'Alle Gebiete',
+      'other_kicker'    => 'Weitere Leistungen',
+      'related_title'   => '&Auml;hnliche Leistungen',
+      'faq_kicker'      => 'H&auml;ufige Fragen',
+      'faq_title'       => 'H&auml;ufig gestellte Fragen',
+    ],
+    'nl' => [
+      'service_kicker'  => 'Dienst',
+      'cta_quote'       => 'Offerte aanvragen',
+      'cta_zones'       => 'Servicegebieden bekijken',
+      'process_kicker'  => 'Werkwijze',
+      'zones_kicker'    => 'Gebieden',
+      'zones_title'     => 'Gebieden waar wij actief zijn',
+      'all_services'    => 'Alle diensten',
+      'all_zones'       => 'Alle gebieden',
+      'other_kicker'    => 'Andere diensten',
+      'related_title'   => 'Gerelateerde diensten',
+      'faq_kicker'      => 'Veelgestelde vragen',
+      'faq_title'       => 'Veelgestelde vragen',
+    ],
+    'ru' => [
+      'service_kicker'  => '&#1059;&#1089;&#1083;&#1091;&#1075;&#1072;',
+      'cta_quote'       => '&#1055;&#1086;&#1083;&#1091;&#1095;&#1080;&#1090;&#1100; &#1087;&#1088;&#1077;&#1076;&#1083;&#1086;&#1078;&#1077;&#1085;&#1080;&#1077;',
+      'cta_zones'       => '&#1055;&#1086;&#1089;&#1084;&#1086;&#1090;&#1088;&#1077;&#1090;&#1100; &#1088;&#1072;&#1081;&#1086;&#1085;&#1099;',
+      'process_kicker'  => '&#1055;&#1088;&#1086;&#1094;&#1077;&#1089;&#1089;',
+      'zones_kicker'    => '&#1056;&#1072;&#1081;&#1086;&#1085;&#1099;',
+      'zones_title'     => '&#1056;&#1072;&#1081;&#1086;&#1085;&#1099; &#1085;&#1072;&#1096;&#1077;&#1081; &#1088;&#1072;&#1073;&#1086;&#1090;&#1099;',
+      'all_services'    => '&#1042;&#1089;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+      'all_zones'       => '&#1042;&#1089;&#1077; &#1088;&#1072;&#1081;&#1086;&#1085;&#1099;',
+      'other_kicker'    => '&#1044;&#1088;&#1091;&#1075;&#1080;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+      'related_title'   => '&#1055;&#1086;&#1093;&#1086;&#1078;&#1080;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+      'faq_kicker'      => '&#1063;&#1072;&#1089;&#1090;&#1099;&#1077; &#1074;&#1086;&#1087;&#1088;&#1086;&#1089;&#1099;',
+      'faq_title'       => '&#1063;&#1072;&#1089;&#1090;&#1086; &#1079;&#1072;&#1076;&#1072;&#1074;&#1072;&#1077;&#1084;&#1099;&#1077; &#1074;&#1086;&#1087;&#1088;&#1086;&#1089;&#1099;',
+    ],
+    'no' => [
+      'service_kicker'  => 'Tjeneste',
+      'cta_quote'       => 'F&aring; tilbud',
+      'cta_zones'       => 'Se serviceomr&aring;der',
+      'process_kicker'  => 'Prosess',
+      'zones_kicker'    => 'Omr&aring;der',
+      'zones_title'     => 'Omr&aring;der vi betjener',
+      'all_services'    => 'Alle tjenester',
+      'all_zones'       => 'Alle omr&aring;der',
+      'other_kicker'    => 'Andre tjenester',
+      'related_title'   => 'Relaterte tjenester',
+      'faq_kicker'      => 'Vanlige sp&oslash;rsm&aring;l',
+      'faq_title'       => 'Ofte stilte sp&oslash;rsm&aring;l',
+    ],
+  ];
+  $serviceUi = $uiLabels[$lang] ?? $uiLabels['es'];
   ob_start();
   include __DIR__ . '/../views/service_detail.php';
   return (string) ob_get_clean();
@@ -657,6 +838,29 @@ function es_page_jsonld(string $path, array $page): string {
       'areaServed' => ['Benidorm', 'Altea', 'Calpe', 'Finestrat', 'La Nucia', 'Marina Baixa', 'Alicante'],
       'serviceType' => html_entity_decode((string) $page['service_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
     ];
+  }
+
+  if (!empty($page['faq']) && is_array($page['faq'])) {
+    $faqItems = [];
+    foreach ($page['faq'] as $item) {
+      if (!empty($item['q']) && !empty($item['a'])) {
+        $faqItems[] = [
+          '@type' => 'Question',
+          'name' => html_entity_decode((string) $item['q'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+          'acceptedAnswer' => [
+            '@type' => 'Answer',
+            'text' => html_entity_decode((string) $item['a'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+          ],
+        ];
+      }
+    }
+    if (!empty($faqItems)) {
+      $schemas[] = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => $faqItems,
+      ];
+    }
   }
 
   return '<script type="application/ld+json">' .
@@ -869,11 +1073,21 @@ function locality_hero_map(): array {
 }
 
 function patch_locality_hero_image(string $html, string $path, string $lang): string {
-  if ($lang !== 'es') {
+  $langPatterns = [
+    'es' => '~^/es/aire-acondicionado-([a-z0-9-]+)/$~',
+    'en' => '~^/en/air-conditioning-([a-z0-9-]+)/$~',
+    'de' => '~^/de/klimaanlage-([a-z0-9-]+)/$~',
+    'nl' => '~^/nl/airco-([a-z0-9-]+)/$~',
+    'ru' => '~^/ru/konditsioner-([a-z0-9-]+)/$~',
+    'no' => '~^/no/aircondition-([a-z0-9-]+)/$~',
+  ];
+
+  $pattern = $langPatterns[$lang] ?? null;
+  if ($pattern === null) {
     return $html;
   }
 
-  if (!preg_match('~^/es/aire-acondicionado-([a-z0-9-]+)/$~', $path, $m)) {
+  if (!preg_match($pattern, $path, $m)) {
     return $html;
   }
 
@@ -974,6 +1188,156 @@ function patch_es_p1_location_page(string $html, string $path, string $lang): st
         ['Benidorm', '/es/aire-acondicionado-benidorm/'],
       ],
     ],
+    '/es/aire-acondicionado-albir/' => [
+      'city' => 'Albir',
+      'title' => 'Aire acondicionado en Albir: instalaci&oacute;n y mantenimiento | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n y mantenimiento de aire acondicionado en Albir para apartamentos, casas y locales en la Costa Blanca.',
+      'nearby' => [
+        ['Altea', '/es/aire-acondicionado-altea/'],
+        ['Alfaz del Pi', '/es/aire-acondicionado-alfaz-del-pi/'],
+        ['La Nuc&iacute;a', '/es/aire-acondicionado-la-nucia/'],
+      ],
+    ],
+    '/es/aire-acondicionado-alfaz-del-pi/' => [
+      'city' => 'Alfaz del Pi',
+      'title' => 'Aire acondicionado en Alfaz del Pi: instalaci&oacute;n y servicio | +QUECLIMA',
+      'description' => 'Servicio de aire acondicionado en Alfaz del Pi: instalaci&oacute;n, mantenimiento y reparaci&oacute;n para viviendas y apartamentos en la Marina Baixa.',
+      'nearby' => [
+        ['Albir', '/es/aire-acondicionado-albir/'],
+        ['La Nuc&iacute;a', '/es/aire-acondicionado-la-nucia/'],
+        ['Altea', '/es/aire-acondicionado-altea/'],
+      ],
+    ],
+    '/es/aire-acondicionado-beniarda/' => [
+      'city' => 'Beniard&agrave;',
+      'title' => 'Aire acondicionado en Beniard&agrave;: instalaci&oacute;n y mantenimiento | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n y mantenimiento de aire acondicionado en Beniard&agrave; para viviendas de interior y chalets en la Sierra de Aitana.',
+      'nearby' => [
+        ['Guadalest', '/es/aire-acondicionado-guadalest/'],
+        ['Polop', '/es/aire-acondicionado-polop/'],
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+      ],
+    ],
+    '/es/aire-acondicionado-benifato/' => [
+      'city' => 'Benifato',
+      'title' => 'Aire acondicionado en Benifato: instalaci&oacute;n y servicio | +QUECLIMA',
+      'description' => 'Servicio de instalaci&oacute;n y mantenimiento de aire acondicionado en Benifato para viviendas en la comarca de la Marina Baixa.',
+      'nearby' => [
+        ['Guadalest', '/es/aire-acondicionado-guadalest/'],
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+        ['Relleu', '/es/aire-acondicionado-relleu/'],
+      ],
+    ],
+    '/es/aire-acondicionado-benimantell/' => [
+      'city' => 'Benimantell',
+      'title' => 'Aire acondicionado en Benimantell: instalaci&oacute;n y mantenimiento | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n y mantenimiento de aire acondicionado en Benimantell para viviendas rurales y chalets en la zona de Guadalest.',
+      'nearby' => [
+        ['Guadalest', '/es/aire-acondicionado-guadalest/'],
+        ['Benifato', '/es/aire-acondicionado-benifato/'],
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+      ],
+    ],
+    '/es/aire-acondicionado-bolulla/' => [
+      'city' => 'Bolulla',
+      'title' => 'Aire acondicionado en Bolulla: instalaci&oacute;n y servicio | +QUECLIMA',
+      'description' => 'Servicio de aire acondicionado en Bolulla para viviendas y casas de campo en la comarca de la Marina Baixa.',
+      'nearby' => [
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+        ['T&agrave;rbena', '/es/aire-acondicionado-tarbena/'],
+        ['Polop', '/es/aire-acondicionado-polop/'],
+      ],
+    ],
+    '/es/aire-acondicionado-callosa-den-sarria/' => [
+      'city' => 'Callosa d&rsquo;en Sarri&agrave;',
+      'title' => 'Aire acondicionado en Callosa d&rsquo;en Sarri&agrave;: instalaci&oacute;n | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n, mantenimiento y reparaci&oacute;n de aire acondicionado en Callosa d&rsquo;en Sarri&agrave; para viviendas y negocios en la Marina Baixa.',
+      'nearby' => [
+        ['Polop', '/es/aire-acondicionado-polop/'],
+        ['La Nuc&iacute;a', '/es/aire-acondicionado-la-nucia/'],
+        ['Guadalest', '/es/aire-acondicionado-guadalest/'],
+      ],
+    ],
+    '/es/aire-acondicionado-confrides/' => [
+      'city' => 'Confrides',
+      'title' => 'Aire acondicionado en Confrides: instalaci&oacute;n y servicio | +QUECLIMA',
+      'description' => 'Servicio de instalaci&oacute;n y mantenimiento de aire acondicionado en Confrides para viviendas en la comarca de El Comtat y Sierra de Aitana.',
+      'nearby' => [
+        ['Guadalest', '/es/aire-acondicionado-guadalest/'],
+        ['Beniard&agrave;', '/es/aire-acondicionado-beniarda/'],
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+      ],
+    ],
+    '/es/aire-acondicionado-guadalest/' => [
+      'city' => 'Guadalest',
+      'title' => 'Aire acondicionado en Guadalest: instalaci&oacute;n y mantenimiento | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n y mantenimiento de aire acondicionado en Guadalest y el Valle de Guadalest para viviendas de interior y uso residencial.',
+      'nearby' => [
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+        ['Benimantell', '/es/aire-acondicionado-benimantell/'],
+        ['Polop', '/es/aire-acondicionado-polop/'],
+      ],
+    ],
+    '/es/aire-acondicionado-orxeta/' => [
+      'city' => 'Orxeta',
+      'title' => 'Aire acondicionado en Orxeta: instalaci&oacute;n y servicio | +QUECLIMA',
+      'description' => 'Servicio de instalaci&oacute;n y mantenimiento de aire acondicionado en Orxeta para viviendas residenciales en la Marina Baixa.',
+      'nearby' => [
+        ['Relleu', '/es/aire-acondicionado-relleu/'],
+        ['Villajoyosa', '/es/aire-acondicionado-villajoyosa/'],
+        ['Finestrat', '/es/aire-acondicionado-finestrat/'],
+      ],
+    ],
+    '/es/aire-acondicionado-polop/' => [
+      'city' => 'Polop',
+      'title' => 'Aire acondicionado en Polop: instalaci&oacute;n y mantenimiento | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n y mantenimiento de aire acondicionado en Polop de la Marina para viviendas, chalets y locales en la Marina Baixa.',
+      'nearby' => [
+        ['La Nuc&iacute;a', '/es/aire-acondicionado-la-nucia/'],
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+        ['Finestrat', '/es/aire-acondicionado-finestrat/'],
+      ],
+    ],
+    '/es/aire-acondicionado-relleu/' => [
+      'city' => 'Relleu',
+      'title' => 'Aire acondicionado en Relleu: instalaci&oacute;n y servicio | +QUECLIMA',
+      'description' => 'Servicio de instalaci&oacute;n y mantenimiento de aire acondicionado en Relleu para viviendas y casas de campo en la Marina Baixa.',
+      'nearby' => [
+        ['Orxeta', '/es/aire-acondicionado-orxeta/'],
+        ['Sella', '/es/aire-acondicionado-sella/'],
+        ['Villajoyosa', '/es/aire-acondicionado-villajoyosa/'],
+      ],
+    ],
+    '/es/aire-acondicionado-sella/' => [
+      'city' => 'Sella',
+      'title' => 'Aire acondicionado en Sella: instalaci&oacute;n y mantenimiento | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n y mantenimiento de aire acondicionado en Sella para viviendas rurales y residenciales en la comarca de la Marina Baixa.',
+      'nearby' => [
+        ['Relleu', '/es/aire-acondicionado-relleu/'],
+        ['Orxeta', '/es/aire-acondicionado-orxeta/'],
+        ['Guadalest', '/es/aire-acondicionado-guadalest/'],
+      ],
+    ],
+    '/es/aire-acondicionado-tarbena/' => [
+      'city' => 'T&agrave;rbena',
+      'title' => 'Aire acondicionado en T&agrave;rbena: instalaci&oacute;n y servicio | +QUECLIMA',
+      'description' => 'Servicio de instalaci&oacute;n y mantenimiento de aire acondicionado en T&agrave;rbena para viviendas en la comarca de la Marina Alta y Marina Baixa.',
+      'nearby' => [
+        ['Bolulla', '/es/aire-acondicionado-bolulla/'],
+        ['Callosa d&rsquo;en Sarri&agrave;', '/es/aire-acondicionado-callosa-den-sarria/'],
+        ['Guadalest', '/es/aire-acondicionado-guadalest/'],
+      ],
+    ],
+    '/es/aire-acondicionado-villajoyosa/' => [
+      'city' => 'Villajoyosa',
+      'title' => 'Aire acondicionado en Villajoyosa: instalaci&oacute;n y mantenimiento | +QUECLIMA',
+      'description' => 'Instalaci&oacute;n, mantenimiento y reparaci&oacute;n de aire acondicionado en Villajoyosa para viviendas, apartamentos y negocios en la Costa Blanca.',
+      'nearby' => [
+        ['Finestrat', '/es/aire-acondicionado-finestrat/'],
+        ['Benidorm', '/es/aire-acondicionado-benidorm/'],
+        ['Orxeta', '/es/aire-acondicionado-orxeta/'],
+      ],
+    ],
   ];
 
   if (!isset($pages[$path])) {
@@ -1039,4 +1403,415 @@ HTML;
   }
 
   return str_replace('</main>', $block . "\n</main>", $html);
+}
+
+
+// ──────────────────────────────────────────────────
+// MULTILINGUAL HUB + SERVICE PAGE RENDERING
+// ──────────────────────────────────────────────────
+
+function render_lang_hub_page(string $path, string $lang): ?string {
+  $servicePage = lang_service_page_for_path($path, $lang);
+  if ($servicePage !== null) {
+    return render_lang_legacy_shell($servicePage, $path, render_service_detail_body($servicePage, $lang), $lang);
+  }
+
+  $page = lang_hub_page_for_path($path, $lang);
+  if ($page === null) {
+    return null;
+  }
+
+  $body = lang_hub_body($page, $lang);
+  return render_lang_legacy_shell($page, $path, $body, $lang);
+}
+
+function lang_hub_page_for_path(string $path, string $lang): ?array {
+  static $cache = [];
+  if (!isset($cache[$lang])) {
+    $file = __DIR__ . '/content/hubs/' . $lang . '.php';
+    $loaded = is_file($file) ? require $file : [];
+    $cache[$lang] = is_array($loaded) ? $loaded : [];
+  }
+  return $cache[$lang][$path] ?? null;
+}
+
+function lang_service_page_for_path(string $path, string $lang): ?array {
+  $pages = lang_service_pages($lang);
+  return $pages[$path] ?? null;
+}
+
+function lang_service_pages(string $lang): array {
+  static $cache = [];
+  if (isset($cache[$lang])) {
+    return $cache[$lang];
+  }
+  $file = __DIR__ . '/content/services/' . $lang . '.php';
+  $loaded = is_file($file) ? require $file : [];
+  $cache[$lang] = is_array($loaded) ? $loaded : [];
+  return $cache[$lang];
+}
+
+function render_lang_legacy_shell(array $page, string $path, string $body, string $lang): string {
+  $homeSnapshot = snapshot_file_for_path('/' . $lang . '/');
+  if ($homeSnapshot === null) {
+    return render_lang_minimal_shell($page, $path, $body, $lang);
+  }
+
+  $base = file_get_contents($homeSnapshot);
+  if ($base === false) {
+    return render_lang_minimal_shell($page, $path, $body, $lang);
+  }
+
+  $mainOpen = '<main id="main-content">';
+  $mainStart = strpos($base, $mainOpen);
+  if ($mainStart === false) {
+    return render_lang_minimal_shell($page, $path, $body, $lang);
+  }
+
+  $mainEnd = strpos($base, '</main>', $mainStart);
+  if ($mainEnd === false) {
+    return render_lang_minimal_shell($page, $path, $body, $lang);
+  }
+
+  $headAndHeader = substr($base, 0, $mainStart + strlen($mainOpen));
+  $interactiveTail = legacy_es_interactive_main_tail($base, $mainStart + strlen($mainOpen), $mainEnd);
+  $tail = substr($base, $mainEnd);
+  $headAndHeader = patch_lang_hub_head($headAndHeader, $page, $path, $lang);
+  $finalCta = final_budget_cta_html($lang);
+
+  return $headAndHeader . "\n" . $body . "\n" . $finalCta . "\n" . $interactiveTail . "\n" . $tail;
+}
+
+function render_lang_minimal_shell(array $page, string $path, string $body, string $lang): string {
+  $canonical = 'https://masqueclima.es' . $path;
+  return '<!DOCTYPE html><html lang="' . e($lang) . '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+    . '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">'
+    . '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">'
+    . '<link rel="stylesheet" href="/assets/css/styles.css">' . lang_page_jsonld($path, $lang, $page) . '</head><body><main id="main-content">'
+    . $body . final_budget_cta_html($lang) . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
+}
+
+function patch_lang_hub_head(string $html, array $page, string $path, string $lang): string {
+  $canonical = 'https://masqueclima.es' . $path;
+
+  $html = preg_replace('/<html\b[^>]*>/i', '<html lang="' . e($lang) . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<title>.*?<\/title>/is', '<title>' . $page['title'] . '</title>', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="description" content="[^"]*">/i', '<meta name="description" content="' . $page['description'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<link rel="canonical" href="[^"]*">/i', '<link rel="canonical" href="' . $canonical . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<!-- Hreflang -->\s*(?:<link rel="alternate"[^>]+>\s*)+/i', '', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:title" content="[^"]*">/i', '<meta property="og:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:description" content="[^"]*">/i', '<meta property="og:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta property="og:url" content="[^"]*">/i', '<meta property="og:url" content="' . $canonical . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
+  $html = patch_es_hub_hero_preload($html, $page);
+  $html = str_replace('</head>', lang_page_jsonld($path, $lang, $page) . "\n</head>", $html);
+
+  return $html;
+}
+
+function lang_page_jsonld(string $path, string $lang, array $page): string {
+  $base = 'https://masqueclima.es';
+  $breadcrumbName = (string) ($page['breadcrumb'] ?? 'Page');
+  $homeLabel = match ($lang) {
+    'en'    => 'Home',
+    'de'    => 'Startseite',
+    'nl'    => 'Home',
+    'ru'    => 'Главная',
+    'no'    => 'Hjem',
+    default => 'Inicio',
+  };
+  $servicesHubUrl = localized_hub_url($lang, 'services');
+  $servicesLabel = match ($lang) {
+    'en'    => 'Services',
+    'de'    => 'Dienstleistungen',
+    'nl'    => 'Diensten',
+    'ru'    => 'Услуги',
+    'no'    => 'Tjenester',
+    default => 'Servicios',
+  };
+
+  $itemList = [[
+    '@type' => 'ListItem',
+    'position' => 1,
+    'name' => $homeLabel,
+    'item' => $base . '/' . $lang . '/',
+  ]];
+
+  if ($servicesHubUrl !== null && str_starts_with($path, $servicesHubUrl) && $path !== $servicesHubUrl) {
+    $itemList[] = [
+      '@type' => 'ListItem',
+      'position' => 2,
+      'name' => $servicesLabel,
+      'item' => $base . $servicesHubUrl,
+    ];
+  }
+
+  $itemList[] = [
+    '@type' => 'ListItem',
+    'position' => count($itemList) + 1,
+    'name' => html_entity_decode($breadcrumbName, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+    'item' => $base . $path,
+  ];
+
+  $schemas = [[
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => $itemList,
+  ]];
+
+  if (!empty($page['service_type'])) {
+    $schemas[] = [
+      '@context' => 'https://schema.org',
+      '@type' => 'Service',
+      'name' => html_entity_decode((string) $page['service_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'description' => html_entity_decode((string) $page['description'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'url' => $base . $path,
+      'provider' => [
+        '@type' => 'HVACBusiness',
+        'name' => '+QUECLIMA',
+        'telephone' => '+34 613 02 66 00',
+        'url' => $base . '/es/',
+      ],
+      'areaServed' => ['Benidorm', 'Altea', 'Calpe', 'Finestrat', 'La Nucia', 'Marina Baixa', 'Alicante'],
+      'serviceType' => html_entity_decode((string) $page['service_type'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+    ];
+  }
+
+  if (!empty($page['faq']) && is_array($page['faq'])) {
+    $faqItems = [];
+    foreach ($page['faq'] as $item) {
+      if (!empty($item['q']) && !empty($item['a'])) {
+        $faqItems[] = [
+          '@type' => 'Question',
+          'name' => html_entity_decode((string) $item['q'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+          'acceptedAnswer' => [
+            '@type' => 'Answer',
+            'text' => html_entity_decode((string) $item['a'], ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+          ],
+        ];
+      }
+    }
+    if (!empty($faqItems)) {
+      $schemas[] = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => $faqItems,
+      ];
+    }
+  }
+
+  return '<script type="application/ld+json">'
+    . json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+    . '</script>';
+}
+
+function lang_hub_body(array $page, string $lang): string {
+  return match ($page['hub_type'] ?? '') {
+    'services' => lang_hub_services_body($page, $lang),
+    'areas'    => lang_hub_areas_body($page, $lang),
+    'guides'   => lang_hub_guides_body($page, $lang),
+    default    => '',
+  };
+}
+
+function lang_hub_services_body(array $page, string $lang): string {
+  $h1 = $page['h1'] ?? '';
+  $introText = $page['hub_intro'] ?? '';
+  $kicker = $page['hub_kicker'] ?? '';
+  $h2 = $page['hub_h2'] ?? '';
+  $p = $page['hub_p'] ?? '';
+  $zonesKicker = $page['hub_zones_kicker'] ?? '';
+  $zonesH2 = $page['hub_zones_h2'] ?? '';
+  $zonesP = $page['hub_zones_p'] ?? '';
+  $zonesAll = $page['hub_zones_all'] ?? '';
+  $styles = hub_styles();
+  $intro = hub_intro($h1, $introText, hub_visual_options($page));
+  $serviceCards = lang_service_cards_html($lang);
+  $miniMap = render_partial('zone_visual', ['variant' => 'mini']);
+  $localityPills = lang_locality_pills_html($lang);
+  $zonesHubUrl = e(localized_hub_url($lang, 'zones') ?? '#');
+
+  return <<<HTML
+{$styles}
+{$intro}
+<section class="hub-section" aria-labelledby="lang-services-main">
+  <div class="container">
+    <p class="hub-kicker">{$kicker}</p>
+    <h2 class="section-title" id="lang-services-main">{$h2}</h2>
+    <p class="hub-muted">{$p}</p>
+    {$serviceCards}
+  </div>
+</section>
+<section class="hub-section alt" aria-labelledby="lang-services-zones">
+  <div class="container">
+    <p class="hub-kicker">{$zonesKicker}</p>
+    <h2 class="section-title" id="lang-services-zones">{$zonesH2}</h2>
+    <div class="service-zones-panel">
+      <div class="service-zones-copy">
+        <p class="hub-muted">{$zonesP}</p>
+        <div class="hub-links">
+          {$localityPills}
+          <a class="hub-pill" href="{$zonesHubUrl}">{$zonesAll}</a>
+        </div>
+      </div>
+      {$miniMap}
+    </div>
+  </div>
+</section>
+HTML;
+}
+
+function lang_hub_areas_body(array $page, string $lang): string {
+  $h1 = $page['h1'] ?? '';
+  $introText = $page['hub_intro'] ?? '';
+  $kicker = $page['hub_kicker'] ?? '';
+  $h2 = $page['hub_h2'] ?? '';
+  $p = $page['hub_p'] ?? '';
+  $contextKicker = $page['hub_context_kicker'] ?? '';
+  $contextH2 = $page['hub_context_h2'] ?? '';
+  $contextP = $page['hub_context_p'] ?? '';
+  $ctaLabel = $page['hub_cta'] ?? 'Request a quote';
+  $selectP = $page['hub_select_p'] ?? '';
+  $styles = hub_styles();
+  $intro = hub_intro($h1, $introText, hub_visual_options($page));
+  $zoneMap = render_partial('zone_visual');
+  $allPills = lang_all_locality_pills_html($lang);
+
+  return <<<HTML
+{$styles}
+{$intro}
+<section class="hub-section" aria-labelledby="lang-areas-list">
+  <div class="container">
+    <p class="hub-kicker">{$kicker}</p>
+    <h2 class="section-title" id="lang-areas-list">{$h2}</h2>
+    <p class="hub-muted">{$p}</p>
+    <div class="zone-layout">
+      {$zoneMap}
+      <div class="zone-list-card">
+        <p class="hub-muted">{$selectP}</p>
+        <div class="hub-links zone-chip-grid">
+          {$allPills}
+        </div>
+        <div class="hub-cta">
+          <a class="btn btn-primary js-track" data-ev="cta_quote_areas" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote">{$ctaLabel}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="hub-section alt" aria-labelledby="lang-areas-context">
+  <div class="container">
+    <p class="hub-kicker">{$contextKicker}</p>
+    <h2 class="section-title" id="lang-areas-context">{$contextH2}</h2>
+    <p class="hub-muted">{$contextP}</p>
+  </div>
+</section>
+HTML;
+}
+
+function lang_hub_guides_body(array $page, string $lang): string {
+  $h1 = $page['h1'] ?? '';
+  $introText = $page['hub_intro'] ?? '';
+  $kicker = $page['hub_kicker'] ?? '';
+  $h2 = $page['hub_h2'] ?? '';
+  $p = $page['hub_p'] ?? '';
+  $styles = hub_styles();
+  $intro = hub_intro($h1, $introText, hub_visual_options($page));
+
+  return <<<HTML
+{$styles}
+{$intro}
+<section class="hub-section" aria-labelledby="lang-guides-list">
+  <div class="container">
+    <p class="hub-kicker">{$kicker}</p>
+    <h2 class="section-title" id="lang-guides-list">{$h2}</h2>
+    <p class="hub-muted">{$p}</p>
+  </div>
+</section>
+HTML;
+}
+
+function lang_service_cards_html(string $lang): string {
+  $services = lang_service_pages($lang);
+  if (empty($services)) {
+    return '';
+  }
+  $html = '<div class="service-cards-grid">' . "\n";
+  foreach ($services as $path => $s) {
+    $title = e($s['h1'] ?? $s['title'] ?? '');
+    $desc  = e($s['subtitle'] ?? $s['description'] ?? '');
+    $url   = e($path);
+    $html .= '  <a class="service-card" href="' . $url . '">'
+      . '<strong>' . $title . '</strong>'
+      . '<span>' . $desc . '</span>'
+      . '</a>' . "\n";
+  }
+  $html .= '</div>';
+  return $html;
+}
+
+function lang_locality_pills_html(string $lang): string {
+  $urlPrefix = match ($lang) {
+    'en'    => '/en/air-conditioning-',
+    'de'    => '/de/klimaanlage-',
+    'nl'    => '/nl/airco-',
+    'ru'    => '/ru/konditsioner-',
+    'no'    => '/no/aircondition-',
+    default => '/es/aire-acondicionado-',
+  };
+  $featured = ['benidorm', 'altea', 'calpe', 'finestrat', 'la-nucia'];
+  $labels = [
+    'benidorm'  => 'Benidorm',
+    'altea'     => 'Altea',
+    'calpe'     => 'Calpe',
+    'finestrat' => 'Finestrat',
+    'la-nucia'  => 'La Nuc&iacute;a',
+  ];
+  $html = '';
+  foreach ($featured as $slug) {
+    $url   = e($urlPrefix . $slug . '/');
+    $label = $labels[$slug];
+    $html .= '<a class="hub-pill" href="' . $url . '">' . $label . '</a>' . "\n";
+  }
+  return $html;
+}
+
+function lang_all_locality_pills_html(string $lang): string {
+  $urlPrefix = match ($lang) {
+    'en'    => '/en/air-conditioning-',
+    'de'    => '/de/klimaanlage-',
+    'nl'    => '/nl/airco-',
+    'ru'    => '/ru/konditsioner-',
+    'no'    => '/no/aircondition-',
+    default => '/es/aire-acondicionado-',
+  };
+  $zones = [
+    ['Albir',                          'albir'],
+    ['Alfaz del Pi',                   'alfaz-del-pi'],
+    ['Altea',                          'altea'],
+    ['Beniard&agrave;',                'beniarda'],
+    ['Benidorm',                       'benidorm'],
+    ['Benifato',                       'benifato'],
+    ['Benimantell',                    'benimantell'],
+    ['Bolulla',                        'bolulla'],
+    ['Callosa d&rsquo;en Sarri&agrave;', 'callosa-den-sarria'],
+    ['Calpe',                          'calpe'],
+    ['Confrides',                      'confrides'],
+    ['Finestrat',                      'finestrat'],
+    ['Guadalest',                      'guadalest'],
+    ['La Nuc&iacute;a',                'la-nucia'],
+    ['Orxeta',                         'orxeta'],
+    ['Polop',                          'polop'],
+    ['Relleu',                         'relleu'],
+    ['Sella',                          'sella'],
+    ['T&agrave;rbena',                 'tarbena'],
+    ['Villajoyosa',                    'villajoyosa'],
+  ];
+  $html = '';
+  foreach ($zones as [$name, $slug]) {
+    $url   = e($urlPrefix . $slug . '/');
+    $html .= '<a class="hub-pill" href="' . $url . '">' . $name . '</a>' . "\n";
+  }
+  return $html;
 }

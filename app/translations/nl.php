@@ -7,6 +7,7 @@ return [
 
   'nav' => [
     'home'=>'Home','method'=>'Methode','about'=>'Over ons','coverage'=>'Gebied','faq'=>'FAQ','contact'=>'Contact',
+    'services'=>'Diensten','zones'=>'Gebieden','guides'=>'Gidsen',
   ],
 
   'hero' => [

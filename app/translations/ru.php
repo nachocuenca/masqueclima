@@ -7,6 +7,7 @@ return [
 
   'nav' => [
     'home'=>'Главная','method'=>'Метод','about'=>'О нас','coverage'=>'Зона','faq'=>'FAQ','contact'=>'Контакты',
+    'services'=>'Услуги','zones'=>'Районы','guides'=>'Руководства',
   ],
 
   'hero' => [

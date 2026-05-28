@@ -104,8 +104,33 @@ if (!function_exists('localized_hub_url')) {
         $paths = [
             'es' => [
                 'services' => '/es/servicios/',
-                'zones' => '/es/zonas/',
-                'guides' => '/es/blog/',
+                'zones'    => '/es/zonas/',
+                'guides'   => '/es/blog/',
+            ],
+            'en' => [
+                'services' => '/en/services/',
+                'zones'    => '/en/areas/',
+                'guides'   => '/en/guides/',
+            ],
+            'de' => [
+                'services' => '/de/dienstleistungen/',
+                'zones'    => '/de/gebiete/',
+                'guides'   => '/de/ratgeber/',
+            ],
+            'nl' => [
+                'services' => '/nl/diensten/',
+                'zones'    => '/nl/gebieden/',
+                'guides'   => '/nl/gidsen/',
+            ],
+            'ru' => [
+                'services' => '/ru/uslugi/',
+                'zones'    => '/ru/raiony/',
+                'guides'   => '/ru/gidy/',
+            ],
+            'no' => [
+                'services' => '/no/tjenester/',
+                'zones'    => '/no/omrader/',
+                'guides'   => '/no/guider/',
             ],
         ];
 
