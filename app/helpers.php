@@ -55,7 +55,8 @@ if (!function_exists('seo_lang_url')) {
 
 if (!function_exists('lang_switch_url')) {
     function lang_switch_url(string $lang): string {
-        return lang_url($lang);
+        $currentPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+        return localized_equivalent_url(is_string($currentPath) ? $currentPath : '/', $lang);
     }
 }
 
@@ -135,6 +136,164 @@ if (!function_exists('localized_hub_url')) {
         ];
 
         return $paths[$lang][$hub] ?? null;
+    }
+}
+
+if (!function_exists('localized_service_equivalent_paths')) {
+    function localized_service_equivalent_paths(): array {
+        return [
+            'installation' => [
+                'es' => '/es/servicios/instalacion-aire-acondicionado/',
+                'en' => '/en/services/air-conditioning-installation/',
+                'de' => '/de/dienstleistungen/klimaanlage-installation/',
+                'nl' => '/nl/diensten/airco-installatie/',
+                'ru' => '/ru/uslugi/ustanovka-konditsionera/',
+                'no' => '/no/tjenester/installasjon-av-aircondition/',
+            ],
+            'maintenance' => [
+                'es' => '/es/servicios/mantenimiento-climatizacion/',
+                'en' => '/en/services/climate-control-maintenance/',
+                'de' => '/de/dienstleistungen/klimaanlagen-wartung/',
+                'nl' => '/nl/diensten/klimaatbeheersing-onderhoud/',
+                'ru' => '/ru/uslugi/obsluzhivanie-konditsionera/',
+                'no' => '/no/tjenester/vedlikehold-av-klimaanlegg/',
+            ],
+            'repair' => [
+                'es' => '/es/servicios/reparacion-aire-acondicionado/',
+                'en' => '/en/services/air-conditioning-repair/',
+                'de' => '/de/dienstleistungen/klimaanlage-reparatur/',
+                'nl' => '/nl/diensten/airco-reparatie/',
+                'ru' => '/ru/uslugi/remont-konditsionera/',
+                'no' => '/no/tjenester/reparasjon-av-aircondition/',
+            ],
+            'heat_pump' => [
+                'es' => '/es/servicios/aerotermia-bomba-calor/',
+                'en' => '/en/services/heat-pump-aerothermal/',
+                'de' => '/de/dienstleistungen/waermepumpe-aerothermie/',
+                'nl' => '/nl/diensten/warmtepomp-aerothermie/',
+                'ru' => '/ru/uslugi/teplovoj-nasos/',
+                'no' => '/no/tjenester/varmepumpe-aerotermi/',
+            ],
+            'solar_thermal' => [
+                'es' => '/es/servicios/energia-solar-termica/',
+                'en' => '/en/services/solar-thermal-energy/',
+                'de' => '/de/dienstleistungen/solarthermie/',
+                'nl' => '/nl/diensten/zonneboiler-zonneenergie/',
+                'ru' => '/ru/uslugi/solnechnye-kollektory/',
+                'no' => '/no/tjenester/solvarme/',
+            ],
+        ];
+    }
+}
+
+if (!function_exists('localized_normalize_path')) {
+    function localized_normalize_path(string $path): string {
+        $path = parse_url($path, PHP_URL_PATH) ?: '/';
+        $path = '/' . ltrim($path, '/');
+        if ($path !== '/' && !str_contains(basename($path), '.') && !str_ends_with($path, '/')) {
+            $path .= '/';
+        }
+        return $path;
+    }
+}
+
+if (!function_exists('localized_locality_prefixes')) {
+    function localized_locality_prefixes(): array {
+        return [
+            'es' => '/es/aire-acondicionado-',
+            'en' => '/en/air-conditioning-',
+            'de' => '/de/klimaanlage-',
+            'nl' => '/nl/airco-',
+            'ru' => '/ru/konditsioner-',
+            'no' => '/no/aircondition-',
+        ];
+    }
+}
+
+if (!function_exists('localized_snapshot_name_for_path')) {
+    function localized_snapshot_name_for_path(string $path): string {
+        $trimmed = trim($path, '/');
+        if ($trimmed === '') {
+            return 'root.html';
+        }
+        return preg_replace('/[^A-Za-z0-9._-]+/', '__', $trimmed) . '.html';
+    }
+}
+
+if (!function_exists('localized_route_exists')) {
+    function localized_route_exists(string $path): bool {
+        $path = localized_normalize_path($path);
+        $langs = config('brand.langs', ['es']);
+        foreach ($langs as $lang) {
+            if ($path === lang_url($lang)) {
+                return true;
+            }
+            foreach (['services', 'zones', 'guides'] as $hub) {
+                if ($path === localized_hub_url($lang, $hub)) {
+                    return true;
+                }
+            }
+        }
+        foreach (localized_service_equivalent_paths() as $paths) {
+            if (in_array($path, $paths, true)) {
+                return true;
+            }
+        }
+
+        return is_file(__DIR__ . '/snapshots/' . localized_snapshot_name_for_path($path));
+    }
+}
+
+if (!function_exists('localized_equivalent_url')) {
+    function localized_equivalent_url(string $currentPath, string $targetLang): string {
+        $langs = config('brand.langs', ['es']);
+        if (!in_array($targetLang, $langs, true)) {
+            $targetLang = config('brand.default_lang', 'es');
+        }
+
+        $fallbackHome = lang_url($targetLang);
+        $path = localized_normalize_path($currentPath);
+
+        foreach ($langs as $lang) {
+            if ($path === lang_url($lang)) {
+                return $fallbackHome;
+            }
+        }
+
+        foreach (['services', 'zones', 'guides'] as $hub) {
+            foreach ($langs as $lang) {
+                if ($path === localized_hub_url($lang, $hub)) {
+                    return localized_hub_url($targetLang, $hub) ?? $fallbackHome;
+                }
+            }
+        }
+
+        foreach (localized_service_equivalent_paths() as $paths) {
+            if (in_array($path, $paths, true)) {
+                return $paths[$targetLang] ?? $fallbackHome;
+            }
+        }
+
+        foreach (localized_locality_prefixes() as $prefix) {
+            $pattern = '~^' . preg_quote($prefix, '~') . '([a-z0-9-]+)/$~';
+            if (!preg_match($pattern, $path, $matches)) {
+                continue;
+            }
+
+            $targetPrefix = localized_locality_prefixes()[$targetLang] ?? null;
+            if ($targetPrefix === null) {
+                return $fallbackHome;
+            }
+
+            $candidate = $targetPrefix . $matches[1] . '/';
+            if (localized_route_exists($candidate)) {
+                return $candidate;
+            }
+
+            return localized_hub_url($targetLang, 'zones') ?? $fallbackHome;
+        }
+
+        return $fallbackHome;
     }
 }
 

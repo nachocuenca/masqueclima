@@ -140,3 +140,11 @@ Hasta decidir su futuro:
 - No quitar `/no/`.
 - No anadir al sitemap sin decision.
 - Mantener fuera de header y footer principal hasta decision comercial.
+
+## Estado multiidioma post-correccion 2026-05-28
+
+- Homes EN/DE/NL/RU/NO enlazan en el cuerpo a sus hubs reales de servicios, zonas/areas y guias.
+- El selector de idioma conserva equivalencias de home, hubs, paginas de servicio y landings locales de aire acondicionado cuando existen.
+- Footer queda como navegacion limpia de 3 enlaces por idioma: servicios, zonas/areas y guias.
+- No se crean equivalencias de articulos de guia porque todavia no existen articulos publicados.
+- Si una landing local no existe en el idioma destino, la estrategia de fallback es el hub de zonas/areas de ese idioma.

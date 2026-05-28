@@ -6,11 +6,7 @@
     </p>
 
     <p class="mb-1"><?php echo e(t('footer.tagline')); ?></p>
-    <?php if (($GLOBALS['current_lang'] ?? 'es') === 'es'): ?>
-      <p class="mb-1"><a class="text-white" href="/es/servicios/">Servicios</a> | <a class="text-white" href="/es/zonas/">Zonas</a> | <a class="text-white" href="/es/blog/">Gu&iacute;as</a></p>
-    <?php else: ?>
-      <p class="mb-1"><a class="text-white" href="<?php echo e(lang_url($GLOBALS['current_lang'] ?? 'es')); ?>"><?php echo e(t('nav.home', 'Inicio')); ?></a> | <a class="text-white" href="<?php echo e(lang_url($GLOBALS['current_lang'] ?? 'es').'#faq'); ?>"><?php echo e(t('nav.faq', 'FAQ')); ?></a></p>
-    <?php endif; ?>
+    <?php echo function_exists('footer_main_links_html') ? footer_main_links_html($GLOBALS['current_lang'] ?? 'es') : ''; ?>
     <p class="mb-0"><?php echo e(t('footer.service')); ?></p>
   </div>
 </footer>

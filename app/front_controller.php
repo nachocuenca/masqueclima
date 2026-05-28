@@ -153,6 +153,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
 
   $html = patch_snapshot_primary_nav($html, $lang);
   $html = patch_snapshot_remove_city_navigation_extras($html);
+  $html = patch_snapshot_quote_modal($html, $lang);
   $html = patch_snapshot_contact_anchor($html);
   $html = patch_snapshot_footer_guides_link($html, $lang);
   $html = patch_snapshot_home_context_links($html, $path, $lang);
@@ -169,7 +170,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
 
   $parts = explode('</head>', $html, 2);
   if (count($parts) === 2) {
-    $parts[1] = patch_snapshot_body_links($parts[1], $lang);
+    $parts[1] = patch_snapshot_body_links($parts[1], $lang, $path);
     $html = $parts[0] . '</head>' . $parts[1];
   }
 
@@ -242,6 +243,176 @@ function patch_snapshot_remove_city_navigation_extras(string $html): string {
   ) ?? $html;
 }
 
+function quote_modal_labels(string $lang): array {
+  $labels = [
+    'es' => [
+      'close' => 'Cerrar',
+      'title' => 'Solicita tu presupuesto',
+      'intro' => 'Deja tus datos y te responderemos r&aacute;pido.',
+      'name' => 'Nombre *',
+      'phone' => 'Tel&eacute;fono *',
+      'email' => 'Email',
+      'service' => 'Tipo de servicio',
+      'select' => 'Selecciona un servicio',
+      'install' => 'Instalaci&oacute;n de aire acondicionado',
+      'maintenance' => 'Mantenimiento de climatizaci&oacute;n',
+      'heating' => 'Instalaci&oacute;n de calefacci&oacute;n',
+      'electrical' => 'Instalaciones el&eacute;ctricas',
+      'plumbing' => 'Servicios de fontaner&iacute;a',
+      'urgent' => 'Servicio urgente 24/7',
+      'message' => 'Descripci&oacute;n del trabajo',
+      'submit' => 'Enviar solicitud',
+      'cancel' => 'Cancelar',
+    ],
+    'en' => [
+      'close' => 'Close',
+      'title' => 'Get a free quote',
+      'intro' => 'Leave your details and we will get back to you quickly.',
+      'name' => 'Name *',
+      'phone' => 'Phone *',
+      'email' => 'Email',
+      'service' => 'Type of service',
+      'select' => 'Select a service',
+      'install' => 'Air conditioning installation',
+      'maintenance' => 'HVAC maintenance',
+      'heating' => 'Heating installation',
+      'electrical' => 'Electrical installations',
+      'plumbing' => 'Plumbing services',
+      'urgent' => 'Urgent service 24/7',
+      'message' => 'Job description',
+      'submit' => 'Send request',
+      'cancel' => 'Cancel',
+    ],
+    'de' => [
+      'close' => 'Schlie&szlig;en',
+      'title' => 'Unverbindliches Angebot anfordern',
+      'intro' => 'Hinterlassen Sie Ihre Daten, wir melden uns schnell.',
+      'name' => 'Name *',
+      'phone' => 'Telefon *',
+      'email' => 'E-Mail',
+      'service' => 'Leistungsart',
+      'select' => 'Dienst ausw&auml;hlen',
+      'install' => 'Klimaanlagen-Installation',
+      'maintenance' => 'Wartung von Klimasystemen',
+      'heating' => 'Heizungsinstallation',
+      'electrical' => 'Elektroinstallationen',
+      'plumbing' => 'Sanit&auml;rleistungen',
+      'urgent' => '24/7-Notdienst',
+      'message' => 'Auftragsbeschreibung',
+      'submit' => 'Anfrage senden',
+      'cancel' => 'Abbrechen',
+    ],
+    'nl' => [
+      'close' => 'Sluiten',
+      'title' => 'Vraag een vrijblijvende offerte aan',
+      'intro' => 'Laat je gegevens achter, we reageren snel.',
+      'name' => 'Naam *',
+      'phone' => 'Telefoon *',
+      'email' => 'E-mail',
+      'service' => 'Type dienst',
+      'select' => 'Kies een dienst',
+      'install' => 'Airco-installatie',
+      'maintenance' => 'Onderhoud HVAC',
+      'heating' => 'Verwarmingsinstallatie',
+      'electrical' => 'Elektrische installaties',
+      'plumbing' => 'Loodgieterswerk',
+      'urgent' => '24/7 spoedservice',
+      'message' => 'Werkbeschrijving',
+      'submit' => 'Versturen',
+      'cancel' => 'Annuleren',
+    ],
+    'ru' => [
+      'close' => '&#1047;&#1072;&#1082;&#1088;&#1099;&#1090;&#1100;',
+      'title' => '&#1047;&#1072;&#1087;&#1088;&#1086;&#1089;&#1080;&#1090;&#1100; &#1087;&#1088;&#1077;&#1076;&#1083;&#1086;&#1078;&#1077;&#1085;&#1080;&#1077;',
+      'intro' => '&#1054;&#1089;&#1090;&#1072;&#1074;&#1100;&#1090;&#1077; &#1082;&#1086;&#1085;&#1090;&#1072;&#1082;&#1090;&#1099;, &#1084;&#1099; &#1073;&#1099;&#1089;&#1090;&#1088;&#1086; &#1089;&#1074;&#1103;&#1078;&#1077;&#1084;&#1089;&#1103;.',
+      'name' => '&#1048;&#1084;&#1103; *',
+      'phone' => '&#1058;&#1077;&#1083;&#1077;&#1092;&#1086;&#1085; *',
+      'email' => 'Email',
+      'service' => '&#1058;&#1080;&#1087; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+      'select' => '&#1042;&#1099;&#1073;&#1077;&#1088;&#1080;&#1090;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1091;',
+      'install' => '&#1052;&#1086;&#1085;&#1090;&#1072;&#1078; &#1082;&#1086;&#1085;&#1076;&#1080;&#1094;&#1080;&#1086;&#1085;&#1077;&#1088;&#1086;&#1074;',
+      'maintenance' => '&#1054;&#1073;&#1089;&#1083;&#1091;&#1078;&#1080;&#1074;&#1072;&#1085;&#1080;&#1077; &#1082;&#1083;&#1080;&#1084;&#1072;&#1090;&#1080;&#1095;&#1077;&#1089;&#1082;&#1080;&#1093; &#1089;&#1080;&#1089;&#1090;&#1077;&#1084;',
+      'heating' => '&#1052;&#1086;&#1085;&#1090;&#1072;&#1078; &#1086;&#1090;&#1086;&#1087;&#1083;&#1077;&#1085;&#1080;&#1103;',
+      'electrical' => '&#1069;&#1083;&#1077;&#1082;&#1090;&#1088;&#1086;&#1084;&#1086;&#1085;&#1090;&#1072;&#1078;&#1085;&#1099;&#1077; &#1088;&#1072;&#1073;&#1086;&#1090;&#1099;',
+      'plumbing' => '&#1057;&#1072;&#1085;&#1090;&#1077;&#1093;&#1085;&#1080;&#1095;&#1077;&#1089;&#1082;&#1080;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+      'urgent' => '&#1057;&#1088;&#1086;&#1095;&#1085;&#1099;&#1081; &#1074;&#1099;&#1077;&#1079;&#1076; 24/7',
+      'message' => '&#1054;&#1087;&#1080;&#1089;&#1072;&#1085;&#1080;&#1077; &#1088;&#1072;&#1073;&#1086;&#1090;',
+      'submit' => '&#1054;&#1090;&#1087;&#1088;&#1072;&#1074;&#1080;&#1090;&#1100; &#1079;&#1072;&#1103;&#1074;&#1082;&#1091;',
+      'cancel' => '&#1054;&#1090;&#1084;&#1077;&#1085;&#1072;',
+    ],
+    'no' => [
+      'close' => 'Lukk',
+      'title' => 'Be om tilbud',
+      'intro' => 'Legg igjen kontaktinfo, s&aring; svarer vi raskt.',
+      'name' => 'Navn *',
+      'phone' => 'Telefon *',
+      'email' => 'E-post',
+      'service' => 'Tjenestetype',
+      'select' => 'Velg en tjeneste',
+      'install' => 'Installasjon av aircondition',
+      'maintenance' => 'Vedlikehold av klimasystemer',
+      'heating' => 'Installasjon av oppvarming',
+      'electrical' => 'Elektriske installasjoner',
+      'plumbing' => 'R&oslash;rleggertjenester',
+      'urgent' => 'Utrykning 24/7',
+      'message' => 'Beskrivelse av jobben',
+      'submit' => 'Send foresp&oslash;rsel',
+      'cancel' => 'Avbryt',
+    ],
+  ];
+
+  return $labels[$lang] ?? $labels['es'];
+}
+
+function patch_snapshot_quote_modal(string $html, string $lang): string {
+  $start = strpos($html, '<div class="modal fade quote-modal" id="quoteModal"');
+  if ($start === false) {
+    return $html;
+  }
+
+  $end = strpos($html, '<!-- =======================', $start + 1);
+  if ($end === false) {
+    return $html;
+  }
+
+  $labels = quote_modal_labels($lang);
+  $modal = substr($html, $start, $end - $start);
+  if (!str_contains($modal, 'for="q-name"')) {
+    return $html;
+  }
+
+  $modal = preg_replace('/(<button type="button" class="btn-close[^"]*"[^>]*aria-label=")[^"]*(")/i', '$1' . e(html_entity_decode($labels['close'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . '$2', $modal, 1) ?? $modal;
+  $modal = preg_replace('/(<h3 class="mb-2 fw-bold">)[\s\S]*?(<\/h3>)/', '$1' . $labels['title'] . '$2', $modal, 1) ?? $modal;
+  $modal = preg_replace('/(<p class="text-muted mb-4">)[\s\S]*?(<\/p>)/', '$1' . $labels['intro'] . '$2', $modal, 1) ?? $modal;
+
+  foreach ([
+    'q-name' => 'name',
+    'q-phone' => 'phone',
+    'q-email' => 'email',
+    'q-service' => 'service',
+    'q-msg' => 'message',
+  ] as $for => $key) {
+    $modal = preg_replace('/(<label for="' . preg_quote($for, '/') . '" class="form-label">)[\s\S]*?(<\/label>)/', '$1' . $labels[$key] . '$2', $modal, 1) ?? $modal;
+  }
+
+  foreach ([
+    '' => 'select',
+    'climatizacion' => 'install',
+    'mantenimiento' => 'maintenance',
+    'calefaccion' => 'heating',
+    'electricidad' => 'electrical',
+    'fontaneria' => 'plumbing',
+    'urgente' => 'urgent',
+  ] as $value => $key) {
+    $modal = preg_replace('/(<option value="' . preg_quote($value, '/') . '">)[\s\S]*?(<\/option>)/', '$1' . $labels[$key] . '$2', $modal, 1) ?? $modal;
+  }
+
+  $modal = preg_replace('/(<button type="submit" class="btn btn-primary btn-lg px-4">)[\s\S]*?(<\/button>)/', '$1' . "\n              " . $labels['submit'] . '            $2', $modal, 1) ?? $modal;
+  $modal = preg_replace('/(<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">)[\s\S]*?(<\/button>)/', '$1' . "\n              " . $labels['cancel'] . '            $2', $modal, 1) ?? $modal;
+
+  return substr($html, 0, $start) . $modal . substr($html, $end);
+}
+
 function patch_snapshot_contact_anchor(string $html): string {
   if (str_contains($html, 'id="contacto"') || !str_contains($html, 'id="presupuesto"')) {
     return $html;
@@ -271,41 +442,48 @@ function patch_snapshot_footer_guides_link(string $html, string $lang): string {
 }
 
 function footer_main_links_html(string $lang): string {
-  if ($lang === 'es') {
-    return '<p class="mb-1 footer-main-links"><a class="text-white" href="/es/servicios/">Servicios</a> | <a class="text-white" href="/es/zonas/">Zonas</a> | <a class="text-white" href="/es/blog/">Gu&iacute;as</a></p>';
-  }
-
-  $home = e(lang_url($lang));
-  $faq = e(lang_url($lang) . '#faq');
-  $homeLabel = e(t('nav.home', 'Home'));
-  $faqLabel = e(t('nav.faq', 'FAQ'));
-
-  $links = '<a class="text-white" href="' . $home . '">' . $homeLabel . '</a>';
-
   $servicesUrl = localized_hub_url($lang, 'services');
   $zonesUrl    = localized_hub_url($lang, 'zones');
   $guidesUrl   = localized_hub_url($lang, 'guides');
+  $labels = [
+    'services' => t('nav.services', $lang === 'es' ? 'Servicios' : 'Services'),
+    'zones'    => t('nav.zones', $lang === 'es' ? 'Zonas' : 'Areas'),
+    'guides'   => t('nav.guides', $lang === 'es' ? 'Gu&iacute;as' : 'Guides'),
+  ];
+  $items = [];
 
   if ($servicesUrl !== null) {
-    $links .= ' | <a class="text-white" href="' . e($servicesUrl) . '">' . e(t('nav.services', 'Services')) . '</a>';
+    $items[] = '<a class="text-white" href="' . e($servicesUrl) . '">' . e(html_entity_decode((string) $labels['services'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . '</a>';
   }
   if ($zonesUrl !== null) {
-    $links .= ' | <a class="text-white" href="' . e($zonesUrl) . '">' . e(t('nav.zones', 'Areas')) . '</a>';
+    $items[] = '<a class="text-white" href="' . e($zonesUrl) . '">' . e(html_entity_decode((string) $labels['zones'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . '</a>';
   }
   if ($guidesUrl !== null) {
-    $links .= ' | <a class="text-white" href="' . e($guidesUrl) . '">' . e(t('nav.guides', 'Guides')) . '</a>';
+    $items[] = '<a class="text-white" href="' . e($guidesUrl) . '">' . e(html_entity_decode((string) $labels['guides'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . '</a>';
   }
-  $links .= ' | <a class="text-white" href="' . $faq . '">' . $faqLabel . '</a>';
 
-  return '<p class="mb-1 footer-main-links">' . $links . '</p>';
+  return '<p class="mb-1 footer-main-links">' . implode(' | ', $items) . '</p>';
 }
 
 function patch_snapshot_home_context_links(string $html, string $path, string $lang): string {
-  if ($lang !== 'es' || !snapshot_is_home_path($path, $lang) || str_contains($html, 'home-context-links')) {
+  if (!snapshot_is_home_path($path, $lang) || str_contains($html, 'home-context-links')) {
     return $html;
   }
 
-  $servicesLink = '    <p class="mt-4 mb-0 text-center home-context-links"><a class="btn btn-outline-primary" href="/es/servicios/">Ver servicios de climatizaci&oacute;n</a></p>' . "\n";
+  $labels = [
+    'es' => ['services' => 'Ver servicios de climatizaci&oacute;n', 'zones' => 'Ver zonas de servicio', 'guides' => 'Ver gu&iacute;as de climatizaci&oacute;n'],
+    'en' => ['services' => 'Services', 'zones' => 'Areas', 'guides' => 'Guides'],
+    'de' => ['services' => 'Dienstleistungen', 'zones' => 'Gebiete', 'guides' => 'Ratgeber'],
+    'nl' => ['services' => 'Diensten', 'zones' => 'Gebieden', 'guides' => 'Gidsen'],
+    'ru' => ['services' => '&#1059;&#1089;&#1083;&#1091;&#1075;&#1080;', 'zones' => '&#1056;&#1072;&#1081;&#1086;&#1085;&#1099;', 'guides' => '&#1043;&#1080;&#1076;&#1099;'],
+    'no' => ['services' => 'Tjenester', 'zones' => 'Omr&aring;der', 'guides' => 'Guider'],
+  ];
+  $copy = $labels[$lang] ?? $labels['es'];
+  $servicesUrl = localized_hub_url($lang, 'services') ?? lang_url($lang);
+  $zonesUrl = localized_hub_url($lang, 'zones') ?? lang_url($lang);
+  $guidesUrl = localized_hub_url($lang, 'guides') ?? lang_url($lang);
+
+  $servicesLink = '    <p class="mt-4 mb-0 text-center home-context-links"><a class="btn btn-outline-primary" href="' . e($servicesUrl) . '">' . $copy['services'] . '</a></p>' . "\n";
   $html = preg_replace_callback(
     '/(<section class="services-plain" id="metodo">[\s\S]*?)(\s*<\/div>\s*<\/section>)/',
     static function (array $matches) use ($servicesLink): string {
@@ -315,13 +493,13 @@ function patch_snapshot_home_context_links(string $html, string $path, string $l
     1
   ) ?? $html;
 
-  $zonesLink = '    <p class="mt-3 mb-4 text-center home-context-links"><a class="btn btn-outline-primary" href="/es/zonas/">Ver zonas de servicio</a></p>' . "\n";
+  $zonesLink = '    <p class="mt-3 mb-4 text-center home-context-links"><a class="btn btn-outline-primary" href="' . e($zonesUrl) . '">' . $copy['zones'] . '</a></p>' . "\n";
   $zonesNeedle = '    <div class="zona-mapa">';
   if (str_contains($html, $zonesNeedle)) {
     $html = str_replace($zonesNeedle, $zonesLink . $zonesNeedle, $html);
   }
 
-  $guidesLink = '    <p class="text-center mb-4 home-context-links"><a class="btn btn-outline-primary" href="/es/blog/">Ver gu&iacute;as de climatizaci&oacute;n</a></p>' . "\n";
+  $guidesLink = '    <p class="text-center mb-4 home-context-links"><a class="btn btn-outline-primary" href="' . e($guidesUrl) . '">' . $copy['guides'] . '</a></p>' . "\n";
   $faqNeedle = '    <div class="accordion" id="faqAccordion">';
   if (str_contains($html, $faqNeedle)) {
     $html = str_replace($faqNeedle, $guidesLink . $faqNeedle, $html);
@@ -330,17 +508,17 @@ function patch_snapshot_home_context_links(string $html, string $path, string $l
   return $html;
 }
 
-function patch_snapshot_body_links(string $body, string $lang): string {
+function patch_snapshot_body_links(string $body, string $lang, string $path): string {
   return preg_replace_callback(
     '/\bhref=(["\'])(.*?)\1/i',
-    static function (array $m) use ($lang): string {
-      return 'href=' . $m[1] . rewrite_visible_href($m[2], $lang) . $m[1];
+    static function (array $m) use ($lang, $path): string {
+      return 'href=' . $m[1] . rewrite_visible_href($m[2], $lang, $path) . $m[1];
     },
     $body
   ) ?? $body;
 }
 
-function rewrite_visible_href(string $href, string $lang): string {
+function rewrite_visible_href(string $href, string $lang, string $currentPath): string {
   $langs = config('brand.langs', ['es']);
   $defaultLang = (string) config('brand.default_lang', 'es');
 
@@ -351,7 +529,7 @@ function rewrite_visible_href(string $href, string $lang): string {
 
     $setLang = query_lang($query, $langs);
     if ($setLang !== null) {
-      return '/' . rawurlencode($setLang) . '/' . $fragment;
+      return localized_equivalent_url($currentPath, $setLang) . $fragment;
     }
 
     if ($path === '' || $path === '/') {
@@ -363,11 +541,11 @@ function rewrite_visible_href(string $href, string $lang): string {
   }
 
   if (preg_match('~^\?setlang=([a-z]{2})(#.*)?$~i', $href, $m) && in_array($m[1], $langs, true)) {
-    return '/' . rawurlencode($m[1]) . '/' . ($m[2] ?? '');
+    return localized_equivalent_url($currentPath, $m[1]) . ($m[2] ?? '');
   }
 
   if (preg_match('~^/\?setlang=([a-z]{2})(#.*)?$~i', $href, $m) && in_array($m[1], $langs, true)) {
-    return '/' . rawurlencode($m[1]) . '/' . ($m[2] ?? '');
+    return localized_equivalent_url($currentPath, $m[1]) . ($m[2] ?? '');
   }
 
   if (str_starts_with($href, '/#')) {
@@ -1737,15 +1915,24 @@ function lang_service_cards_html(string $lang): string {
   if (empty($services)) {
     return '';
   }
-  $html = '<div class="service-cards-grid">' . "\n";
+  $ctaLabels = [
+    'en' => 'View service',
+    'de' => 'Leistung ansehen',
+    'nl' => 'Dienst bekijken',
+    'ru' => '&#1055;&#1086;&#1089;&#1084;&#1086;&#1090;&#1088;&#1077;&#1090;&#1100; &#1091;&#1089;&#1083;&#1091;&#1075;&#1091;',
+    'no' => 'Se tjeneste',
+  ];
+  $ctaLabel = $ctaLabels[$lang] ?? 'Ver servicio';
+  $html = '<div class="hub-grid services-grid">' . "\n";
   foreach ($services as $path => $s) {
     $title = e($s['h1'] ?? $s['title'] ?? '');
     $desc  = e($s['subtitle'] ?? $s['description'] ?? '');
     $url   = e($path);
-    $html .= '  <a class="service-card" href="' . $url . '">'
-      . '<strong>' . $title . '</strong>'
-      . '<span>' . $desc . '</span>'
-      . '</a>' . "\n";
+    $html .= '  <article class="hub-card">'
+      . '<h3>' . $title . '</h3>'
+      . '<p>' . $desc . '</p>'
+      . '<a class="btn btn-primary js-track" data-ev="nav_service_lang" href="' . $url . '">' . $ctaLabel . '</a>'
+      . '</article>' . "\n";
   }
   $html .= '</div>';
   return $html;

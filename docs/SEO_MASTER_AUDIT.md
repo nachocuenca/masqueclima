@@ -382,4 +382,17 @@ Untracked (nuevos):
   app/content/services/no.php
 ```
 
+## Correccion post-audit - 2026-05-28
+
+Se corrigen regresiones visuales/UX detectadas en dev sin modificar produccion, sitemap, robots, DNS, `.env`, assets ni snapshots:
+
+- Selector de idioma contextual para hubs, servicios y landings locales de aire acondicionado.
+- Footer final por idioma reducido a 3 enlaces: servicios, zonas/areas y guias.
+- CTA final localizado en hubs y paginas de servicio multiidioma.
+- Cards de servicios no-ES alineadas con el patron visual ES (`hub-card`).
+- Homes no-ES con accesos claros a servicios, zonas/areas y guias en el cuerpo.
+- Modal de presupuesto validado/localizado por idioma, manteniendo formulario, CSRF, honeypot y POST.
+
+Validaciones locales: 25/25 URLs no-ES PASS, selector contextual 20/20 PASS, smoke ES/NO 9/9 PASS, sin warnings PHP.
+
 *Audit de expansión multiidioma — sin deploy, sin commit, sin producción/Nicalia, sin sitemap, sin robots.*

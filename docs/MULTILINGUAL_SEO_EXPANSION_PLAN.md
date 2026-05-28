@@ -105,7 +105,7 @@ El front-controller detecta rutas de hub no-ES y de servicio no-ES y las despach
 | DE | `/de/dienstleistungen/klimaanlage-installation/` |
 | NL | `/nl/diensten/airco-installatie/` |
 | RU | `/ru/uslugi/ustanovka-konditsionera/` |
-| NO | `/no/tjenester/aircondition-installasjon/` |
+| NO | `/no/tjenester/installasjon-av-aircondition/` |
 
 ### Locality landings (prefijo por idioma)
 
@@ -188,6 +188,32 @@ Verificación rápida:
 # Servicio DE
 (Invoke-WebRequest "http://localhost:8787/de/dienstleistungen/klimaanlage-installation/" -UseBasicParsing).StatusCode
 ```
+
+---
+
+## 7. Correccion visual/UX post-expansion - 2026-05-28
+
+Alcance aplicado en `fix/legacy-php-dev-stabilization`, sin commit y sin deploy:
+
+- Selector de idioma contextual: `localized_equivalent_url()` conserva equivalentes seguros para home, hubs, servicios y landings locales de aire acondicionado. Si una localidad no existe en el idioma destino, cae al hub de zonas de ese idioma.
+- Footer multiidioma: queda reducido a 3 enlaces por idioma: Servicios/Zonas/Guias y equivalentes EN/DE/NL/RU/NO. Se eliminan Home/FAQ/Contacto/Kontakt del footer generado.
+- Homes EN/DE/NL/RU/NO: se anaden 3 accesos contextuales en el cuerpo a servicios, zonas/areas y guias, reutilizando los puntos donde ES ya enlaza esos hubs.
+- Cards de servicios no-ES: el hub de servicios usa la misma estructura visual que ES (`hub-grid services-grid` + `hub-card`) y deja de usar `.service-card`, evitando los bloques grises del estilo clasico.
+- CTA final: `final_budget_cta_html($lang)` ahora renderiza copy localizado para ES/EN/DE/NL/RU/NO y se inserta antes del footer en hubs y paginas de servicio dinamicas, sin duplicar snapshots existentes.
+- Modal de presupuesto: se normalizan textos visibles por idioma en el HTML servido, preservando `csrf`, honeypot, `POST`, `return_to` y endpoint.
+
+Validado localmente en `localhost:8787`:
+
+- 5 homes no-ES: `/en/`, `/de/`, `/nl/`, `/ru/`, `/no/`.
+- 15 hubs no-ES.
+- 5 servicios de instalacion solicitados.
+- Selector contextual: 20/20 equivalencias esperadas.
+- Smoke ES/NO: 9/9 rutas con 200, footer de 3 enlaces y sin warnings PHP.
+
+Pendientes:
+
+- No se tocaron sitemap, robots, DNS, `.env`, produccion ni Nicalia.
+- No se anadieron articulos de guia ni equivalencias de articulos inexistentes.
 
 ---
 
