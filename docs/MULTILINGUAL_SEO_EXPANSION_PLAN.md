@@ -218,3 +218,20 @@ Pendientes:
 ---
 
 *Documento generado durante sesión de validación de expansión multiidioma. Sin deploy, sin commit, sin producción.*
+
+## 8. Auditoria final predeploy - 2026-05-28
+
+Referencia completa: `docs/FINAL_PREDEPLOY_AUDIT.md`.
+
+Resultado multiidioma final:
+
+- 45 paginas no-ES auditadas sin frases visibles en castellano del set obligatorio.
+- 48 hubs/servicios con hreflang completo tras correccion.
+- Selector contextual validado en los casos obligatorios de hubs, servicios, guias, zonas y Benidorm.
+- 120 landings locales multiidioma auditadas con 0 errores HTTP.
+- Banner de cookies heredado localizado en EN/DE/NL/RU/NO.
+
+Pendientes:
+
+- P1 externo al contenido multiidioma: `/politica-de-cookies` enlazado y en 404.
+- P2 editorial: `app/content/guides/*` no-ES conserva borradores en castellano no renderizados actualmente.

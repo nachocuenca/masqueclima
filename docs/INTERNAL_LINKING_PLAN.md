@@ -148,3 +148,18 @@ Hasta decidir su futuro:
 - Footer queda como navegacion limpia de 3 enlaces por idioma: servicios, zonas/areas y guias.
 - No se crean equivalencias de articulos de guia porque todavia no existen articulos publicados.
 - Si una landing local no existe en el idioma destino, la estrategia de fallback es el hub de zonas/areas de ese idioma.
+
+## Auditoria final de enlaces - 2026-05-28
+
+Referencia completa: `docs/FINAL_PREDEPLOY_AUDIT.md`.
+
+Resultado:
+
+- 36 paginas fuente auditadas.
+- 195 enlaces internos unicos comprobados.
+- 1 enlace interno roto: `/politica-de-cookies` devuelve 404 y aparece en el banner de cookies.
+
+Decision:
+
+- No se crea pagina nueva ni se cambia URL durante esta auditoria.
+- Debe resolverse antes de Nicalia con pagina legal/restauracion de URL o destino aprobado.

@@ -154,6 +154,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_snapshot_primary_nav($html, $lang);
   $html = patch_snapshot_remove_city_navigation_extras($html);
   $html = patch_snapshot_quote_modal($html, $lang);
+  $html = patch_snapshot_cookie_banner($html, $lang);
   $html = patch_snapshot_contact_anchor($html);
   $html = patch_snapshot_footer_guides_link($html, $lang);
   $html = patch_snapshot_home_context_links($html, $path, $lang);
@@ -411,6 +412,70 @@ function patch_snapshot_quote_modal(string $html, string $lang): string {
   $modal = preg_replace('/(<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">)[\s\S]*?(<\/button>)/', '$1' . "\n              " . $labels['cancel'] . '            $2', $modal, 1) ?? $modal;
 
   return substr($html, 0, $start) . $modal . substr($html, $end);
+}
+
+function cookie_banner_labels(string $lang): array {
+  $labels = [
+    'es' => [
+      'message' => 'Usamos cookies para anal&iacute;tica (GA4) y contenidos de terceros (Maps, Elfsight).',
+      'more' => 'M&aacute;s info',
+      'reject' => 'Rechazar',
+      'analytics' => 'Solo anal&iacute;ticas',
+      'accept' => 'Aceptar',
+    ],
+    'en' => [
+      'message' => 'We use cookies for analytics (GA4) and third-party content (Maps, Elfsight).',
+      'more' => 'More info',
+      'reject' => 'Reject',
+      'analytics' => 'Analytics only',
+      'accept' => 'Accept',
+    ],
+    'de' => [
+      'message' => 'Wir nutzen Cookies f&uuml;r Analyse (GA4) und Inhalte Dritter (Maps, Elfsight).',
+      'more' => 'Mehr Infos',
+      'reject' => 'Ablehnen',
+      'analytics' => 'Nur Analyse',
+      'accept' => 'Akzeptieren',
+    ],
+    'nl' => [
+      'message' => 'We gebruiken cookies voor analytics (GA4) en content van derden (Maps, Elfsight).',
+      'more' => 'Meer info',
+      'reject' => 'Weigeren',
+      'analytics' => 'Alleen analytics',
+      'accept' => 'Accepteren',
+    ],
+    'ru' => [
+      'message' => '&#1052;&#1099; &#1080;&#1089;&#1087;&#1086;&#1083;&#1100;&#1079;&#1091;&#1077;&#1084; cookies &#1076;&#1083;&#1103; &#1072;&#1085;&#1072;&#1083;&#1080;&#1090;&#1080;&#1082;&#1080; (GA4) &#1080; &#1082;&#1086;&#1085;&#1090;&#1077;&#1085;&#1090;&#1072; &#1090;&#1088;&#1077;&#1090;&#1100;&#1080;&#1093; &#1089;&#1090;&#1086;&#1088;&#1086;&#1085; (Maps, Elfsight).',
+      'more' => '&#1055;&#1086;&#1076;&#1088;&#1086;&#1073;&#1085;&#1077;&#1077;',
+      'reject' => '&#1054;&#1090;&#1082;&#1083;&#1086;&#1085;&#1080;&#1090;&#1100;',
+      'analytics' => '&#1058;&#1086;&#1083;&#1100;&#1082;&#1086; &#1072;&#1085;&#1072;&#1083;&#1080;&#1090;&#1080;&#1082;&#1072;',
+      'accept' => '&#1055;&#1088;&#1080;&#1085;&#1103;&#1090;&#1100;',
+    ],
+    'no' => [
+      'message' => 'Vi bruker informasjonskapsler for analyse (GA4) og tredjepartsinnhold (Maps, Elfsight).',
+      'more' => 'Mer info',
+      'reject' => 'Avvis',
+      'analytics' => 'Bare analyse',
+      'accept' => 'Godta',
+    ],
+  ];
+
+  return $labels[$lang] ?? $labels['es'];
+}
+
+function patch_snapshot_cookie_banner(string $html, string $lang): string {
+  if (!str_contains($html, 'id="cookie-banner"')) {
+    return $html;
+  }
+
+  $labels = cookie_banner_labels($lang);
+
+  return preg_replace(
+    '/(<div id="cookie-banner" class="cookie-banner" hidden>\s*<div class="cookie-box">\s*<p>)[\s\S]*?(<a href="\/politica-de-cookies" target="_blank" rel="nofollow">)[\s\S]*?(<\/a>\s*<\/p>\s*<div class="cookie-actions">\s*<button id="cb-reject"[^>]*>)[\s\S]*?(<\/button>\s*<button id="cb-analytics"[^>]*>)[\s\S]*?(<\/button>\s*<button id="cb-accept"[^>]*>)[\s\S]*?(<\/button>)/',
+    '$1' . "\n      " . $labels['message'] . "\n      " . '$2' . $labels['more'] . '$3' . $labels['reject'] . '$4' . $labels['analytics'] . '$5' . $labels['accept'] . '$6',
+    $html,
+    1
+  ) ?? $html;
 }
 
 function patch_snapshot_contact_anchor(string $html): string {
@@ -922,7 +987,7 @@ function render_es_minimal_shell(array $page, string $path, string $body): strin
   return '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' .
     '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">' .
     '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">' .
-    '<link rel="stylesheet" href="/assets/css/styles.css">' . es_page_jsonld($path, $page) . '</head><body><main id="main-content">' .
+    '<link rel="stylesheet" href="/assets/css/styles.css">' . localized_hreflang_links_html($path) . es_page_jsonld($path, $page) . '</head><body><main id="main-content">' .
     $body . final_budget_cta_html('es') . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
@@ -939,7 +1004,7 @@ function patch_es_hub_head(string $html, array $page, string $path): string {
   $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
   $html = patch_es_hub_hero_preload($html, $page);
-  $html = str_replace('</head>', es_page_jsonld($path, $page) . "\n</head>", $html);
+  $html = str_replace('</head>', localized_hreflang_links_html($path) . es_page_jsonld($path, $page) . "\n</head>", $html);
 
   return $html;
 }
@@ -1665,7 +1730,7 @@ function render_lang_minimal_shell(array $page, string $path, string $body, stri
   return '<!DOCTYPE html><html lang="' . e($lang) . '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
     . '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">'
     . '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">'
-    . '<link rel="stylesheet" href="/assets/css/styles.css">' . lang_page_jsonld($path, $lang, $page) . '</head><body><main id="main-content">'
+    . '<link rel="stylesheet" href="/assets/css/styles.css">' . localized_hreflang_links_html($path) . lang_page_jsonld($path, $lang, $page) . '</head><body><main id="main-content">'
     . $body . final_budget_cta_html($lang) . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
@@ -1683,7 +1748,7 @@ function patch_lang_hub_head(string $html, array $page, string $path, string $la
   $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
   $html = patch_es_hub_hero_preload($html, $page);
-  $html = str_replace('</head>', lang_page_jsonld($path, $lang, $page) . "\n</head>", $html);
+  $html = str_replace('</head>', localized_hreflang_links_html($path) . lang_page_jsonld($path, $lang, $page) . "\n</head>", $html);
 
   return $html;
 }

@@ -297,6 +297,25 @@ if (!function_exists('localized_equivalent_url')) {
     }
 }
 
+if (!function_exists('localized_hreflang_links_html')) {
+    function localized_hreflang_links_html(string $currentPath): string {
+        $langs = config('brand.langs', ['es']);
+        $defaultLang = config('brand.default_lang', 'es');
+        $base = canonical_base_url();
+        $html = '';
+
+        foreach ($langs as $lang) {
+            $path = localized_equivalent_url($currentPath, $lang);
+            $html .= '<link rel="alternate" hreflang="' . e($lang) . '" href="' . e($base . $path) . '">' . "\n";
+        }
+
+        $defaultPath = localized_equivalent_url($currentPath, $defaultLang);
+        $html .= '<link rel="alternate" hreflang="x-default" href="' . e($base . $defaultPath) . '">' . "\n";
+
+        return $html;
+    }
+}
+
 if (!function_exists('primary_nav_items')) {
     function primary_nav_items(string $lang): array {
         if ($lang === 'es') {

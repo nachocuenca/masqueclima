@@ -396,3 +396,25 @@ Se corrigen regresiones visuales/UX detectadas en dev sin modificar produccion, 
 Validaciones locales: 25/25 URLs no-ES PASS, selector contextual 20/20 PASS, smoke ES/NO 9/9 PASS, sin warnings PHP.
 
 *Audit de expansión multiidioma — sin deploy, sin commit, sin producción/Nicalia, sin sitemap, sin robots.*
+
+## Auditoria final predeploy - 2026-05-28
+
+Referencia completa: `docs/FINAL_PREDEPLOY_AUDIT.md`.
+
+Correcciones aplicadas durante la auditoria final:
+
+- Hreflang contextual anadido a hubs y servicios dinamicos. Revalidacion: 48 URLs de hubs/servicios con `es`, `en`, `de`, `nl`, `ru`, `no` y `x-default`.
+- Banner de cookies heredado localizado en EN/DE/NL/RU/NO.
+
+Estado SEO final:
+
+- PHP lint completo OK.
+- BOM OK.
+- 75 URLs principales auditadas sin errores HTTP en rutas canonicas.
+- 120 landings locales multiidioma auditadas con 0 errores.
+- JSON-LD decodifica en la muestra critica.
+
+Pendientes antes de Nicalia:
+
+- P1: `/politica-de-cookies` esta enlazada y devuelve 404. Requiere decision legal/URL autorizada.
+- P2: sitemap desfasado; faltan hubs y servicios multiidioma. No se modifico por instruccion.
