@@ -212,7 +212,8 @@ $_privacy_es = <<<HTML
       <p>En cumplimiento del Reglamento (UE) 2016/679 (RGPD) y la Ley Org&aacute;nica 3/2018 (LOPDGDD), le informamos sobre el tratamiento de sus datos personales en esta web.</p>
 
       <h2>Responsable del tratamiento</h2>
-      <p>El responsable del tratamiento es +QUECLIMA, titular de masqueclima.es. Contacto: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
+      <p>Responsable del tratamiento: <strong>DANIEL CUENCA MOYA</strong>, titular de la web +QUECLIMA (masqueclima.es).<br>
+      Contacto legal y privacidad: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
 
       <h2>Datos que recogemos</h2>
       <p>A trav&eacute;s del formulario de contacto recogemos nombre, tel&eacute;fono, direcci&oacute;n de correo electr&oacute;nico (opcional), tipo de servicio solicitado y descripci&oacute;n del trabajo. No se recogen categor&iacute;as especiales de datos.</p>
@@ -250,7 +251,8 @@ $_privacy_en = <<<HTML
       <p>In compliance with EU Regulation 2016/679 (GDPR), we inform you about the processing of your personal data on this website.</p>
 
       <h2>Data controller</h2>
-      <p>The data controller is +QUECLIMA, owner of masqueclima.es. Contact: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
+      <p>Data controller: <strong>DANIEL CUENCA MOYA</strong>, owner of +QUECLIMA (masqueclima.es).<br>
+      Legal and privacy contact: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
 
       <h2>Data we collect</h2>
       <p>Through the contact form we collect name, phone number, email address (optional), service type requested and job description. No special categories of data are collected.</p>
@@ -288,7 +290,8 @@ $_privacy_de = <<<HTML
       <p>Gem&auml;&szlig; der EU-Verordnung 2016/679 (DSGVO) informieren wir Sie &uuml;ber die Verarbeitung Ihrer personenbezogenen Daten auf dieser Website.</p>
 
       <h2>Verantwortlicher</h2>
-      <p>Verantwortlicher f&uuml;r die Datenverarbeitung ist +QUECLIMA, Inhaber von masqueclima.es. Kontakt: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
+      <p>Verantwortlicher: <strong>DANIEL CUENCA MOYA</strong>, Inhaber von +QUECLIMA (masqueclima.es).<br>
+      Kontakt f&uuml;r rechtliche und Datenschutzanfragen: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
 
       <h2>Erhobene Daten</h2>
       <p>Wir erfassen &uuml;ber das Kontaktformular Name, Telefonnummer, E-Mail-Adresse (optional), Art der gew&uuml;nschten Dienstleistung und Auftragsbeschreibung. Besondere Kategorien personenbezogener Daten werden nicht erhoben.</p>
@@ -326,7 +329,8 @@ $_privacy_nl = <<<HTML
       <p>In overeenstemming met EU-Verordening 2016/679 (AVG) informeren wij u over de verwerking van uw persoonsgegevens op deze website.</p>
 
       <h2>Verwerkingsverantwoordelijke</h2>
-      <p>De verwerkingsverantwoordelijke is +QUECLIMA, eigenaar van masqueclima.es. Contact: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
+      <p>Verwerkingsverantwoordelijke: <strong>DANIEL CUENCA MOYA</strong>, eigenaar van +QUECLIMA (masqueclima.es).<br>
+      Contact voor juridische en privacyvragen: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
 
       <h2>Gegevens die wij verzamelen</h2>
       <p>Via het contactformulier verzamelen wij naam, telefoonnummer, e-mailadres (optioneel), type gevraagde dienst en werkbeschrijving. Er worden geen bijzondere categorie&euml;n persoonsgegevens verzameld.</p>
@@ -364,7 +368,8 @@ $_privacy_ru = <<<HTML
       <p>В соответствии с Регламентом ЕС 2016/679 (GDPR) мы информируем вас об обработке ваших персональных данных на данном сайте.</p>
 
       <h2>Контролёр данных</h2>
-      <p>Контролёром данных является +QUECLIMA, владелец masqueclima.es. Контакт: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
+      <p>Ответственное лицо: <strong>DANIEL CUENCA MOYA</strong>, владелец +QUECLIMA (masqueclima.es).<br>
+      Контакт по юридическим вопросам и вопросам конфиденциальности: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
 
       <h2>Собираемые данные</h2>
       <p>Через контактную форму мы собираем имя, номер телефона, адрес электронной почты (по желанию), тип запрашиваемой услуги и описание работ. Данные особых категорий не собираются.</p>
@@ -402,7 +407,8 @@ $_privacy_no = <<<HTML
       <p>I samsvar med EU-forordning 2016/679 (GDPR) informerer vi deg om behandlingen av dine personopplysninger p&aring; dette nettstedet.</p>
 
       <h2>Behandlingsansvarlig</h2>
-      <p>Behandlingsansvarlig er +QUECLIMA, eier av masqueclima.es. Kontakt: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
+      <p>Ansvarlig: <strong>DANIEL CUENCA MOYA</strong>, eier av +QUECLIMA (masqueclima.es).<br>
+      Kontakt for juridiske sp&oslash;rsm&aring;l og personvern: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a>.</p>
 
       <h2>Data vi samler inn</h2>
       <p>Via kontaktskjemaet samler vi inn navn, telefonnummer, e-postadresse (valgfritt), &oslash;nsket tjenestetype og jobbeskrivelse. Ingen s&aelig;rlige kategorier av personopplysninger samles inn.</p>
@@ -441,9 +447,10 @@ $_legal_es = <<<HTML
       <h1 id="legal-title">Aviso legal</h1>
 
       <h2>Datos del titular</h2>
-      <p>Nombre comercial: <strong>+QUECLIMA</strong><br>
+      <p>Responsable del sitio: <strong>DANIEL CUENCA MOYA</strong><br>
+      Nombre comercial: <strong>+QUECLIMA</strong><br>
       Sitio web: masqueclima.es<br>
-      Correo electr&oacute;nico: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
+      Contacto legal y privacidad: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
 
       <h2>Actividad</h2>
       <p>+QUECLIMA ofrece servicios de instalaci&oacute;n, mantenimiento y reparaci&oacute;n de sistemas de climatizaci&oacute;n, calefacci&oacute;n y energ&iacute;a solar en la provincia de Alicante (Espa&ntilde;a).</p>
@@ -471,9 +478,10 @@ $_legal_en = <<<HTML
       <h1 id="legal-title">Legal Notice</h1>
 
       <h2>Site owner</h2>
-      <p>Trade name: <strong>+QUECLIMA</strong><br>
+      <p>Owner / controller: <strong>DANIEL CUENCA MOYA</strong><br>
+      Trade name: <strong>+QUECLIMA</strong><br>
       Website: masqueclima.es<br>
-      Email: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
+      Legal and privacy contact: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
 
       <h2>Activity</h2>
       <p>+QUECLIMA provides installation, maintenance and repair services for air conditioning, heating and solar energy systems in the province of Alicante, Spain.</p>
@@ -501,9 +509,10 @@ $_legal_de = <<<HTML
       <h1 id="legal-title">Impressum</h1>
 
       <h2>Angaben gem&auml;&szlig; &sect; 5 TMG / Anbieteridentifikation</h2>
-      <p>Handelsname: <strong>+QUECLIMA</strong><br>
+      <p>Verantwortlicher: <strong>DANIEL CUENCA MOYA</strong><br>
+      Handelsname: <strong>+QUECLIMA</strong><br>
       Website: masqueclima.es<br>
-      E-Mail: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
+      Kontakt f&uuml;r rechtliche und Datenschutzanfragen: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
 
       <h2>T&auml;tigkeit</h2>
       <p>+QUECLIMA bietet Installations-, Wartungs- und Reparaturdienstleistungen f&uuml;r Klimaanlagen, Heizungs- und Solarenergiesysteme in der Provinz Alicante (Spanien) an.</p>
@@ -531,9 +540,10 @@ $_legal_nl = <<<HTML
       <h1 id="legal-title">Juridische mededeling</h1>
 
       <h2>Eigenaar van de website</h2>
-      <p>Handelsnaam: <strong>+QUECLIMA</strong><br>
+      <p>Verantwoordelijke: <strong>DANIEL CUENCA MOYA</strong><br>
+      Handelsnaam: <strong>+QUECLIMA</strong><br>
       Website: masqueclima.es<br>
-      E-mail: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
+      Contact voor juridische en privacyvragen: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
 
       <h2>Activiteit</h2>
       <p>+QUECLIMA biedt installatie-, onderhouds- en reparatiediensten voor airconditioning, verwarming en zonne-energiesystemen in de provincie Alicante, Spanje.</p>
@@ -561,9 +571,10 @@ $_legal_ru = <<<HTML
       <h1 id="legal-title">Правовое уведомление</h1>
 
       <h2>Владелец сайта</h2>
-      <p>Торговое наименование: <strong>+QUECLIMA</strong><br>
+      <p>Ответственное лицо: <strong>DANIEL CUENCA MOYA</strong><br>
+      Торговое наименование: <strong>+QUECLIMA</strong><br>
       Сайт: masqueclima.es<br>
-      Эл. почта: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
+      Контакт по юридическим вопросам и вопросам конфиденциальности: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
 
       <h2>Деятельность</h2>
       <p>+QUECLIMA предоставляет услуги по монтажу, техническому обслуживанию и ремонту систем кондиционирования воздуха, отопления и солнечной энергетики в провинции Аликанте (Испания).</p>
@@ -591,9 +602,10 @@ $_legal_no = <<<HTML
       <h1 id="legal-title">Juridisk varsel</h1>
 
       <h2>Nettstedseier</h2>
-      <p>Handelsnavn: <strong>+QUECLIMA</strong><br>
+      <p>Ansvarlig: <strong>DANIEL CUENCA MOYA</strong><br>
+      Handelsnavn: <strong>+QUECLIMA</strong><br>
       Nettsted: masqueclima.es<br>
-      E-post: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
+      Kontakt for juridiske sp&oslash;rsm&aring;l og personvern: <a href="mailto:administracion@masqueclima.es">administracion@masqueclima.es</a></p>
 
       <h2>Virksomhet</h2>
       <p>+QUECLIMA tilbyr installasjons-, vedlikeholds- og reparasjonstjenester for klimaanlegg, varme og solenergi­systemer i provinsen Alicante, Spania.</p>

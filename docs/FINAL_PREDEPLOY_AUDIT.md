@@ -292,6 +292,7 @@ P2:
 - Arquitectura: `app/content/legal.php` + funciones de render en `front_controller.php`.
 - `/politica-de-cookies/` → 301 → `/es/politica-de-cookies/` (SEO redirect a canónico).
 - Hreflang completo en todas las páginas legales (7 alternates por página).
+- **Responsable visible**: `DANIEL CUENCA MOYA` (en privacidad + avisos legales, 12 secciones × 6 idiomas).
 - **Email legal**: `administracion@masqueclima.es` (privacidad + avisos legales, todas las lenguas).
 - **Teléfono**: deliberadamente excluido del texto de páginas legales.
 - **NIF/titular/domicilio**: no incluidos ni inventados. Sujeto a revisión legal antes de Nicalia (puede ser obligatorio por LSSI-CE).

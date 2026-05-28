@@ -416,6 +416,6 @@ Estado SEO final:
 
 Pendientes antes de Nicalia:
 
-- P1 corregido: `/politica-de-cookies` esta activa con 200 OK y canonical `https://masqueclima.es/politica-de-cookies`.
-- Pendiente legal: revisar el contenido de `/politica-de-cookies` antes de produccion/Nicalia.
+- P1 cerrado: `/politica-de-cookies/` → 301 → `/es/politica-de-cookies/` (200 OK, canonical `https://masqueclima.es/es/politica-de-cookies/`). 18 páginas legales multiidioma implementadas (3 tipos × 6 idiomas); responsable visible: `DANIEL CUENCA MOYA`; email: `administracion@masqueclima.es`. Ver `docs/LEGAL_PAGES_IMPLEMENTATION.md`.
+- Pendiente legal antes de Nicalia: confirmar con asesoría si LSSI-CE exige publicar NIF y domicilio. Actualmente no publicados.
 - ~~P2: sitemap desfasado; faltan hubs y servicios multiidioma.~~ **CERRADO 2026-05-28** — sitemap.xml actualizado a 174 URLs.

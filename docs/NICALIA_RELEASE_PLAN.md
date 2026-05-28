@@ -204,7 +204,13 @@ for url in es/aire-acondicionado-benidorm/ en/air-conditioning-benidorm/ de/klim
   echo "$url → $code"
 done
 
-# Legal
+# Legal — páginas legales multiidioma
+for url in es/aviso-legal/ es/politica-de-privacidad/ es/politica-de-cookies/ en/legal-notice/ en/privacy-policy/ en/cookie-policy/ de/impressum/ de/datenschutzerklaerung/ de/cookie-richtlinie/ nl/juridische-mededeling/ nl/privacybeleid/ nl/cookiebeleid/ ru/pravovoe-uvedomlenie/ ru/politika-konfidentsialnosti/ ru/cookie-policy/ no/juridisk-varsel/ no/personvernerklaering/ no/cookie-policy/; do
+  code=$(curl -sI "$BASE/$url" | awk '/^HTTP/{print $2}')
+  echo "$url → $code"
+done
+
+# Compatibilidad legacy
 curl -sI "$BASE/politica-de-cookies" | head -2
 
 # Sitemap y robots
@@ -225,7 +231,9 @@ curl -sI "$BASE/contact-submit.php" | head -2
 - [ ] `/es/servicios/` hub carga correctamente con listado de servicios
 - [ ] `/es/servicios/instalacion-aire-acondicionado/` carga con contenido correcto
 - [ ] `/es/aire-acondicionado-benidorm/` carga con hero local (no fallback)
-- [ ] `/politica-de-cookies` → 200, contenido correcto
+- [ ] `/politica-de-cookies` → 301 → `/es/politica-de-cookies/` sin bucle
+- [ ] `/es/aviso-legal/` carga con `DANIEL CUENCA MOYA` visible y email `administracion@masqueclima.es`
+- [ ] `/en/legal-notice/` ídem en inglés
 - [ ] Modal de presupuesto abre y cierra en cada idioma
 - [ ] Formulario de contacto no rompe (submit va a `/contact-submit.php`)
 - [ ] `/robots.txt` accesible

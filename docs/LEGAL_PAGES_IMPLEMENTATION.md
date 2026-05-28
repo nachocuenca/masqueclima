@@ -130,6 +130,20 @@ Rendered via `footer_legal_links_html(string $lang)`. Links are localised per la
 
 ## Content Notes
 
+### Responsable / titular visible
+
+Responsable visible en páginas legales: **`DANIEL CUENCA MOYA`**
+
+Aparece en:
+- Privacidad (6 langs): sección "Responsable del tratamiento / Data controller / Verantwortlicher / etc."
+- Aviso legal (6 langs): sección "Datos del titular / Site owner / Impressum / etc."
+
+**No publicado** (dato disponible, pendiente de decisión legal antes de Nicalia):
+- NIF: disponible pero no publicado
+- Domicilio: disponible pero no publicado
+
+Antes de producción/Nicalia, confirmar con asesoría legal si LSSI-CE exige publicar NIF y domicilio para esta actividad concreta.
+
 ### Email de contacto legal
 Email usado en páginas legales: **`administracion@masqueclima.es`** (privacidad + avisos legales).
 El email `info@masqueclima.es` se usa en el resto del sitio (formulario, WhatsApp, JSON-LD) pero NO en el texto de las páginas legales.
