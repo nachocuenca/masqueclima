@@ -176,6 +176,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_snapshot_home_context_links($html, $path, $lang);
 
   $html = patch_es_p1_location_page($html, $path, $lang);
+  $html = patch_nonES_locality_seo($html, $path, $lang);
   $html = patch_locality_hero_image($html, $path, $lang);
 
   $html = patch_snapshot_home_hero($html, $path, $lang);
@@ -1734,6 +1735,76 @@ function patch_locality_hero_image(string $html, string $path, string $lang): st
   ) ?? $html;
 
   return $html;
+}
+
+function locality_display_names(): array {
+  return [
+    'albir'              => 'Albir',
+    'alfaz-del-pi'       => 'Alfaz del Pi',
+    'altea'              => 'Altea',
+    'beniarda'           => 'Beniard&agrave;',
+    'benidorm'           => 'Benidorm',
+    'benifato'           => 'Benifato',
+    'benimantell'        => 'Benimantell',
+    'bolulla'            => 'Bolulla',
+    'callosa-den-sarria' => 'Callosa d&rsquo;en Sarri&agrave;',
+    'calpe'              => 'Calpe',
+    'confrides'          => 'Confrides',
+    'finestrat'          => 'Finestrat',
+    'guadalest'          => 'Guadalest',
+    'la-nucia'           => 'La Nuc&iacute;a',
+    'orxeta'             => 'Orxeta',
+    'polop'              => 'Polop',
+    'relleu'             => 'Relleu',
+    'sella'              => 'Sella',
+    'tarbena'            => 'T&agrave;rbena',
+    'villajoyosa'        => 'Villajoyosa',
+  ];
+}
+
+function patch_nonES_locality_seo(string $html, string $path, string $lang): string {
+  if ($lang === 'es') {
+    return $html;
+  }
+
+  $patterns = [
+    'en' => '~^/en/air-conditioning-([a-z0-9-]+)/$~',
+    'de' => '~^/de/klimaanlage-([a-z0-9-]+)/$~',
+    'nl' => '~^/nl/airco-([a-z0-9-]+)/$~',
+    'ru' => '~^/ru/konditsioner-([a-z0-9-]+)/$~',
+    'no' => '~^/no/aircondition-([a-z0-9-]+)/$~',
+  ];
+
+  $pattern = $patterns[$lang] ?? null;
+  if ($pattern === null || !preg_match($pattern, $path, $m)) {
+    return $html;
+  }
+
+  $slug  = $m[1];
+  $names = locality_display_names();
+  $city  = $names[$slug] ?? ucfirst(str_replace('-', ' ', $slug));
+
+  $titles = [
+    'en' => 'Air conditioning in %s | +QUECLIMA',
+    'de' => 'Klimaanlage in %s | +QUECLIMA',
+    'nl' => 'Airco in %s | +QUECLIMA',
+    'ru' => '&#1050;&#1086;&#1085;&#1076;&#1080;&#1094;&#1080;&#1086;&#1085;&#1077;&#1088; &#1074; %s | +QUECLIMA',
+    'no' => 'Aircondition i %s | +QUECLIMA',
+  ];
+
+  $metas = [
+    'en' => 'Air conditioning installation, maintenance and repair in %s and the Marina Baixa. Clear advice for homes, businesses and holiday apartments.',
+    'de' => 'Installation, Wartung und Reparatur von Klimaanlagen in %s und der Marina Baixa. Klare Beratung f&uuml;r Wohnungen, H&auml;user und Gesch&auml;fte.',
+    'nl' => 'Installatie, onderhoud en reparatie van airconditioning in %s en de Marina Baixa. Duidelijk advies voor woningen, bedrijven en vakantieappartementen.',
+    'ru' => '&#1059;&#1089;&#1090;&#1072;&#1085;&#1086;&#1074;&#1082;&#1072;, &#1086;&#1073;&#1089;&#1083;&#1091;&#1078;&#1080;&#1074;&#1072;&#1085;&#1080;&#1077; &#1080; &#1088;&#1077;&#1084;&#1086;&#1085;&#1090; &#1082;&#1086;&#1085;&#1076;&#1080;&#1094;&#1080;&#1086;&#1085;&#1077;&#1088;&#1086;&#1074; &#1074; %s &#1080; Marina Baixa. &#1055;&#1086;&#1085;&#1103;&#1090;&#1085;&#1072;&#1103; &#1082;&#1086;&#1085;&#1089;&#1091;&#1083;&#1100;&#1090;&#1072;&#1094;&#1080;&#1103; &#1076;&#1083;&#1103; &#1076;&#1086;&#1084;&#1086;&#1074;, &#1082;&#1074;&#1072;&#1088;&#1090;&#1080;&#1088; &#1080; &#1082;&#1086;&#1084;&#1084;&#1077;&#1088;&#1095;&#1077;&#1089;&#1082;&#1080;&#1093; &#1087;&#1086;&#1084;&#1077;&#1097;&#1077;&#1085;&#1080;&#1081;.',
+    'no' => 'Installasjon, vedlikehold og reparasjon av aircondition i %s og Marina Baixa. Tydelige r&aring;d for boliger, bedrifter og ferieboliger.',
+  ];
+
+  $title     = sprintf($titles[$lang], $city);
+  $meta      = sprintf($metas[$lang], $city);
+  $canonical = 'https://masqueclima.es' . $path;
+
+  return patch_snapshot_seo_meta($html, $title, $meta, $canonical);
 }
 
 function patch_es_p1_location_page(string $html, string $path, string $lang): string {
