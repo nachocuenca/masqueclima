@@ -339,6 +339,14 @@ $block = <<<HTML
 
 **Solución propuesta:** Ampliar `hub_intro` y `hub_p` en `app/content/hubs/{lang}.php` para cada idioma.
 
+---
+
+## 10. Actualización UX de navegación (2026-05-29)
+
+- Selector contextual en guías corregido mediante equivalencia de rutas de guía por idioma.
+- Eliminadas tarjetas futuras de hubs de guías: se muestran solo 3 guías reales por idioma.
+- Menú principal unificado con la estructura ES en todos los idiomas, conservando solo labels y URLs localizadas.
+
 ### P3 — Non-ES locality pages sin nearby links
 
 **Descripción:** Las páginas de localidad EN/DE/NL/RU/NO no tienen sección de nearby localities.

@@ -19,12 +19,8 @@
   $ctaLabelMap = [
     'es' => 'Leer guía', 'en' => 'Read guide', 'de' => 'Ratgeber lesen', 'nl' => 'Gids lezen', 'ru' => 'Читать руководство', 'no' => 'Les guide',
   ];
-  $comingSoonMap = [
-    'es' => 'Próximamente', 'en' => 'Coming soon', 'de' => 'Demnächst', 'nl' => 'Binnenkort', 'ru' => 'Скоро', 'no' => 'Kommer snart',
-  ];
   $guideLabel = $guideLabelMap[$lang] ?? $guideLabelMap['es'];
   $ctaLabel = $ctaLabelMap[$lang] ?? $ctaLabelMap['es'];
-  $comingSoon = $comingSoonMap[$lang] ?? $comingSoonMap['es'];
 ?>
 <div class="hub-grid guides-grid">
   <?php foreach ($cards as $g): ?>
@@ -35,16 +31,6 @@
       <a class="hub-pill" href="<?php echo e($prefix . $g['slug'] . '/'); ?>"><?php echo e($ctaLabel); ?></a>
     </article>
   <?php endforeach; ?>
-  <article class="hub-card">
-    <span class="guide-badge"><?php echo e($comingSoon); ?></span>
-    <h3><?php echo e($lang === 'es' ? 'Aire acondicionado para apartamentos tur&iacute;sticos' : 'Air conditioning for holiday apartments'); ?></h3>
-    <p><?php echo e($lang === 'es' ? 'Aspectos importantes para viviendas de alquiler vacacional: consumo, ruido, control y fiabilidad.' : 'Important factors for holiday rentals: consumption, noise, control and reliability.'); ?></p>
-  </article>
-  <article class="hub-card">
-    <span class="guide-badge"><?php echo e($comingSoon); ?></span>
-    <h3><?php echo e($lang === 'es' ? 'Split, multisplit o conductos: qu&eacute; sistema elegir' : 'Split, multi-split or ducted: which system to choose'); ?></h3>
-    <p><?php echo e($lang === 'es' ? 'Diferencias principales entre sistemas y cu&aacute;ndo conviene cada soluci&oacute;n.' : 'Main differences between systems and when each solution makes sense.'); ?></p>
-  </article>
 </div>
 <style>
   .guide-badge{display:inline-block;background:#e8f0fb;color:#0058b8;font-size:.78rem;font-weight:700;border-radius:999px;padding:.2rem .65rem;margin-bottom:.5rem;letter-spacing:.02em;}

@@ -217,6 +217,13 @@ Fuente: 36 paginas principales.
 ```text
 Unique internal links checked: 195
 Bad internal links: 1 en auditoria original; `/politica-de-cookies` corregido posteriormente.
+
+## 11. Actualización UX navegación (2026-05-29)
+
+- Selector de idioma en guías corregido: ya no redirige a la home del idioma; mantiene la guía equivalente.
+- Hubs de guías ajustados para mostrar solo 3 guías reales; sin placeholders de futuro.
+- Menú/header unificado con estructura ES en todos los idiomas, sin reintroducir `Reformas` ni enlaces extra.
+- `public/sitemap.xml` y `public/robots.txt` permanecen sin cambios.
 ```
 
 Enlace roto detectado en auditoria original:

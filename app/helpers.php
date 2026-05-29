@@ -335,6 +335,14 @@ if (!function_exists('localized_equivalent_url')) {
             }
         }
 
+        if (function_exists('localized_guide_equivalent_paths')) {
+            foreach (localized_guide_equivalent_paths() as $paths) {
+                if (in_array($path, $paths, true)) {
+                    return $paths[$targetLang] ?? (localized_hub_url($targetLang, 'guides') ?? $fallbackHome);
+                }
+            }
+        }
+
         foreach (localized_locality_prefixes() as $prefix) {
             $pattern = '~^' . preg_quote($prefix, '~') . '([a-z0-9-]+)/$~';
             if (!preg_match($pattern, $path, $matches)) {
@@ -379,38 +387,14 @@ if (!function_exists('localized_hreflang_links_html')) {
 
 if (!function_exists('primary_nav_items')) {
     function primary_nav_items(string $lang): array {
-        if ($lang === 'es') {
-            return [
-                ['label' => 'Inicio', 'href' => '/es/'],
-                ['label' => 'Método', 'href' => '/es/#metodo'],
-                ['label' => 'Nosotros', 'href' => '/es/#nosotros'],
-                ['label' => 'Zona', 'href' => '/es/#zona'],
-                ['label' => 'FAQ', 'href' => '/es/#faq'],
-                ['label' => 'Contacto', 'href' => '/es/#contacto'],
-            ];
-        }
-
-        $items = [
+        return [
             ['label' => t('nav.home', 'Inicio'), 'href' => lang_url($lang)],
-            ['label' => t('nav.method', 'Metodo'), 'href' => lang_url($lang) . '#metodo'],
+            ['label' => t('nav.method', 'Método'), 'href' => lang_url($lang) . '#metodo'],
+            ['label' => t('nav.about', 'Nosotros'), 'href' => lang_url($lang) . '#nosotros'],
+            ['label' => t('nav.coverage', 'Zona'), 'href' => lang_url($lang) . '#zona'],
+            ['label' => t('nav.faq', 'FAQ'), 'href' => lang_url($lang) . '#faq'],
+            ['label' => t('nav.contact', 'Contacto'), 'href' => lang_url($lang) . '#contacto'],
         ];
-
-        if ($services = localized_hub_url($lang, 'services')) {
-            $items[] = ['label' => t('nav.services', 'Servicios'), 'href' => $services];
-        }
-
-        if ($zones = localized_hub_url($lang, 'zones')) {
-            $items[] = ['label' => t('nav.zones', 'Zonas'), 'href' => $zones];
-        }
-
-        if ($guides = localized_hub_url($lang, 'guides')) {
-            $items[] = ['label' => t('nav.guides', 'Guias'), 'href' => $guides];
-        }
-
-        $items[] = ['label' => t('nav.faq', 'FAQ'), 'href' => lang_url($lang) . '#faq'];
-        $items[] = ['label' => t('nav.contact', 'Contacto'), 'href' => lang_url($lang) . '#contacto'];
-
-        return $items;
     }
 }
 

@@ -272,6 +272,12 @@ Nuevo cierre de la rama `fix/legacy-php-dev-stabilization` para la fase de guía
 - `public/sitemap.xml` y `public/robots.txt` sin cambios.
 - Scripts temporales de validación eliminados tras el cierre.
 
+## 15. Actualización UX navegación (2026-05-29)
+
+- Selector de idioma en guías validado 18/18: todos los enlaces `lang-link` apuntan a la guía equivalente por idioma.
+- Hubs de guías 6/6 con 3 tarjetas reales y 0 apariciones de `Próximamente`/`Coming soon`/equivalentes y 0 `cta.read`.
+- Menú principal validado en homes, hubs, servicios y guías: misma estructura de ES en EN/DE/NL/RU/NO, sin `Reformas` y sin enlaces extra.
+
 ### Sesiones 1–5
 Ninguna modificación de código. Auditoría pura.
 

@@ -26,3 +26,10 @@
 - Service-to-guide interlinking: validated 30/30.
 - Sitemap and robots: unchanged in this pass.
 - Turnstile: untouched.
+
+## UX navigation update (2026-05-29)
+- Language switch in guide pages is now contextual: switching language keeps users on the equivalent guide path, not the language home.
+- Guides hubs now render only the 3 real guides in each language.
+- Future placeholder cards were removed from guide hubs.
+- `Próximamente` / `Coming soon` variants and `cta.read` were removed from guides hubs.
+- Header menu structure is now aligned with ES in all languages (same count/order/structure; localized labels and localized URLs).
