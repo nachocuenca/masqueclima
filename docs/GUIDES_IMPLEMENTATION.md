@@ -33,3 +33,6 @@
 - Future placeholder cards were removed from guide hubs.
 - `Próximamente` / `Coming soon` variants and `cta.read` were removed from guides hubs.
 - Header menu structure is now aligned with ES in all languages (same count/order/structure; localized labels and localized URLs).
+
+## Final SEO readiness reference
+- Final production-readiness SEO verdict and risk matrix are documented in `docs/FINAL_SEO_PRODUCTION_READINESS_AUDIT.md`.

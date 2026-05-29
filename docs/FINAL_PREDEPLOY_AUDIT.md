@@ -17,6 +17,8 @@ No hay P0/P1 tecnicos abiertos tras activar `/politica-de-cookies`. La pagina le
 
 Veredicto: apto para commit/revision dev. No apto para subida final a Nicalia hasta revisar legalmente la politica de cookies y actualizar sitemap segun alcance aprobado.
 
+Addendum 2026-05-29: ver `docs/FINAL_SEO_PRODUCTION_READINESS_AUDIT.md` para el dictamen final de readiness SEO, validación de no-regresión sobre home legacy y checklist mínimo previo a dominio bueno.
+
 ## 2. Estado git
 
 Estado inicial de Fase 0:

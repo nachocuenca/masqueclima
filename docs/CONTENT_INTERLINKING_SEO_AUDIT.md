@@ -9,9 +9,11 @@
 ## 7. Actualización 2026-05-29
 
 - Guías: 18/18 URLs validadas con 200, canonical correcto, 7 hreflang, og/twitter image, BlogPosting, FAQPage, BreadcrumbList y `mainEntityOfPage`.
-- Hubs de guías: 6/6 con tres tarjetas enlazando a guías reales, dos tarjetas de futuro, CTA localizada y sin `cta.read`.
+- Hubs de guías: 6/6 con tres tarjetas enlazando a guías reales, sin tarjetas de futuro y sin `cta.read`.
 - Servicios: 30/30 páginas con un enlace localizado a la guía relacionada esperada, sin duplicados visibles y sin leaks visibles en no-ES.
 - Temporales: los scripts de validación se eliminaron tras la comprobación.
+
+Referencia de cierre: ver `docs/FINAL_SEO_PRODUCTION_READINESS_AUDIT.md` para el dictamen final de salida a dominio bueno.
 
 ## 1. RESUMEN EJECUTIVO
 

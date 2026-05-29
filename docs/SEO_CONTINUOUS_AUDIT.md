@@ -26,6 +26,12 @@ Auditoría SEO continua en dev local.
 
 ---
 
+## Addendum 2026-05-29
+
+Final production-readiness SEO decision, P0/P1/P2/P3 classification and deployment checklist are consolidated in `docs/FINAL_SEO_PRODUCTION_READINESS_AUDIT.md`.
+
+---
+
 ## 1. Homes (6 idiomas)
 
 | URL | Status | Title | H1 | hreflang | canonical | Dev leak |
