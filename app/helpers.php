@@ -210,6 +210,36 @@ if (!function_exists('localized_locality_prefixes')) {
     }
 }
 
+if (!function_exists('nearby_locality_slugs')) {
+    function nearby_locality_slugs(string $slug): array {
+        $map = [
+            'benidorm'           => ['altea', 'finestrat', 'la-nucia', 'villajoyosa', 'albir'],
+            'altea'              => ['benidorm', 'calpe', 'albir', 'alfaz-del-pi', 'la-nucia'],
+            'calpe'              => ['altea', 'benidorm', 'finestrat', 'la-nucia', 'albir'],
+            'finestrat'          => ['benidorm', 'la-nucia', 'villajoyosa', 'altea', 'polop'],
+            'la-nucia'           => ['benidorm', 'altea', 'polop', 'alfaz-del-pi', 'finestrat'],
+            'guadalest'          => ['polop', 'benimantell', 'benifato', 'beniarda', 'confrides'],
+            'villajoyosa'        => ['benidorm', 'finestrat', 'orxeta', 'relleu', 'altea'],
+            'albir'              => ['altea', 'alfaz-del-pi', 'la-nucia', 'benidorm', 'calpe'],
+            'alfaz-del-pi'       => ['albir', 'la-nucia', 'altea', 'benidorm', 'polop'],
+            'beniarda'           => ['guadalest', 'polop', 'callosa-den-sarria', 'benimantell', 'confrides'],
+            'benifato'           => ['guadalest', 'callosa-den-sarria', 'relleu', 'benimantell', 'polop'],
+            'benimantell'        => ['guadalest', 'benifato', 'callosa-den-sarria', 'beniarda', 'polop'],
+            'bolulla'            => ['callosa-den-sarria', 'tarbena', 'polop', 'guadalest', 'la-nucia'],
+            'callosa-den-sarria' => ['polop', 'la-nucia', 'guadalest', 'benimantell', 'bolulla'],
+            'confrides'          => ['guadalest', 'beniarda', 'callosa-den-sarria', 'polop', 'benimantell'],
+            'orxeta'             => ['relleu', 'villajoyosa', 'finestrat', 'sella', 'benidorm'],
+            'polop'              => ['la-nucia', 'callosa-den-sarria', 'finestrat', 'alfaz-del-pi', 'guadalest'],
+            'relleu'             => ['orxeta', 'sella', 'villajoyosa', 'finestrat', 'benidorm'],
+            'sella'              => ['relleu', 'orxeta', 'guadalest', 'villajoyosa', 'benidorm'],
+            'tarbena'            => ['bolulla', 'callosa-den-sarria', 'guadalest', 'benimantell', 'polop'],
+        ];
+        $default = ['benidorm', 'altea', 'calpe', 'finestrat', 'la-nucia'];
+        $neighbors = $map[$slug] ?? $default;
+        return array_values(array_filter($neighbors, fn($s) => $s !== $slug));
+    }
+}
+
 if (!function_exists('localized_snapshot_name_for_path')) {
     function localized_snapshot_name_for_path(string $path): string {
         $trimmed = trim($path, '/');

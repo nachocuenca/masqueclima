@@ -1340,6 +1340,15 @@ function render_service_detail_body(array $service, string $lang = 'es'): string
     ],
   ];
   $serviceUi = $uiLabels[$lang] ?? $uiLabels['es'];
+  $guidesUrl  = localized_hub_url($lang, 'guides');
+  $guidesLabel = match ($lang) {
+    'en'    => 'Guides',
+    'de'    => 'Ratgeber',
+    'nl'    => 'Gidsen',
+    'ru'    => '&#1043;&#1080;&#1076;&#1099;',
+    'no'    => 'Guider',
+    default => 'Gu&iacute;as de climatizaci&oacute;n',
+  };
   ob_start();
   include __DIR__ . '/../views/service_detail.php';
   return (string) ob_get_clean();
@@ -1601,6 +1610,13 @@ function hub_zones_body(array $page): string {
     $items .= '<a class="hub-pill" href="' . $url . '">' . $name . '</a>' . "\n";
   }
 
+  $svcPaths = localized_service_equivalent_paths();
+  $svcLabels = locality_service_link_labels()['es'];
+  $esServicePills = '';
+  foreach (['installation', 'maintenance', 'repair', 'heat_pump', 'solar_thermal'] as $key) {
+    $esServicePills .= '<a class="hub-pill" href="' . $svcPaths[$key]['es'] . '">' . $svcLabels[$key] . '</a>' . "\n";
+  }
+
   return <<<HTML
 {$styles}
 {$intro}
@@ -1628,6 +1644,16 @@ function hub_zones_body(array $page): string {
     <p class="hub-kicker">Prioridad local</p>
     <h2 class="section-title" id="zonas-contexto">Benidorm, Marina Baixa y Costa Blanca norte</h2>
     <p class="hub-muted">Cada zona tiene necesidades distintas: apartamentos tur&iacute;sticos en Benidorm, viviendas cerca del mar en Altea y Calpe, obra nueva en Finestrat o chalets en La Nuc&iacute;a. Adaptamos la soluci&oacute;n a cada vivienda y a cada uso.</p>
+  </div>
+</section>
+<section class="hub-section" aria-labelledby="zonas-servicios">
+  <div class="container">
+    <p class="hub-kicker">Servicios</p>
+    <h2 class="section-title" id="zonas-servicios">Servicios de climatizaci&oacute;n disponibles</h2>
+    <div class="hub-links">
+      {$esServicePills}
+      <a class="hub-pill" href="/es/servicios/">Todos los servicios</a>
+    </div>
   </div>
 </section>
 HTML;
@@ -1766,6 +1792,53 @@ function locality_display_names(): array {
   ];
 }
 
+function locality_service_link_labels(): array {
+  return [
+    'es' => [
+      'installation'  => 'Instalaci&oacute;n de aire acondicionado',
+      'maintenance'   => 'Mantenimiento de climatizaci&oacute;n',
+      'repair'        => 'Reparaci&oacute;n de aire acondicionado',
+      'heat_pump'     => 'Aerotermia y bomba de calor',
+      'solar_thermal' => 'Energ&iacute;a solar t&eacute;rmica',
+    ],
+    'en' => [
+      'installation'  => 'Air conditioning installation',
+      'maintenance'   => 'Climate control maintenance',
+      'repair'        => 'Air conditioning repair',
+      'heat_pump'     => 'Heat pump &amp; aerothermal',
+      'solar_thermal' => 'Solar thermal energy',
+    ],
+    'de' => [
+      'installation'  => 'Klimaanlagen-Installation',
+      'maintenance'   => 'Klimaanlagen-Wartung',
+      'repair'        => 'Klimaanlagen-Reparatur',
+      'heat_pump'     => 'W&auml;rmepumpe &amp; Aerothermie',
+      'solar_thermal' => 'Solarthermie',
+    ],
+    'nl' => [
+      'installation'  => 'Airco-installatie',
+      'maintenance'   => 'Klimaatbeheersing-onderhoud',
+      'repair'        => 'Airco-reparatie',
+      'heat_pump'     => 'Warmtepomp &amp; aerothermie',
+      'solar_thermal' => 'Zonneboiler &amp; zonne-energie',
+    ],
+    'ru' => [
+      'installation'  => '&#1059;&#1089;&#1090;&#1072;&#1085;&#1086;&#1074;&#1082;&#1072; &#1082;&#1086;&#1085;&#1076;&#1080;&#1094;&#1080;&#1086;&#1085;&#1077;&#1088;&#1072;',
+      'maintenance'   => '&#1054;&#1073;&#1089;&#1083;&#1091;&#1078;&#1080;&#1074;&#1072;&#1085;&#1080;&#1077; &#1082;&#1086;&#1085;&#1076;&#1080;&#1094;&#1080;&#1086;&#1085;&#1077;&#1088;&#1086;&#1074;',
+      'repair'        => '&#1056;&#1077;&#1084;&#1086;&#1085;&#1090; &#1082;&#1086;&#1085;&#1076;&#1080;&#1094;&#1080;&#1086;&#1085;&#1077;&#1088;&#1086;&#1074;',
+      'heat_pump'     => '&#1058;&#1077;&#1087;&#1083;&#1086;&#1074;&#1086;&#1081; &#1085;&#1072;&#1089;&#1086;&#1089;',
+      'solar_thermal' => '&#1057;&#1086;&#1083;&#1085;&#1077;&#1095;&#1085;&#1099;&#1077; &#1082;&#1086;&#1083;&#1083;&#1077;&#1082;&#1090;&#1086;&#1088;&#1099;',
+    ],
+    'no' => [
+      'installation'  => 'Installasjon av aircondition',
+      'maintenance'   => 'Vedlikehold av klimaanlegg',
+      'repair'        => 'Reparasjon av aircondition',
+      'heat_pump'     => 'Varmepumpe &amp; aerotermi',
+      'solar_thermal' => 'Solvarme',
+    ],
+  ];
+}
+
 function patch_nonES_locality_seo(string $html, string $path, string $lang): string {
   if ($lang === 'es') {
     return $html;
@@ -1808,7 +1881,19 @@ function patch_nonES_locality_seo(string $html, string $path, string $lang): str
   $meta      = sprintf($metas[$lang], $city);
   $canonical = 'https://masqueclima.es' . $path;
 
-  return patch_snapshot_seo_meta($html, $title, $meta, $canonical);
+  $html = patch_snapshot_seo_meta($html, $title, $meta, $canonical);
+
+  if (!str_contains($html, 'locality-links-block')) {
+    $block = build_locality_links_block($lang, $slug, $city);
+    $needle = '<section class="zona" id="zona">';
+    if (str_contains($html, $needle)) {
+      $html = str_replace($needle, $block . "\n" . $needle, $html);
+    } else {
+      $html = str_replace('</main>', $block . "\n</main>", $html);
+    }
+  }
+
+  return $html;
 }
 
 function patch_es_p1_location_page(string $html, string $path, string $lang): string {
@@ -2094,7 +2179,12 @@ function insert_p1_internal_links(string $html, array $page): string {
     <h2>Servicios y zonas relacionadas con {$city}</h2>
     <p>Si est&aacute;s comparando opciones, revisa nuestros servicios principales y el mapa completo de cobertura. Tambi&eacute;n atendemos zonas cercanas con la misma estructura de presupuesto, instalaci&oacute;n y postventa.</p>
     <div class="mb-2">
-      <a class="p1-pill" href="/es/servicios/">Servicios de climatizaci&oacute;n</a>
+      <a class="p1-pill" href="/es/servicios/instalacion-aire-acondicionado/">Instalaci&oacute;n de aire acondicionado</a>
+      <a class="p1-pill" href="/es/servicios/mantenimiento-climatizacion/">Mantenimiento de climatizaci&oacute;n</a>
+      <a class="p1-pill" href="/es/servicios/reparacion-aire-acondicionado/">Reparaci&oacute;n de aire acondicionado</a>
+      <a class="p1-pill" href="/es/servicios/aerotermia-bomba-calor/">Aerotermia y bomba de calor</a>
+      <a class="p1-pill" href="/es/servicios/energia-solar-termica/">Energ&iacute;a solar t&eacute;rmica</a>
+      <a class="p1-pill" href="/es/servicios/">Todos los servicios</a>
       <a class="p1-pill" href="/es/zonas/">Todas las zonas</a>
       {$nearby}
     </div>
@@ -2111,6 +2201,92 @@ HTML;
   return str_replace('</main>', $block . "\n</main>", $html);
 }
 
+
+// ──────────────────────────────────────────────────
+// NON-ES LOCALITY LINKS BLOCK
+// ──────────────────────────────────────────────────
+
+function build_locality_links_block(string $lang, string $slug, string $city): string {
+  $serviceUrls    = localized_service_equivalent_paths();
+  $svcLabelMap    = locality_service_link_labels();
+  $serviceLabels  = $svcLabelMap[$lang] ?? $svcLabelMap['en'];
+  $urlPrefix      = localized_locality_prefixes()[$lang] ?? '/es/aire-acondicionado-';
+  $servicesHubUrl = e(localized_hub_url($lang, 'services') ?? '#');
+  $zonesHubUrl    = e(localized_hub_url($lang, 'zones') ?? '#');
+  $displayNames   = locality_display_names();
+
+  $servicePills = '';
+  foreach (['installation', 'maintenance', 'repair', 'heat_pump', 'solar_thermal'] as $key) {
+    $url   = e($serviceUrls[$key][$lang] ?? '#');
+    $label = $serviceLabels[$key] ?? $key;
+    $servicePills .= '<a class="loc-pill" href="' . $url . '">' . $label . '</a>' . "\n";
+  }
+
+  $nearbyPills = '';
+  foreach (array_slice(nearby_locality_slugs($slug), 0, 3) as $nearbySlug) {
+    $url  = e($urlPrefix . $nearbySlug . '/');
+    $name = $displayNames[$nearbySlug] ?? ucwords(str_replace('-', ' ', $nearbySlug));
+    $nearbyPills .= '<a class="loc-pill" href="' . $url . '">' . $name . '</a>' . "\n";
+  }
+
+  $sectionTitle = match ($lang) {
+    'en'    => 'Climate services in ' . $city,
+    'de'    => 'Klimadienste in ' . $city,
+    'nl'    => 'Klimaatdiensten in ' . $city,
+    'ru'    => '&#1059;&#1089;&#1083;&#1091;&#1075;&#1080; &#1074; ' . $city,
+    'no'    => 'Klimatjenester i ' . $city,
+    default => 'Servicios de climatizaci&oacute;n en ' . $city,
+  };
+  $nearbyTitle = match ($lang) {
+    'en'    => 'Nearby areas',
+    'de'    => 'Benachbarte Orte',
+    'nl'    => 'Nabijgelegen gebieden',
+    'ru'    => '&#1057;&#1086;&#1089;&#1077;&#1076;&#1085;&#1080;&#1077; &#1088;&#1072;&#1081;&#1086;&#1085;&#1099;',
+    'no'    => 'Naboromr&aring;der',
+    default => 'Localidades cercanas',
+  };
+  $allZonesLabel = match ($lang) {
+    'en'    => 'All areas',
+    'de'    => 'Alle Gebiete',
+    'nl'    => 'Alle gebieden',
+    'ru'    => '&#1042;&#1089;&#1077; &#1088;&#1072;&#1081;&#1086;&#1085;&#1099;',
+    'no'    => 'Alle omr&aring;der',
+    default => 'Todas las zonas',
+  };
+  $ctaLabel = match ($lang) {
+    'en'    => 'Get a quote',
+    'de'    => 'Angebot anfordern',
+    'nl'    => 'Offerte aanvragen',
+    'ru'    => '&#1047;&#1072;&#1087;&#1088;&#1086;&#1089;&#1080;&#1090;&#1100; &#1087;&#1088;&#1077;&#1076;&#1083;&#1086;&#1078;&#1077;&#1085;&#1080;&#1077;',
+    'no'    => 'F&aring; tilbud',
+    default => 'Pedir presupuesto',
+  };
+
+  return <<<HTML
+<section class="container py-4 locality-links-block" id="locality-servicios">
+  <style>
+    .locality-links-block{border-top:1px solid #edf2f7;border-bottom:1px solid #edf2f7;}
+    .locality-links-block .loc-box{background:#f7faff;border:1px solid #e4edf8;border-radius:14px;padding:22px;}
+    .locality-links-block h2{font-size:1.25rem;font-weight:800;color:#142033;margin-bottom:.7rem;}
+    .locality-links-block h3{font-size:1rem;font-weight:700;color:#425466;margin:.8rem 0 .4rem;}
+    .loc-pill{display:inline-flex;margin:.25rem .35rem .25rem 0;border:1px solid #d5e3f2;border-radius:999px;padding:.42rem .7rem;background:#fff;color:#12324f;font-weight:700;text-decoration:none;}
+    .loc-pill:hover{border-color:#0074e8;color:#0074e8;background:#fff;}
+  </style>
+  <div class="loc-box">
+    <h2>{$sectionTitle}</h2>
+    <div class="mb-2">
+      {$servicePills}
+    </div>
+    <h3>{$nearbyTitle}</h3>
+    <div class="mb-3">
+      <a class="loc-pill" href="{$zonesHubUrl}">{$allZonesLabel}</a>
+      {$nearbyPills}
+    </div>
+    <a class="btn btn-primary js-track" data-ev="cta_quote_locality" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote" aria-controls="quoteModal">{$ctaLabel}</a>
+  </div>
+</section>
+HTML;
+}
 
 // ──────────────────────────────────────────────────
 // MULTILINGUAL HUB + SERVICE PAGE RENDERING
@@ -2409,6 +2585,41 @@ function lang_hub_areas_body(array $page, string $lang): string {
   }
   $allPills = lang_all_locality_pills_html($lang);
 
+  $svcUrls2       = localized_service_equivalent_paths();
+  $svcLabelMap2   = locality_service_link_labels();
+  $svcLabels2     = $svcLabelMap2[$lang] ?? $svcLabelMap2['en'];
+  $svcHubUrl2     = e(localized_hub_url($lang, 'services') ?? '#');
+  $langServicePills = '';
+  foreach (['installation', 'maintenance', 'repair', 'heat_pump', 'solar_thermal'] as $key) {
+    $url   = e($svcUrls2[$key][$lang] ?? '#');
+    $label = $svcLabels2[$key] ?? $key;
+    $langServicePills .= '<a class="hub-pill" href="' . $url . '">' . $label . '</a>' . "\n";
+  }
+  $svcSectionKicker = match ($lang) {
+    'en'    => 'Services',
+    'de'    => 'Leistungen',
+    'nl'    => 'Diensten',
+    'ru'    => '&#1059;&#1089;&#1083;&#1091;&#1075;&#1080;',
+    'no'    => 'Tjenester',
+    default => 'Servicios',
+  };
+  $svcSectionH2 = match ($lang) {
+    'en'    => 'Services available in these areas',
+    'de'    => 'Verf&uuml;gbare Leistungen in diesen Gebieten',
+    'nl'    => 'Beschikbare diensten in deze gebieden',
+    'ru'    => '&#1044;&#1086;&#1089;&#1090;&#1091;&#1087;&#1085;&#1099;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080; &#1074; &#1101;&#1090;&#1080;&#1093; &#1088;&#1072;&#1081;&#1086;&#1085;&#1072;&#1093;',
+    'no'    => 'Tilgjengelige tjenester i disse omr&aring;dene',
+    default => 'Servicios disponibles en estas zonas',
+  };
+  $allServicesLabelAreas = match ($lang) {
+    'en'    => 'All services',
+    'de'    => 'Alle Leistungen',
+    'nl'    => 'Alle diensten',
+    'ru'    => '&#1042;&#1089;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+    'no'    => 'Alle tjenester',
+    default => 'Todos los servicios',
+  };
+
   return <<<HTML
 {$styles}
 {$intro}
@@ -2438,6 +2649,16 @@ function lang_hub_areas_body(array $page, string $lang): string {
     <p class="hub-muted">{$contextP}</p>
   </div>
 </section>
+<section class="hub-section" aria-labelledby="lang-areas-services">
+  <div class="container">
+    <p class="hub-kicker">{$svcSectionKicker}</p>
+    <h2 class="section-title" id="lang-areas-services">{$svcSectionH2}</h2>
+    <div class="hub-links">
+      {$langServicePills}
+      <a class="hub-pill" href="{$svcHubUrl2}">{$allServicesLabelAreas}</a>
+    </div>
+  </div>
+</section>
 HTML;
 }
 
@@ -2450,6 +2671,49 @@ function lang_hub_guides_body(array $page, string $lang): string {
   $styles = hub_styles();
   $intro = hub_intro($h1, $introText, hub_visual_options($page));
 
+  $svcUrls3       = localized_service_equivalent_paths();
+  $svcLabelMap3   = locality_service_link_labels();
+  $svcLabels3     = $svcLabelMap3[$lang] ?? $svcLabelMap3['en'];
+  $guidesSvcHubUrl = e(localized_hub_url($lang, 'services') ?? '#');
+  $guidesSvcPills = '';
+  foreach (['installation', 'maintenance', 'repair', 'heat_pump', 'solar_thermal'] as $key) {
+    $url   = e($svcUrls3[$key][$lang] ?? '#');
+    $label = $svcLabels3[$key] ?? $key;
+    $guidesSvcPills .= '<a class="hub-pill" href="' . $url . '">' . $label . '</a>' . "\n";
+  }
+  $guidesRelatedKicker = match ($lang) {
+    'en'    => 'Related',
+    'de'    => 'Verwandt',
+    'nl'    => 'Gerelateerd',
+    'ru'    => '&#1057;&#1074;&#1103;&#1079;&#1072;&#1085;&#1085;&#1099;&#1077;',
+    'no'    => 'Relatert',
+    default => 'Relacionado',
+  };
+  $guidesRelatedH2 = match ($lang) {
+    'en'    => 'Related services',
+    'de'    => 'Verwandte Leistungen',
+    'nl'    => 'Gerelateerde diensten',
+    'ru'    => '&#1057;&#1074;&#1103;&#1079;&#1072;&#1085;&#1085;&#1099;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+    'no'    => 'Relaterte tjenester',
+    default => 'Servicios relacionados',
+  };
+  $guidesRelatedP = match ($lang) {
+    'en'    => 'Discover our climate control services for homes and businesses on the Costa Blanca.',
+    'de'    => 'Entdecken Sie unsere Klimaanlagen-Leistungen f&uuml;r Haushalte und Unternehmen an der Costa Blanca.',
+    'nl'    => 'Ontdek onze klimaatdiensten voor woningen en bedrijven aan de Costa Blanca.',
+    'ru'    => '&#1054;&#1090;&#1082;&#1088;&#1086;&#1081;&#1090;&#1077; &#1085;&#1072;&#1096;&#1080; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080; &#1082;&#1083;&#1080;&#1084;&#1072;&#1090;&#1080;&#1079;&#1072;&#1094;&#1080;&#1080; &#1076;&#1083;&#1103; &#1076;&#1086;&#1084;&#1086;&#1074; &#1080; &#1087;&#1088;&#1077;&#1076;&#1087;&#1088;&#1080;&#1103;&#1090;&#1080;&#1081; &#1085;&#1072; Costa Blanca.',
+    'no'    => 'Utforsk v&aring;re klimatjenester for boliger og bedrifter p&aring; Costa Blanca.',
+    default => 'Descubre nuestros servicios de climatizaci&oacute;n para viviendas y negocios en la Costa Blanca.',
+  };
+  $guidesAllServicesLabel = match ($lang) {
+    'en'    => 'All services',
+    'de'    => 'Alle Leistungen',
+    'nl'    => 'Alle diensten',
+    'ru'    => '&#1042;&#1089;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+    'no'    => 'Alle tjenester',
+    default => 'Todos los servicios',
+  };
+
   return <<<HTML
 {$styles}
 {$intro}
@@ -2458,6 +2722,17 @@ function lang_hub_guides_body(array $page, string $lang): string {
     <p class="hub-kicker">{$kicker}</p>
     <h2 class="section-title" id="lang-guides-list">{$h2}</h2>
     <p class="hub-muted">{$p}</p>
+  </div>
+</section>
+<section class="hub-section alt" aria-labelledby="lang-guides-services">
+  <div class="container">
+    <p class="hub-kicker">{$guidesRelatedKicker}</p>
+    <h2 class="section-title" id="lang-guides-services">{$guidesRelatedH2}</h2>
+    <p class="hub-muted">{$guidesRelatedP}</p>
+    <div class="hub-links">
+      {$guidesSvcPills}
+      <a class="hub-pill" href="{$guidesSvcHubUrl}">{$guidesAllServicesLabel}</a>
+    </div>
   </div>
 </section>
 HTML;

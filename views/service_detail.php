@@ -98,6 +98,9 @@ $relatedServices = array_filter($otherServices, fn($s) => $s[1] !== $currentPath
     <div class="hub-links">
       <a class="hub-pill" href="<?= $servicesHubUrl ?>"><?= $serviceUi['all_services'] ?></a>
       <a class="hub-pill" href="<?= $zonesHubUrl ?>"><?= $serviceUi['all_zones'] ?></a>
+      <?php if (!empty($guidesUrl)): ?>
+        <a class="hub-pill" href="<?= e($guidesUrl) ?>"><?= $guidesLabel ?></a>
+      <?php endif; ?>
       <?php foreach ($priorityZones as [$name, $url]): ?>
         <a class="hub-pill" href="<?= $url ?>"><?= $name ?></a>
       <?php endforeach; ?>
