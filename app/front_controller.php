@@ -2026,7 +2026,7 @@ function patch_es_p1_location_page(string $html, string $path, string $lang): st
   $page = $pages[$path];
   $html = patch_snapshot_seo_meta($html, $page['title'], $page['description'], 'https://masqueclima.es' . $path);
 
-  if (!str_contains($html, '/es/servicios/')) {
+  if (!str_contains($html, 'p1-internal-links')) {
     $html = insert_p1_internal_links($html, $page);
   }
 
@@ -2338,6 +2338,17 @@ function lang_hub_services_body(array $page, string $lang): string {
   $intro = hub_intro($h1, $introText, hub_visual_options($page));
   $serviceCards = lang_service_cards_html($lang);
   $miniMap = render_partial('zone_visual', ['variant' => 'mini']);
+  if ($lang !== 'es') {
+    $langPrefix = match ($lang) {
+      'en'    => '/en/air-conditioning-',
+      'de'    => '/de/klimaanlage-',
+      'nl'    => '/nl/airco-',
+      'ru'    => '/ru/konditsioner-',
+      'no'    => '/no/aircondition-',
+      default => '/es/aire-acondicionado-',
+    };
+    $miniMap = str_replace('href="/es/aire-acondicionado-', 'href="' . $langPrefix, $miniMap);
+  }
   $localityPills = lang_locality_pills_html($lang);
   $zonesHubUrl = e(localized_hub_url($lang, 'zones') ?? '#');
 
@@ -2385,6 +2396,17 @@ function lang_hub_areas_body(array $page, string $lang): string {
   $styles = hub_styles();
   $intro = hub_intro($h1, $introText, hub_visual_options($page));
   $zoneMap = render_partial('zone_visual');
+  if ($lang !== 'es') {
+    $langPrefix = match ($lang) {
+      'en'    => '/en/air-conditioning-',
+      'de'    => '/de/klimaanlage-',
+      'nl'    => '/nl/airco-',
+      'ru'    => '/ru/konditsioner-',
+      'no'    => '/no/aircondition-',
+      default => '/es/aire-acondicionado-',
+    };
+    $zoneMap = str_replace('href="/es/aire-acondicionado-', 'href="' . $langPrefix, $zoneMap);
+  }
   $allPills = lang_all_locality_pills_html($lang);
 
   return <<<HTML
