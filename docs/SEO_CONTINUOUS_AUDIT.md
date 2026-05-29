@@ -187,9 +187,19 @@ Todas las localidades ES 20/20 OK.
 | Locality heroes (20) | `/assets/img/localidades/heroes/hero-localidad-{slug}.webp` | 200 ✅ (todos 20) |
 | og:image | `/assets/img/og.jpg` | Verificado como genérico global |
 
-**Nota P2:** `og:image` es la misma imagen genérica (`og.jpg`) para todas las páginas, incluyendo
-localidades y servicios. No es un error funcional, pero reduce el CTR en redes sociales.
-Recomendado a futuro: og:image por tipo de página.
+**Nota P2 → RESUELTO (Sesión 6, 2026-05-28):** `og:image` ya no es genérica para localidades ni hubs/servicios. Se implementó `patch_og_image_meta()` + `patch_snapshot_og_image()` + integración en `patch_lang_hub_head()` + `patch_es_hub_head()`. Ver `docs/OG_IMAGE_REFINEMENT.md`.
+
+| Tipo de página | og:image | Validado |
+|----------------|----------|----------|
+| Home (6 langs) | `og.jpg` (genérico) | ✅ correcto |
+| Hub servicios (6 langs) | `heroes/hub-servicios-climatizacion.webp` | ✅ |
+| Hub zonas (6 langs) | `heroes/hub-zonas-marina-baixa.webp` | ✅ |
+| Hub guías (6 langs) | `heroes/hub-guias-climatizacion.webp` | ✅ |
+| Servicios detalle (ES+non-ES) | imagen de servicio específica | ✅ |
+| Localidades (120 URLs) | `hero-localidad-{slug}.webp` | ✅ |
+| Legales (18 URLs) | `og.jpg` (genérico) | ✅ aceptable |
+
+`og:image == twitter:image` en todos los casos ✅
 
 ---
 
@@ -239,14 +249,25 @@ Ninguno.
 Ninguno.
 
 ### P2 — Mejoras recomendadas
-- Turnstile sin activar — falta claves reales del dashboard Cloudflare.
-- `og:image` genérica en todas las páginas (no por localidad ni servicio).
+- ~~Turnstile sin activar~~ → **RESUELTO Sesión 5** — activado en VPS dev con claves reales, `sent=1` confirmado por usuario.
+- ~~`og:image` genérica en todas las páginas~~ → **RESUELTO Sesión 6** — og:image específica por localidad, hub y servicio. Solo homes y legales mantienen `og.jpg` (correcto).
 
 ### P3 — Cosmético
 - Comentarios HTML en español en snapshots no-ES (heredados, no visibles).
 
 ---
 
-## 13. Archivos modificados esta sesión
+## 13. Archivos modificados
 
-Ninguno. Esta sesión fue exclusivamente de auditoría.
+### Sesiones 1–5
+Ninguna modificación de código. Auditoría pura.
+
+### Sesión 6 — 2026-05-28
+| Archivo | Cambio |
+|---------|--------|
+| `app/front_controller.php` | +34 líneas: `patch_og_image_meta()`, `patch_snapshot_og_image()`, integración en `patch_lang_hub_head()` y `patch_es_hub_head()` |
+| `docs/TURNSTILE_RUNTIME_AUDIT.md` | Sección 8 completada con resultados validación Turnstile VPS |
+
+PhP lint: `No syntax errors detected` ✅  
+Sitemap: 0 diff ✅  
+Robots: 0 diff ✅

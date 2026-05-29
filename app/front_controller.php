@@ -178,6 +178,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_es_p1_location_page($html, $path, $lang);
   $html = patch_nonES_locality_seo($html, $path, $lang);
   $html = patch_locality_hero_image($html, $path, $lang);
+  $html = patch_snapshot_og_image($html, $path, $lang);
 
   $html = patch_snapshot_home_hero($html, $path, $lang);
 
@@ -1366,6 +1367,9 @@ function patch_es_hub_head(string $html, array $page, string $path): string {
   $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
   $html = patch_es_hub_hero_preload($html, $page);
+  if (!empty($page['hero_image'])) {
+    $html = patch_og_image_meta($html, 'https://masqueclima.es' . $page['hero_image']);
+  }
   $html = str_replace('</head>', localized_hreflang_links_html($path) . es_page_jsonld($path, $page) . "\n</head>", $html);
 
   return $html;
@@ -2029,6 +2033,33 @@ function patch_es_p1_location_page(string $html, string $path, string $lang): st
   return $html;
 }
 
+function patch_og_image_meta(string $html, string $absoluteUrl): string {
+  $html = preg_replace('/<meta property="og:image" content="[^"]*">/i', '<meta property="og:image" content="' . $absoluteUrl . '">', $html, 1) ?? $html;
+  $html = preg_replace('/<meta name="twitter:image" content="[^"]*">/i', '<meta name="twitter:image" content="' . $absoluteUrl . '">', $html, 1) ?? $html;
+  return $html;
+}
+
+function patch_snapshot_og_image(string $html, string $path, string $lang): string {
+  $patterns = [
+    'es' => '~^/es/aire-acondicionado-([a-z0-9-]+)/$~',
+    'en' => '~^/en/air-conditioning-([a-z0-9-]+)/$~',
+    'de' => '~^/de/klimaanlage-([a-z0-9-]+)/$~',
+    'nl' => '~^/nl/airco-([a-z0-9-]+)/$~',
+    'ru' => '~^/ru/konditsioner-([a-z0-9-]+)/$~',
+    'no' => '~^/no/aircondition-([a-z0-9-]+)/$~',
+  ];
+  $pattern = $patterns[$lang] ?? null;
+  if ($pattern === null || !preg_match($pattern, $path, $m)) {
+    return $html;
+  }
+  $heroMap = locality_hero_map();
+  $slug    = $m[1];
+  if (!isset($heroMap[$slug])) {
+    return $html;
+  }
+  return patch_og_image_meta($html, 'https://masqueclima.es' . $heroMap[$slug]);
+}
+
 function patch_snapshot_seo_meta(string $html, string $title, string $description, string $canonical): string {
   $html = preg_replace('/<title>.*?<\/title>/is', '<title>' . $title . '</title>', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="description" content="[^"]*">/i', '<meta name="description" content="' . $description . '">', $html, 1) ?? $html;
@@ -2180,6 +2211,9 @@ function patch_lang_hub_head(string $html, array $page, string $path, string $la
   $html = preg_replace('/<meta name="twitter:title" content="[^"]*">/i', '<meta name="twitter:title" content="' . $page['title'] . '">', $html, 1) ?? $html;
   $html = preg_replace('/<meta name="twitter:description" content="[^"]*">/i', '<meta name="twitter:description" content="' . $page['description'] . '">', $html, 1) ?? $html;
   $html = patch_es_hub_hero_preload($html, $page);
+  if (!empty($page['hero_image'])) {
+    $html = patch_og_image_meta($html, 'https://masqueclima.es' . $page['hero_image']);
+  }
   $html = str_replace('</head>', localized_hreflang_links_html($path) . lang_page_jsonld($path, $lang, $page) . "\n</head>", $html);
 
   return $html;

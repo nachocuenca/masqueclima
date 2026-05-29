@@ -153,14 +153,45 @@ TURNSTILE_SECRET_KEY=0x...  # clave secreta, NUNCA al repo
 
 ---
 
-## 8. Pendiente para activación real
+## 8. Validación en dev VPS — Resultados (2026-05-28/29)
 
-- [ ] Crear cuenta Cloudflare Turnstile, obtener claves reales para dominio `masqueclima.es`
-- [ ] Añadir al `.env` del VPS (no al repo)
-- [ ] Redeploy / reload
-- [ ] Prueba de envío real (token válido + token inválido + sin token)
-- [ ] Confirmar que `sent=1` aparece con token válido
-- [ ] Confirmar que `sent=2` aparece con token inválido/ausente
+### Variables en `/srv/apps/masqueclima-legacy-dev/shared/.env`
+
+| Variable | Estado |
+|---|---|
+| `TURNSTILE_ENABLED` | `true` |
+| `TURNSTILE_SITE_KEY` | `***SET***` (clave pública — no se documenta aquí) |
+| `TURNSTILE_SECRET_KEY` | `***SET***` (clave secreta — nunca al repo) |
+
+### Pruebas automatizadas (curl)
+
+| Test | Resultado |
+|------|-----------|
+| Frontend script `challenges.cloudflare.com/turnstile` | ✅ Presente en `/es/` |
+| Widget `cf-turnstile` con `data-sitekey` | ✅ Presente en `/es/` |
+| Widget `data-language="en"` en `/en/` | ✅ Localizado correctamente |
+| CSRF `name="csrf"` (token 32 chars) | ✅ Presente |
+| Honeypot `name="company"` | ✅ Presente |
+| POST sin `cf-turnstile-response` | ✅ → 303 `/es/?sent=2` |
+| POST con token `invalid-token-fake-123` | ✅ → 303 `/es/?sent=2` (Cloudflare Siteverify rechazó) |
+| HTTP status dev | ✅ 200 |
+| `X-Robots-Tag: noindex, nofollow, noarchive` | ✅ Presente |
+| PHP lint | ✅ Sin errores |
+| Logs nginx (masqueclima) | ✅ Sin errores |
+| Logs contacts.log | Sin nuevas entradas (tests rechazados por Turnstile, correcto) |
+
+### Prueba real navegador (2026-05-29)
+
+```
+URL: https://dev.masqueclima.es/es/
+Acción: abrir popup modal → widget Turnstile visible → rellenar form → resolver Turnstile → enviar
+Resultado: https://dev.masqueclima.es/es/?sent=1#inicio
+```
+
+**`sent=1` = envío aceptado.** Turnstile validado end-to-end en dev. ✅
+
+**Conclusión: Cloudflare Turnstile está activo y operativo en dev (`fix/legacy-php-dev-stabilization`).
+Listo para producción una vez se añadan las claves al `.env` de Nicalia.**
 
 ---
 

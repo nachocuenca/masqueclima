@@ -276,6 +276,7 @@ P2:
 - ~~Páginas legales ausentes~~ **CERRADO** — 18 páginas legales implementadas (3 tipos × 6 idiomas). Ver `docs/LEGAL_PAGES_IMPLEMENTATION.md`.
 - ~~Cookie banner con URL hardcodeada a /politica-de-cookies~~ **CERRADO** — banner usa URL localizada por idioma.
 - ~~Footer sin enlaces legales~~ **CERRADO** — footer incluye aviso legal · privacidad · cookies por idioma.
+- ~~`og:image` genérica en todas las páginas~~ **CERRADO Sesión 6** — og:image específica por localidad, hub y servicio (ver `docs/OG_IMAGE_REFINEMENT.md`).
 - Variantes sin slash (`/es`, `/en`, `/es/servicios`) sirven 200 en PHP local con canonical a slash. Valorar redirect canonico antes de produccion si Nicalia no lo fuerza.
 - Contenido de `app/content/guides/*` no-ES sigue en castellano aunque no este renderizado en hubs actuales.
 - Comentario legacy largo en `app/content/services/de.php` con contenido antiguo en castellano. No renderiza.
@@ -302,10 +303,10 @@ P2:
 ### Turnstile (anti-spam form)
 
 - Cloudflare Turnstile integrado en el modal de presupuesto.
-- **Desactivado por defecto** (`TURNSTILE_ENABLED` no configurado = false).
-- Para activar en producción: configurar `TURNSTILE_ENABLED=true`, `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` en env.
+- **ACTIVADO en dev VPS** (Sesión 5+6) — claves reales en `/srv/apps/masqueclima-legacy-dev/shared/.env`, `TURNSTILE_ENABLED=true`.
+- Test manual confirmado por usuario: `https://dev.masqueclima.es/es/?sent=1#inicio` → éxito ✅.
 - Fallos de validación → `?sent=2` → error modal (mismo que CSRF).
-- Ver `docs/TURNSTILE_FORM_PROTECTION.md`.
+- Ver `docs/TURNSTILE_RUNTIME_AUDIT.md` (Sección 8 — resultados de validación).
 
 ### Estado PHP lint sesión 3
 
