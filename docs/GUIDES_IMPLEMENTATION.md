@@ -24,8 +24,14 @@
 - Guide pages: validated 18/18.
 - Guides hubs: validated 6/6.
 - Service-to-guide interlinking: validated 30/30.
-- Sitemap and robots: unchanged in this pass.
+- Sitemap: 18/18 guide detail URLs added and validated.
+- Robots: validated unchanged and indexable.
 - Turnstile: untouched.
+
+## Sitemap closure (2026-05-29)
+- Added 18 guide detail URLs to `public/sitemap.xml` with production domain entries.
+- Validation result: XML valid, no duplicated URLs, no localhost/dev URLs, no missing trailing slash.
+- Runtime check result: 18/18 guide routes return HTTP 200 in local validation.
 
 ## UX navigation update (2026-05-29)
 - Language switch in guide pages is now contextual: switching language keeps users on the equivalent guide path, not the language home.

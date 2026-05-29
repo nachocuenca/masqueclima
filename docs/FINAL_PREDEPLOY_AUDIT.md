@@ -19,6 +19,23 @@ Veredicto: apto para commit/revision dev. No apto para subida final a Nicalia ha
 
 Addendum 2026-05-29: ver `docs/FINAL_SEO_PRODUCTION_READINESS_AUDIT.md` para el dictamen final de readiness SEO, validación de no-regresión sobre home legacy y checklist mínimo previo a dominio bueno.
 
+Addendum 2026-05-29 (cierre P2 sitemap):
+
+- Se añadieron las 18 URLs de detalle de guías al sitemap productivo.
+- Validación sitemap: XML válido, sin `dev.masqueclima.es`, sin `localhost`, sin duplicados, sin URLs sin slash final.
+- Validación runtime local: 18/18 guías en 200.
+- `public/robots.txt` permanece indexable y sin cambios funcionales.
+- Riesgo noindex en producción: controlado por `APP_ENV`; valor esperado para dominio bueno: `APP_ENV=production`.
+
+Checklist final antes de dominio bueno (sin deploy automático):
+
+1. Confirmar `APP_ENV=production` en runtime objetivo.
+2. Confirmar `robots.txt` indexable (`Allow: /`) y sitemap productivo.
+3. Confirmar ausencia de `X-Robots-Tag: noindex` en edge/CDN/proxy.
+4. Confirmar 200 + canonical + hreflang en `/es/`, `/es/blog/` y una guía por idioma.
+5. Si Turnstile se activa en producción, validar claves reales en entorno y flujo de formulario tras deploy.
+6. Limpiar cache/CDN si aplica para publicar sitemap/metadatos actualizados.
+
 ## 2. Estado git
 
 Estado inicial de Fase 0:

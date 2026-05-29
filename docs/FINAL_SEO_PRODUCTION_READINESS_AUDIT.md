@@ -127,15 +127,16 @@ OG image sample validation:
 
 ## 8) Sitemap and guides inclusion decision
 
-Sitemap checks:
+Sitemap checks (post-update 2026-05-29):
 - No dev.masqueclima.es in sitemap.
 - No localhost in sitemap.
 - Hub guide URLs are present.
-- Individual 18 guide detail URLs are NOT present.
+- Individual 18 guide detail URLs are present.
+- XML is valid.
+- No duplicate loc entries.
+- No URLs without trailing slash.
 
-Recommendation:
-- If guides are now visually and editorially approved, include the 18 guide URLs in sitemap in the next controlled step.
-- This is a P2 recommendation (not a release blocker), since discovery can still happen through internal links.
+P2 status: CLOSED.
 
 ## 9) Robots and indexability risk (dev vs production)
 
@@ -189,7 +190,7 @@ Observed state in audited sets:
 Risk classification:
 - P0: none
 - P1: none
-- P2: add 18 guide URLs to sitemap once approved
+- P2: closed (18 guide URLs added to sitemap and validated)
 - P3: continue monitoring title/meta overlap as content volume grows
 
 ## 12) Final readiness verdict
@@ -208,4 +209,6 @@ No commit performed in this audit.
 4. Confirm canonical/hreflang in /es/ and one URL per section (hub/service/guide/locality).
 5. Confirm quote modal and contact endpoint render path.
 6. Confirm no emergency noindex header at CDN/proxy layer.
-7. Optional P2: add 18 guides to sitemap in a controlled follow-up.
+7. Confirm sitemap.xml includes the 18 guide detail URLs and contains no localhost/dev entries.
+8. If Turnstile is enabled in production runtime, verify real keys are present and form submission still works after deploy.
+9. Purge CDN/cache layers if applicable so updated sitemap and metadata are served immediately.
