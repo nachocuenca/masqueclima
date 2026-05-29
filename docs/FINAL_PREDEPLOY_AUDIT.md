@@ -118,6 +118,16 @@ Resultado:
 - Sin warnings/notices/fatals PHP.
 - Sin `localhost`, `127.0.0.1`, `dev.masqueclima.es`, `var_dump` o `print_r` en HTML renderizado.
 
+## 6. Actualizacion 2026-05-29
+
+Nuevo cierre de guias dentro de la rama `fix/legacy-php-dev-stabilization`:
+
+- 18/18 guias validadas con 200, canonical absoluto, 7 hreflang, og/twitter image y JSON-LD completo.
+- Hubs de guias corregidos en los 6 idiomas: tarjetas localizadas visibles, CTA localizada y sin `cta.read`.
+- Interlinking servicios -> guias validado en 30/30 paginas de servicio con enlace localizado esperado.
+- `public/sitemap.xml` y `public/robots.txt` sin cambios en esta pasada.
+- Scripts temporales de validacion eliminados tras el cierre.
+
 Nota: detectores case-insensitive marcaban falsos positivos por `Metodo`/`swiper`; se verifico con busqueda case-sensitive.
 
 ## 6. Resultado de selector idioma

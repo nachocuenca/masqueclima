@@ -259,6 +259,19 @@ Ninguno.
 
 ## 13. Archivos modificados
 
+---
+
+## 14. Actualización 2026-05-29
+
+Nuevo cierre de la rama `fix/legacy-php-dev-stabilization` para la fase de guías:
+
+- 18/18 guías validadas con `200`, `title`, meta description, H1 único, canonical absoluto, 7 hreflang, `og:image`, `twitter:image`, `BlogPosting`, `FAQPage`, `BreadcrumbList`, `mainEntityOfPage` y footer intacto.
+- 18/18 guías sin leaks visibles de castellano en ES/EN/DE/NL/RU/NO.
+- Hubs de guías corregidos: 6/6 con tarjetas локалizadas, CTA correcta y sin `cta.read`.
+- Interlinking servicios -> guías validado en 30/30 servicios con URLs localizadas.
+- `public/sitemap.xml` y `public/robots.txt` sin cambios.
+- Scripts temporales de validación eliminados tras el cierre.
+
 ### Sesiones 1–5
 Ninguna modificación de código. Auditoría pura.
 

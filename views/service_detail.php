@@ -32,6 +32,9 @@ if (!isset($serviceUi)) {
     'faq_kicker'     => 'Dudas habituales', 'faq_title' => 'Preguntas frecuentes',
   ];
 }
+$relatedGuideUrl = $relatedGuideUrl ?? null;
+$relatedGuideTitle = $relatedGuideTitle ?? '';
+$relatedGuideLabel = $relatedGuideLabel ?? 'Related guide';
 $currentPath = $service['path'] ?? '';
 $relatedServices = array_filter($otherServices, fn($s) => $s[1] !== $currentPath);
 ?>
@@ -107,6 +110,17 @@ $relatedServices = array_filter($otherServices, fn($s) => $s[1] !== $currentPath
     </div>
   </div>
 </section>
+<?php if (!empty($relatedGuideUrl)): ?>
+<section class="hub-section service-related-guide" aria-labelledby="service-related-guide">
+  <div class="container">
+    <p class="hub-kicker"><?= $relatedGuideLabel ?></p>
+    <h2 class="section-title" id="service-related-guide"><?= $relatedGuideTitle ?></h2>
+    <div class="hub-links">
+      <a class="hub-pill" href="<?= e($relatedGuideUrl) ?>"><?= $relatedGuideTitle ?></a>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 <?php if (!empty($relatedServices)): ?>
 <section class="hub-section alt service-related" aria-labelledby="service-related">
   <div class="container">

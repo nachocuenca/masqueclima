@@ -1099,6 +1099,11 @@ function render_es_hub_page(string $path): ?string {
     return render_es_legacy_shell($servicePage, $path, render_service_detail_body($servicePage));
   }
 
+  $guidePage = es_guide_page_for_path($path);
+  if ($guidePage !== null) {
+    return render_es_legacy_shell($guidePage, $path, render_guide_detail_body($guidePage, 'es'));
+  }
+
   $pages = [
     '/es/servicios/' => [
       'slug' => 'servicios',
@@ -1251,6 +1256,45 @@ function render_service_detail_body(array $service, string $lang = 'es'): string
       lang_service_pages($lang)
     ));
   }
+  $serviceKey = null;
+  foreach (localized_service_equivalent_paths() as $key => $paths) {
+    if (($paths[$lang] ?? null) === ($service['path'] ?? '')) {
+      $serviceKey = $key;
+      break;
+    }
+  }
+  $serviceGuideMap = [
+    'installation' => 'capacity',
+    'maintenance'  => 'maintenance',
+    'repair'       => 'maintenance',
+    'heat_pump'    => 'heat_pump',
+    'solar_thermal'=> 'heat_pump',
+  ];
+  $relatedGuideUrl = null;
+  $relatedGuideTitle = null;
+  if ($serviceKey !== null) {
+    $guideKey = $serviceGuideMap[$serviceKey] ?? null;
+    if ($guideKey !== null) {
+      $guidePaths = localized_guide_equivalent_paths();
+      $relatedGuideUrl = $guidePaths[$guideKey][$lang] ?? null;
+      $guideFiles = [
+        'es' => __DIR__ . '/content/guides/es.php',
+        'en' => __DIR__ . '/content/guides/en.php',
+        'de' => __DIR__ . '/content/guides/de.php',
+        'nl' => __DIR__ . '/content/guides/nl.php',
+        'ru' => __DIR__ . '/content/guides/ru.php',
+        'no' => __DIR__ . '/content/guides/no.php',
+      ];
+      $guideData = [];
+      if (isset($guideFiles[$lang]) && is_file($guideFiles[$lang])) {
+        $loadedGuides = require $guideFiles[$lang];
+        if (is_array($loadedGuides) && isset($guidePaths[$guideKey][$lang])) {
+          $guideData = $loadedGuides[$guidePaths[$guideKey][$lang]] ?? [];
+        }
+      }
+      $relatedGuideTitle = (string)($guideData['h1'] ?? $guideData['title'] ?? '');
+    }
+  }
   $servicesHubUrl = localized_hub_url($lang, 'services') ?? '/es/servicios/';
   $zonesHubUrl    = localized_hub_url($lang, 'zones')    ?? '/es/zonas/';
   static $uiLabels = [
@@ -1349,6 +1393,14 @@ function render_service_detail_body(array $service, string $lang = 'es'): string
     'no'    => 'Guider',
     default => 'Gu&iacute;as de climatizaci&oacute;n',
   };
+  $relatedGuideLabel = match ($lang) {
+    'en'    => 'Related guide',
+    'de'    => 'Verwandter Ratgeber',
+    'nl'    => 'Gerelateerde gids',
+    'ru'    => '&#1057;&#1074;&#1103;&#1079;&#1072;&#1085;&#1085;&#1086;&#1077; &#1088;&#1091;&#1082;&#1086;&#1074;&#1086;&#1076;&#1089;&#1090;&#1074;&#1086;',
+    'no'    => 'Relatert guide',
+    default => 'Guía relacionada',
+  };
   ob_start();
   include __DIR__ . '/../views/service_detail.php';
   return (string) ob_get_clean();
@@ -1356,10 +1408,11 @@ function render_service_detail_body(array $service, string $lang = 'es'): string
 
 function render_es_minimal_shell(array $page, string $path, string $body): string {
   $canonical = 'https://masqueclima.es' . $path;
+  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
   return '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' .
     '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">' .
     '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">' .
-    '<link rel="stylesheet" href="/assets/css/styles.css">' . localized_hreflang_links_html($path) . es_page_jsonld($path, $page) . '</head><body><main id="main-content">' .
+    '<link rel="stylesheet" href="/assets/css/styles.css">' . $hreflang . es_page_jsonld($path, $page) . '</head><body><main id="main-content">' .
     $body . final_budget_cta_html('es') . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
@@ -1379,7 +1432,8 @@ function patch_es_hub_head(string $html, array $page, string $path): string {
   if (!empty($page['hero_image'])) {
     $html = patch_og_image_meta($html, 'https://masqueclima.es' . $page['hero_image']);
   }
-  $html = str_replace('</head>', localized_hreflang_links_html($path) . es_page_jsonld($path, $page) . "\n</head>", $html);
+  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
+  $html = str_replace('</head>', $hreflang . es_page_jsonld($path, $page) . "\n</head>", $html);
 
   return $html;
 }
@@ -1424,6 +1478,15 @@ function es_page_jsonld(string $path, array $page): string {
       'position' => 2,
       'name' => 'Servicios',
       'item' => $base . '/es/servicios/',
+    ];
+  }
+
+  if (str_starts_with($path, '/es/blog/') && $path !== '/es/blog/') {
+    $itemList[] = [
+      '@type' => 'ListItem',
+      'position' => 2,
+      'name' => 'Guías',
+      'item' => $base . '/es/blog/',
     ];
   }
 
@@ -1479,6 +1542,26 @@ function es_page_jsonld(string $path, array $page): string {
         'mainEntity' => $faqItems,
       ];
     }
+  }
+
+  if (!empty($page['article_type']) && $page['article_type'] === 'BlogPosting') {
+    $orgUrl = $base . '/es/';
+    $blogPosting = [
+      '@context'      => 'https://schema.org',
+      '@type'         => 'BlogPosting',
+      'headline'      => html_entity_decode((string)($page['h1'] ?? $page['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'description'   => html_entity_decode((string)($page['description'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'url'           => $base . $path,
+      'datePublished' => (string)($page['date_published'] ?? ''),
+      'dateModified'  => (string)($page['date_modified'] ?? ''),
+      'inLanguage'    => 'es',
+      'author'        => ['@type' => 'Organization', 'name' => '+QUECLIMA', 'url' => $orgUrl],
+      'publisher'     => ['@type' => 'Organization', 'name' => '+QUECLIMA', 'url' => $orgUrl],
+    ];
+    if (!empty($page['og_image'])) {
+      $blogPosting['image'] = $base . $page['og_image'];
+    }
+    $schemas[] = $blogPosting;
   }
 
   return '<script type="application/ld+json">' .
@@ -2298,6 +2381,11 @@ function render_lang_hub_page(string $path, string $lang): ?string {
     return render_lang_legacy_shell($servicePage, $path, render_service_detail_body($servicePage, $lang), $lang);
   }
 
+  $guidePage = lang_guide_page_for_path($path, $lang);
+  if ($guidePage !== null) {
+    return render_lang_legacy_shell($guidePage, $path, render_guide_detail_body($guidePage, $lang), $lang);
+  }
+
   $page = lang_hub_page_for_path($path, $lang);
   if ($page === null) {
     return null;
@@ -2366,10 +2454,11 @@ function render_lang_legacy_shell(array $page, string $path, string $body, strin
 
 function render_lang_minimal_shell(array $page, string $path, string $body, string $lang): string {
   $canonical = 'https://masqueclima.es' . $path;
+  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
   return '<!DOCTYPE html><html lang="' . e($lang) . '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
     . '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">'
     . '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">'
-    . '<link rel="stylesheet" href="/assets/css/styles.css">' . localized_hreflang_links_html($path) . lang_page_jsonld($path, $lang, $page) . '</head><body><main id="main-content">'
+    . '<link rel="stylesheet" href="/assets/css/styles.css">' . $hreflang . lang_page_jsonld($path, $lang, $page) . '</head><body><main id="main-content">'
     . $body . final_budget_cta_html($lang) . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
@@ -2390,7 +2479,8 @@ function patch_lang_hub_head(string $html, array $page, string $path, string $la
   if (!empty($page['hero_image'])) {
     $html = patch_og_image_meta($html, 'https://masqueclima.es' . $page['hero_image']);
   }
-  $html = str_replace('</head>', localized_hreflang_links_html($path) . lang_page_jsonld($path, $lang, $page) . "\n</head>", $html);
+  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
+  $html = str_replace('</head>', $hreflang . lang_page_jsonld($path, $lang, $page) . "\n</head>", $html);
 
   return $html;
 }
@@ -2429,6 +2519,24 @@ function lang_page_jsonld(string $path, string $lang, array $page): string {
       'position' => 2,
       'name' => $servicesLabel,
       'item' => $base . $servicesHubUrl,
+    ];
+  }
+
+  $guidesHubUrl = localized_hub_url($lang, 'guides');
+  $guidesLabel = match ($lang) {
+    'en'    => 'Guides',
+    'de'    => 'Ratgeber',
+    'nl'    => 'Gidsen',
+    'ru'    => 'Руководства',
+    'no'    => 'Guider',
+    default => 'Guías',
+  };
+  if ($guidesHubUrl !== null && str_starts_with($path, $guidesHubUrl) && $path !== $guidesHubUrl) {
+    $itemList[] = [
+      '@type' => 'ListItem',
+      'position' => 2,
+      'name' => $guidesLabel,
+      'item' => $base . $guidesHubUrl,
     ];
   }
 
@@ -2486,6 +2594,34 @@ function lang_page_jsonld(string $path, string $lang, array $page): string {
     }
   }
 
+  if (!empty($page['article_type']) && $page['article_type'] === 'BlogPosting') {
+    $orgUrl = $base . '/es/';
+    $blogPosting = [
+      '@context'      => 'https://schema.org',
+      '@type'         => 'BlogPosting',
+      'headline'      => html_entity_decode((string)($page['h1'] ?? $page['title']), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'description'   => html_entity_decode((string)($page['description'] ?? ''), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+      'url'           => $base . $path,
+      'mainEntityOfPage' => [
+        '@type' => 'WebPage',
+        '@id'   => $base . $path,
+      ],
+      'mainEntityOfPage' => [
+        '@type' => 'WebPage',
+        '@id'   => $base . $path,
+      ],
+      'datePublished' => (string)($page['date_published'] ?? ''),
+      'dateModified'  => (string)($page['date_modified'] ?? ''),
+      'inLanguage'    => $lang,
+      'author'        => ['@type' => 'Organization', 'name' => '+QUECLIMA', 'url' => $orgUrl],
+      'publisher'     => ['@type' => 'Organization', 'name' => '+QUECLIMA', 'url' => $orgUrl],
+    ];
+    if (!empty($page['og_image'])) {
+      $blogPosting['image'] = $base . $page['og_image'];
+    }
+    $schemas[] = $blogPosting;
+  }
+
   return '<script type="application/ld+json">'
     . json_encode($schemas, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
     . '</script>';
@@ -2512,6 +2648,12 @@ function lang_hub_services_body(array $page, string $lang): string {
   $zonesAll = $page['hub_zones_all'] ?? '';
   $styles = hub_styles();
   $intro = hub_intro($h1, $introText, hub_visual_options($page));
+
+  // render localized guide cards (first 3 guides)
+  $guideCards = render_partial('guide_cards');
+
+  // render localized guide cards (first 3 guides)
+  $guideCards = render_partial('guide_cards');
   $serviceCards = lang_service_cards_html($lang);
   $miniMap = render_partial('zone_visual', ['variant' => 'mini']);
   if ($lang !== 'es') {
@@ -2670,6 +2812,7 @@ function lang_hub_guides_body(array $page, string $lang): string {
   $p = $page['hub_p'] ?? '';
   $styles = hub_styles();
   $intro = hub_intro($h1, $introText, hub_visual_options($page));
+  $guideCards = render_partial('guide_cards');
 
   $svcUrls3       = localized_service_equivalent_paths();
   $svcLabelMap3   = locality_service_link_labels();
@@ -2722,6 +2865,7 @@ function lang_hub_guides_body(array $page, string $lang): string {
     <p class="hub-kicker">{$kicker}</p>
     <h2 class="section-title" id="lang-guides-list">{$h2}</h2>
     <p class="hub-muted">{$p}</p>
+    <div class="guide-cards">{$guideCards}</div>
   </div>
 </section>
 <section class="hub-section alt" aria-labelledby="lang-guides-services">
@@ -2829,4 +2973,140 @@ function lang_all_locality_pills_html(string $lang): string {
     $html .= '<a class="hub-pill" href="' . $url . '">' . $name . '</a>' . "\n";
   }
   return $html;
+}
+
+// ── Guide page helpers ────────────────────────────────────────────────
+
+function guide_hreflang_map(): array {
+  static $map = null;
+  if ($map !== null) return $map;
+  $b = 'https://masqueclima.es';
+  $map = [
+    'heat_pump' => [
+      'es' => $b . '/es/blog/aerotermia-bomba-calor-cuando-merece-la-pena/',
+      'en' => $b . '/en/guides/heat-pump-aerothermal-when-worth-it/',
+      'de' => $b . '/de/ratgeber/waermepumpe-aerothermie-wann-lohnt-es-sich/',
+      'nl' => $b . '/nl/gidsen/warmtepomp-aerothermie-wanneer-de-moeite-waard/',
+      'ru' => $b . '/ru/gidy/teplovoj-nasos-aerotermiya-kogda-vygodno/',
+      'no' => $b . '/no/guider/varmepumpe-aerotermi-nar-lonner-det-seg/',
+    ],
+    'capacity' => [
+      'es' => $b . '/es/blog/que-potencia-aire-acondicionado-necesita-vivienda/',
+      'en' => $b . '/en/guides/what-air-conditioning-capacity-home-needs/',
+      'de' => $b . '/de/ratgeber/welche-klimaanlagen-leistung-wohnung-benoetigt/',
+      'nl' => $b . '/nl/gidsen/welk-vermogen-airco-woning-nodig/',
+      'ru' => $b . '/ru/gidy/kakaya-moshchnost-konditsionera-nuzhna-dlya-doma/',
+      'no' => $b . '/no/guider/hvilken-kapasitet-aircondition-trenger-bolig/',
+    ],
+    'maintenance' => [
+      'es' => $b . '/es/blog/mantenimiento-aire-acondicionado-antes-verano/',
+      'en' => $b . '/en/guides/air-conditioning-maintenance-before-summer/',
+      'de' => $b . '/de/ratgeber/klimaanlagen-wartung-vor-dem-sommer/',
+      'nl' => $b . '/nl/gidsen/airco-onderhoud-voor-de-zomer/',
+      'ru' => $b . '/ru/gidy/obsluzhivanie-konditsionera-pered-letom/',
+      'no' => $b . '/no/guider/vedlikehold-aircondition-for-sommeren/',
+    ],
+  ];
+  return $map;
+}
+
+function guide_hreflang_html(string $guideKey): string {
+  $map = guide_hreflang_map();
+  $urls = $map[$guideKey] ?? [];
+  if (empty($urls)) {
+    return '';
+  }
+  $html = '';
+  foreach ($urls as $lang => $url) {
+    $html .= '<link rel="alternate" hreflang="' . e($lang) . '" href="' . e($url) . '">' . "\n";
+  }
+  $html .= '<link rel="alternate" hreflang="x-default" href="' . e($urls['es'] ?? reset($urls)) . '">' . "\n";
+  return $html;
+}
+
+function es_guide_page_for_path(string $path): ?array {
+  static $cache = null;
+  if ($cache === null) {
+    $file = __DIR__ . '/content/guides/es.php';
+    $loaded = is_file($file) ? require $file : [];
+    $cache = is_array($loaded) ? $loaded : [];
+  }
+  return $cache[$path] ?? null;
+}
+
+function lang_guide_page_for_path(string $path, string $lang): ?array {
+  static $caches = [];
+  if (!isset($caches[$lang])) {
+    $file = __DIR__ . '/content/guides/' . $lang . '.php';
+    $loaded = is_file($file) ? require $file : [];
+    $caches[$lang] = is_array($loaded) ? $loaded : [];
+  }
+  return $caches[$lang][$path] ?? null;
+}
+
+function guide_ui_labels(string $lang): array {
+  static $labels = [
+    'es' => [
+      'intro_kicker'    => 'Gu&iacute;a',
+      'faq_kicker'      => 'Dudas habituales',
+      'faq_h2'          => 'Preguntas frecuentes',
+      'services_kicker' => 'Servicios',
+      'services_h2'     => 'Servicios relacionados',
+      'areas_kicker'    => 'Zonas',
+      'areas_h2'        => 'Zonas donde trabajamos',
+    ],
+    'en' => [
+      'intro_kicker'    => 'Guide',
+      'faq_kicker'      => 'Common questions',
+      'faq_h2'          => 'Frequently asked questions',
+      'services_kicker' => 'Services',
+      'services_h2'     => 'Related services',
+      'areas_kicker'    => 'Areas',
+      'areas_h2'        => 'Areas we serve',
+    ],
+    'de' => [
+      'intro_kicker'    => 'Ratgeber',
+      'faq_kicker'      => 'H&auml;ufige Fragen',
+      'faq_h2'          => 'H&auml;ufig gestellte Fragen',
+      'services_kicker' => 'Leistungen',
+      'services_h2'     => 'Verwandte Leistungen',
+      'areas_kicker'    => 'Gebiete',
+      'areas_h2'        => 'Gebiete, in denen wir t&auml;tig sind',
+    ],
+    'nl' => [
+      'intro_kicker'    => 'Gids',
+      'faq_kicker'      => 'Veelgestelde vragen',
+      'faq_h2'          => 'Veelgestelde vragen',
+      'services_kicker' => 'Diensten',
+      'services_h2'     => 'Gerelateerde diensten',
+      'areas_kicker'    => 'Gebieden',
+      'areas_h2'        => 'Gebieden waar wij actief zijn',
+    ],
+    'ru' => [
+      'intro_kicker'    => '&#1056;&#1091;&#1082;&#1086;&#1074;&#1086;&#1076;&#1089;&#1090;&#1074;&#1086;',
+      'faq_kicker'      => '&#1063;&#1072;&#1089;&#1090;&#1099;&#1077; &#1074;&#1086;&#1087;&#1088;&#1086;&#1089;&#1099;',
+      'faq_h2'          => '&#1063;&#1072;&#1089;&#1090;&#1086; &#1079;&#1072;&#1076;&#1072;&#1074;&#1072;&#1077;&#1084;&#1099;&#1077; &#1074;&#1086;&#1087;&#1088;&#1086;&#1089;&#1099;',
+      'services_kicker' => '&#1059;&#1089;&#1083;&#1091;&#1075;&#1080;',
+      'services_h2'     => '&#1057;&#1074;&#1103;&#1079;&#1072;&#1085;&#1085;&#1099;&#1077; &#1091;&#1089;&#1083;&#1091;&#1075;&#1080;',
+      'areas_kicker'    => '&#1056;&#1072;&#1081;&#1086;&#1085;&#1099;',
+      'areas_h2'        => '&#1056;&#1072;&#1081;&#1086;&#1085;&#1099; &#1085;&#1072;&#1096;&#1077;&#1081; &#1088;&#1072;&#1073;&#1086;&#1090;&#1099;',
+    ],
+    'no' => [
+      'intro_kicker'    => 'Guide',
+      'faq_kicker'      => 'Vanlige sp&oslash;rsm&aring;l',
+      'faq_h2'          => 'Vanlige sp&oslash;rsm&aring;l',
+      'services_kicker' => 'Tjenester',
+      'services_h2'     => 'Relaterte tjenester',
+      'areas_kicker'    => 'Omr&aring;der',
+      'areas_h2'        => 'Omr&aring;der vi betjener',
+    ],
+  ];
+  return $labels[$lang] ?? $labels['en'];
+}
+
+function render_guide_detail_body(array $guide, string $lang): string {
+  $guideUi = guide_ui_labels($lang);
+  ob_start();
+  include __DIR__ . '/../views/guide_detail.php';
+  return ob_get_clean() ?: '';
 }

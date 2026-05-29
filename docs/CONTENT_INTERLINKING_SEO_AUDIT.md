@@ -6,6 +6,13 @@
 
 ---
 
+## 7. Actualización 2026-05-29
+
+- Guías: 18/18 URLs validadas con 200, canonical correcto, 7 hreflang, og/twitter image, BlogPosting, FAQPage, BreadcrumbList y `mainEntityOfPage`.
+- Hubs de guías: 6/6 con tres tarjetas enlazando a guías reales, dos tarjetas de futuro, CTA localizada y sin `cta.read`.
+- Servicios: 30/30 páginas con un enlace localizado a la guía relacionada esperada, sin duplicados visibles y sin leaks visibles en no-ES.
+- Temporales: los scripts de validación se eliminaron tras la comprobación.
+
 ## 1. RESUMEN EJECUTIVO
 
 Se encontraron **2 bugs P1** de código y **5 hallazgos SEO P2/P3**. Los dos bugs P1 han sido corregidos y validados en esta sesión. No se realizaron commits, despliegues, ni cambios en producción.

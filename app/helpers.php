@@ -186,6 +186,37 @@ if (!function_exists('localized_service_equivalent_paths')) {
     }
 }
 
+if (!function_exists('localized_guide_equivalent_paths')) {
+    function localized_guide_equivalent_paths(): array {
+        return [
+            'capacity' => [
+                'es' => '/es/blog/que-potencia-aire-acondicionado-necesita-vivienda/',
+                'en' => '/en/guides/what-air-conditioning-capacity-home-needs/',
+                'de' => '/de/ratgeber/welche-klimaanlagen-leistung-wohnung-benoetigt/',
+                'nl' => '/nl/gidsen/welk-vermogen-airco-woning-nodig/',
+                'ru' => '/ru/gidy/kakaya-moshchnost-konditsionera-nuzhna-dlya-doma/',
+                'no' => '/no/guider/hvilken-kapasitet-aircondition-trenger-bolig/',
+            ],
+            'maintenance' => [
+                'es' => '/es/blog/mantenimiento-aire-acondicionado-antes-verano/',
+                'en' => '/en/guides/air-conditioning-maintenance-before-summer/',
+                'de' => '/de/ratgeber/klimaanlagen-wartung-vor-dem-sommer/',
+                'nl' => '/nl/gidsen/airco-onderhoud-voor-de-zomer/',
+                'ru' => '/ru/gidy/obsluzhivanie-konditsionera-pered-letom/',
+                'no' => '/no/guider/vedlikehold-aircondition-for-sommeren/',
+            ],
+            'heat_pump' => [
+                'es' => '/es/blog/aerotermia-bomba-calor-cuando-merece-la-pena/',
+                'en' => '/en/guides/heat-pump-aerothermal-when-worth-it/',
+                'de' => '/de/ratgeber/waermepumpe-aerothermie-wann-lohnt-es-sich/',
+                'nl' => '/nl/gidsen/warmtepomp-aerothermie-wanneer-de-moeite-waard/',
+                'ru' => '/ru/gidy/teplovoj-nasos-aerotermiya-kogda-vygodno/',
+                'no' => '/no/guider/varmepumpe-aerotermi-nar-lonner-det-seg/',
+            ],
+        ];
+    }
+}
+
 if (!function_exists('localized_normalize_path')) {
     function localized_normalize_path(string $path): string {
         $path = parse_url($path, PHP_URL_PATH) ?: '/';
