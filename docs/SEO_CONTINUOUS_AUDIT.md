@@ -89,6 +89,17 @@ Final production-readiness SEO decision, P0/P1/P2/P3 classification and deployme
 - El bloque no se renderiza si faltan `rating`, `review_count` o `google_url`.
 - No se añadió `Review` ni `AggregateRating` schema en JSON-LD (decisión explícita para evitar riesgos de self-serving markup).
 
+## Addendum 2026-06-07 — Rediseño premium Google Reviews Widget
+
+- Rediseño visual completo del módulo de reseñas Google hacia un look premium de sección de confianza.
+- Layout desktop: sidebar resumen (rating 5,0 + estrellas + wordmark Google coloreado + CTA) + carrusel 3 cards derecha.
+- Layout tablet: resumen horizontal compacto + 2 cards. Móvil: resumen + 1 card.
+- Nuevo: `.google-reviews-layout` (flexbox sidebar+carousel), `.google-reviews-header` con kicker/title/lead, `.google-reviews-kicker`, `.google-reviews-lead`, `.google-rating-score`, `.google-wordmark` (spans G-o-o-g-l-e coloreados CSS), `.google-reviews-cta` (botón propio), `.google-reviews-track`, `.google-review-card-top`, `.google-review-chips`, `.google-review-chip`, `.google-review-quote`.
+- Cards: border-radius 16px, hover lift, avatares multicolor via CSS custom properties, chips pill-style, comilla decorativa.
+- Shell: border-radius 24px, sombra multicapa, fondo degradado sutil azul→blanco.
+- Sin cambios en schema JSON-LD, robots.txt, sitemap.xml, DNS, SMTP, Turnstile ni formularios.
+- Assets CSS/JS versionados con `versioned_asset()` (filemtime). JS del carrusel sin cambios.
+
 ---
 
 ## 1. Homes (6 idiomas)

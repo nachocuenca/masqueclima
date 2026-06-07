@@ -45,6 +45,15 @@ Addendum 2026-05-30 (módulo reseñas Google):
 - Sin cambios en `robots.txt`, `sitemap.xml`, DNS, SMTP o Turnstile.
 - Sin marcado `Review/AggregateRating` en JSON-LD por política de riesgo SEO.
 
+Addendum 2026-06-07 (rediseño premium Google Reviews):
+
+- Rediseño visual completo del módulo hacia sección de confianza premium.
+- Layout nuevo: header con kicker/título/lead + sidebar rating + carrusel 3/2/1 cards según breakpoint.
+- Shell con border-radius 24px, sombra elegante, degradado de fondo. Cards con border-radius 16px, hover lift, avatares multicolor, chips pill-style y comilla decorativa.
+- Wordmark Google con spans CSS coloreados (G-o-o-g-l-e). CTA propio con icono SVG externo.
+- Sin cambios en schema JSON-LD, robots.txt, sitemap.xml, DNS, SMTP, Turnstile ni formularios.
+- Assets versionados con filemtime. JS carrusel sin modificaciones.
+
 ## 2. Estado git
 
 Estado inicial de Fase 0:
