@@ -1,5 +1,20 @@
 # SEO_CONTINUOUS_AUDIT.md
 
+## Addendum 2026-06-07 - P1 ES guide sitemap prep
+
+Scope: local sitemap preparation for the six Spanish P1 guide URLs. No production, deploy, robots, DNS, Nginx, SMTP, Turnstile, `.env`, forms or Search Console changes.
+
+Sitemap changes:
+- Added the six P1 ES guide URLs to `public/sitemap.xml` as normal sitemap URLs.
+- Kept them `es_only`: no `xhtml:link` hreflang alternates and no `x-default` entries were added for these six blocks.
+- Converted `public/sitemap.xml` from UTF-16 LE with BOM to clean UTF-8 without BOM, matching the XML declaration.
+- Kept the existing sitemap namespace and existing `xhtml` namespace for already-localized URL groups.
+- `public/robots.txt` was not edited.
+
+Pending after deploy:
+- Validate the deployed `/sitemap.xml` response.
+- Submit or inspect sitemap/URLs in Search Console only after the final deployment is approved and completed.
+
 ## Addendum 2026-06-07 - P1 ES guide implementation validation
 
 Scope: six Spanish guide URLs implemented and validated locally. No production, deploy, sitemap, robots, DNS, Nginx, SMTP or Turnstile changes.

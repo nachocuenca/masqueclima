@@ -1,5 +1,20 @@
 # CONTENT, INTERLINKING & SEO AUDIT
 
+## Addendum 2026-06-07 - P1 ES sitemap prep
+
+Scope: local sitemap preparation for the six prioritized Spanish guide URLs. No deploy, production, robots, DNS, Nginx, SMTP, Turnstile, `.env`, forms or Search Console changes.
+
+Sitemap outcome:
+- The six P1 ES guide URLs are now included in `public/sitemap.xml`.
+- The six sitemap blocks remain `es_only`: no `xhtml:link` hreflang alternates and no `x-default` entries.
+- `public/sitemap.xml` is clean UTF-8 without BOM after this pass.
+- `public/robots.txt` was not edited.
+
+Remaining publication tasks:
+- Deploy only after the final release is approved.
+- Validate deployed `/sitemap.xml`.
+- Submit or inspect in Search Console only after deploy.
+
 ## Addendum 2026-06-07 - P1 ES guide interlinking implemented
 
 Scope: implemented interlinking for the six prioritized Spanish guide URLs. No sitemap, robots, deploy or production changes.
@@ -27,10 +42,9 @@ Local validation on `127.0.0.1:8787`:
 - Checked internal links from the six new guides return 200.
 - The first three ES hub cards follow the requested priority order: cost in Benidorm, no-cooling diagnosis, conductos vs split.
 
-Pending before sitemap:
-- User approval of final ES URLs.
-- Decision on whether to publish ES-only URLs first or wait for adapted EN/DE/NL/RU/NO versions.
-- If multilingual versions are added, update guide equivalence/hreflang maps only after every localized URL returns 200.
+Sitemap status:
+- Closed in the sitemap prep addendum above: the six ES-only URLs are included in `public/sitemap.xml` without hreflang alternates.
+- If multilingual versions are added later, update guide equivalence/hreflang maps only after every localized URL returns 200.
 
 ## Addendum 2026-06-07 - Blog SEO / guides expansion
 
@@ -67,7 +81,8 @@ Secondary ES guides and existing-guide updates:
 - `que-revisar-antes-instalar-aire-acondicionado-vivienda`
 
 Sitemap gate:
-- Do not add the six implemented P1 ES URLs, the remaining planned ES URLs, or any future EN/DE/NL/RU/NO equivalents to `public/sitemap.xml` until final URL approval, internal links, hreflang maps and every target URL are validated.
+- The six implemented P1 ES URLs were added in the sitemap prep pass above after local validation, as ES-only sitemap entries without alternates.
+- Do not add the remaining planned ES URLs or any future EN/DE/NL/RU/NO equivalents to `public/sitemap.xml` until final URL approval, internal links, hreflang maps and every target URL are validated.
 **Sesión 7 — fix/legacy-php-dev-stabilization**  
 **Fecha:** 2026-05-29  
 **Rama:** `fix/legacy-php-dev-stabilization` (HEAD pre-fix: `bfbc545`)  

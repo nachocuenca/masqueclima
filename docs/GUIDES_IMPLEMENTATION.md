@@ -45,6 +45,26 @@
 
 ---
 
+## Blog SEO P1 ES sitemap prep - 2026-06-07
+
+Scope of this sitemap pass:
+- Added the 6 prioritized ES commercial-intent guides to `public/sitemap.xml`.
+- Kept the six new guide URLs `es_only`: no EN/DE/NL/RU/NO alternates and no `x-default` were added for these six sitemap blocks.
+- Converted `public/sitemap.xml` to clean UTF-8 without BOM.
+- Did not touch robots, DNS, Nginx, SMTP, Turnstile, `.env`, forms, Search Console, deploy or production.
+
+Sitemap entries added:
+- `https://masqueclima.es/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/`
+- `https://masqueclima.es/es/blog/por-que-aire-acondicionado-no-enfria/`
+- `https://masqueclima.es/es/blog/aire-acondicionado-conductos-o-split/`
+- `https://masqueclima.es/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/`
+- `https://masqueclima.es/es/blog/reparar-o-cambiar-aire-acondicionado/`
+- `https://masqueclima.es/es/blog/como-ahorrar-luz-aire-acondicionado/`
+
+Pending after final deploy:
+- Validate `/sitemap.xml` in production.
+- Submit or inspect the sitemap/URLs in Search Console only after the final deployment is approved.
+
 ## Blog SEO P1 ES implementation - 2026-06-07
 
 Scope of this implementation pass:
@@ -75,7 +95,7 @@ Local validation on `127.0.0.1:8787`:
 - `/es/blog/` returns 200 and contains the six new guide cards, with the first three cards matching the P1 order: cost in Benidorm, no-cooling diagnosis, conductos vs split.
 
 Sitemap gate:
-- Do not add the six new URLs to `public/sitemap.xml` until the user authorizes sitemap changes after final URL validation.
+- Closed in the sitemap prep pass above: the six ES-only URLs are present in `public/sitemap.xml` without hreflang alternates.
 - Do not add EN/DE/NL/RU/NO guide records or guide hreflang map entries until each language has contextual content and natural slugs validated.
 
 ## Blog SEO expansion plan - 2026-06-07
