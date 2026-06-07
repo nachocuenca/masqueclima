@@ -234,4 +234,38 @@
     });
   });
 
+  // ---- Keep the floating WhatsApp button from covering reviews ----
+  document.addEventListener('DOMContentLoaded', function () {
+    var wa = document.querySelector('.whatsapp-floating, .btn-whatsapp-pulse');
+    var sections = Array.prototype.slice.call(document.querySelectorAll('.google-reviews-section'));
+    if (!wa || !sections.length) return;
+
+    var ticking = false;
+
+    function sync() {
+      ticking = false;
+      var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+      var active = sections.some(function (section) {
+        var rect = section.getBoundingClientRect();
+        return rect.top < viewportHeight - 80 && rect.bottom > 80;
+      });
+
+      wa.classList.toggle('whatsapp-floating--reviews-hidden', active);
+    }
+
+    function requestSync() {
+      if (ticking) return;
+      ticking = true;
+      if (window.requestAnimationFrame) {
+        window.requestAnimationFrame(sync);
+      } else {
+        setTimeout(sync, 80);
+      }
+    }
+
+    window.addEventListener('scroll', requestSync, { passive: true });
+    window.addEventListener('resize', requestSync);
+    sync();
+  });
+
 })();

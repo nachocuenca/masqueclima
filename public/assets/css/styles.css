@@ -322,6 +322,14 @@ footer{text-align:center;}
 }
 .whatsapp-floating:hover{ background:var(--wa); color:#fff !important; box-shadow:0 12px 28px rgba(37,211,102,.28); }
 .whatsapp-floating:focus-visible{ outline:3px solid rgba(255,255,255,.95); outline-offset:3px; }
+@media (max-width:767.98px){
+  .whatsapp-floating.whatsapp-floating--reviews-hidden,
+  .btn-whatsapp-pulse.whatsapp-floating--reviews-hidden{
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(14px) scale(.96);
+  }
+}
 
 /* Variante FAB compacta */
 .whatsapp-floating.is-fab{
@@ -330,7 +338,7 @@ footer{text-align:center;}
   width:var(--wa-size); height:var(--wa-size); padding:0;
   border-radius:999px; background:var(--wa); color:#fff !important;
   border:none; box-shadow:0 10px 24px rgba(0,0,0,.2);
-  transition:width .2s ease, padding .2s ease, box-shadow .2s;
+  transition:width .2s ease, padding .2s ease, box-shadow .2s, opacity .18s ease, transform .18s ease;
 }
 .whatsapp-floating.is-fab .wa-icon{ display:block; width:24px; height:24px; margin:auto; filter:drop-shadow(0 1px 1px rgba(0,0,0,.15)); }
 .whatsapp-floating.is-fab .wa-label{ white-space:nowrap; margin-left:8px; font-weight:700; opacity:0; max-width:0; transition:max-width .2s, opacity .2s, margin-left .2s; color:#fff !important; }
