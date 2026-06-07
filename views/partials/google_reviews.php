@@ -9,7 +9,6 @@ if (!is_array($payload)) {
 $rating = trim((string)($payload['rating'] ?? ''));
 $reviewCount = (int)($payload['review_count'] ?? 0);
 $googleUrl = trim((string)($payload['google_url'] ?? ''));
-$updatedAt = trim((string)($payload['updated_at'] ?? ''));
 $rawReviews = $payload['reviews'] ?? [];
 
 if ($rating === '' || $reviewCount <= 0 || $googleUrl === '') {
@@ -36,7 +35,6 @@ if (is_array($rawReviews)) {
       'meta' => $meta,
       'text' => $text,
       'stars' => $stars,
-      'has_photo' => (bool)($item['has_photo'] ?? false),
     ];
   }
 }
@@ -55,22 +53,20 @@ $initialsFor = static function (string $name): string {
   return strtoupper($letters[0] ?? 'G');
 };
 
-// Avatar palette — cycles through reviews
+// Avatar palette cycles through reviews.
 $avatarPalette = [
-  ['bg' => '#dbeafe', 'fg' => '#1d4ed8'],
-  ['bg' => '#dcfce7', 'fg' => '#166534'],
-  ['bg' => '#fce7f3', 'fg' => '#9d174d'],
-  ['bg' => '#fef3c7', 'fg' => '#92400e'],
-  ['bg' => '#ede9fe', 'fg' => '#5b21b6'],
-  ['bg' => '#ffedd5', 'fg' => '#9a3412'],
+  ['bg' => '#e8f1fb', 'fg' => '#174f86'],
+  ['bg' => '#e6f6f0', 'fg' => '#17644f'],
+  ['bg' => '#f4ecfb', 'fg' => '#64418f'],
+  ['bg' => '#fff3dc', 'fg' => '#7a4c12'],
+  ['bg' => '#eaf4f7', 'fg' => '#27566a'],
+  ['bg' => '#f7ece8', 'fg' => '#884532'],
 ];
 
 $hasCards = count($reviews) > 0;
 $sectionId = 'google-reviews-' . substr(md5($lang . '|' . $googleUrl), 0, 8);
 $summaryLabel = (string)t('google_reviews.summary_label', 'Resumen de reseñas de Google');
 $starsLabel = (string)t('google_reviews.stars_label', '%s de 5 estrellas');
-$withPhotosLabel = (string)t('google_reviews.with_photos', 'con fotos');
-$verifiedLabel = (string)t('google_reviews.tag', 'Reseña verificada');
 $slideLabel = (string)t('google_reviews.slide_label', 'Grupo de reseñas %s');
 ?>
 <section class="google-reviews-section" aria-labelledby="<?php echo e($sectionId); ?>">
@@ -115,12 +111,6 @@ $slideLabel = (string)t('google_reviews.slide_label', 'Grupo de reseñas %s');
                 if ($isLocalGuide) {
                   $chips[] = 'Local Guide';
                 }
-                if ($review['has_photo']) {
-                  $chips[] = $withPhotosLabel;
-                }
-                if (empty($chips)) {
-                  $chips[] = $verifiedLabel;
-                }
               ?>
               <div class="google-review-card" data-review-index="<?php echo e((string)$idx); ?>">
                 <div class="google-review-card-top">
@@ -133,11 +123,13 @@ $slideLabel = (string)t('google_reviews.slide_label', 'Grupo de reseñas %s');
                       <?php endif; ?>
                     </div>
                   </div>
-                  <div class="google-review-chips">
-                    <?php foreach ($chips as $chip): ?>
-                      <span class="google-review-chip"><?php echo e($chip); ?></span>
-                    <?php endforeach; ?>
-                  </div>
+                  <?php if (!empty($chips)): ?>
+                    <div class="google-review-chips">
+                      <?php foreach ($chips as $chip): ?>
+                        <span class="google-review-chip"><?php echo e($chip); ?></span>
+                      <?php endforeach; ?>
+                    </div>
+                  <?php endif; ?>
                 </div>
                 <div class="google-stars google-stars--sm" aria-label="<?php echo e(sprintf($starsLabel, (string)$review['stars'])); ?>"><?php echo e(str_repeat('★', $review['stars']) . str_repeat('☆', 5 - $review['stars'])); ?></div>
                 <p class="google-review-text"><span class="google-review-quote" aria-hidden="true">"</span><?php echo e($review['text']); ?></p>
@@ -149,11 +141,6 @@ $slideLabel = (string)t('google_reviews.slide_label', 'Grupo de reseñas %s');
         <?php endif; ?>
 
       </div><!-- /.google-reviews-layout -->
-
-      <?php if ($updatedAt !== ''): ?>
-        <p class="google-reviews-updated"><?php echo e(sprintf((string)t('google_reviews.updated', 'Actualizado: %s'), $updatedAt)); ?></p>
-      <?php endif; ?>
-
     </div><!-- /.google-reviews-shell -->
   </div>
 </section>

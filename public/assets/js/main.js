@@ -133,13 +133,17 @@
       var cards = Array.prototype.slice.call(root.querySelectorAll('.google-review-card'));
       if (!cards.length) return;
 
+      var track = root.querySelector('.google-reviews-track');
       var dotsHost = root.querySelector('.google-review-dots');
       var visible = getVisibleCount();
       var pages = Math.ceil(cards.length / visible);
       var current = 0;
       var timer = null;
       var resizeTimer = null;
-      var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var transitionTimer = null;
+      var transitionDelay = 220;
+      var reducedMotionQuery = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+      var reducedMotion = !!(reducedMotionQuery && reducedMotionQuery.matches);
       var interval = parseInt(root.getAttribute('data-interval') || '6000', 10);
 
       root.classList.add('is-ready');
@@ -150,9 +154,7 @@
         return Math.max(1, parseInt(root.getAttribute('data-visible') || '3', 10) || 3);
       }
 
-      function showPage(pageIndex) {
-        if (pages < 1) pages = 1;
-        current = Math.max(0, Math.min(pageIndex, pages - 1));
+      function applyPage() {
         var start = current * visible;
         var end = start + visible;
         cards.forEach(function (card, idx) {
@@ -162,17 +164,48 @@
             card.classList.add('google-review-card--hidden');
           }
         });
+      }
 
+      function updateDots() {
         if (dotsHost) {
           dotsHost.querySelectorAll('.google-review-dot').forEach(function (dot, idx) {
-            dot.classList.toggle('is-active', idx === current);
+            var active = idx === current;
+            dot.classList.toggle('is-active', active);
+            dot.setAttribute('aria-current', active ? 'true' : 'false');
           });
         }
       }
 
+      function showPage(pageIndex, immediate) {
+        if (pages < 1) pages = 1;
+        var next = Math.max(0, Math.min(pageIndex, pages - 1));
+        var shouldAnimate = !immediate && !reducedMotion && track && next !== current;
+
+        current = next;
+        updateDots();
+
+        clearTimeout(transitionTimer);
+        if (!shouldAnimate) {
+          if (track) track.classList.remove('is-transitioning');
+          applyPage();
+          return;
+        }
+
+        track.classList.add('is-transitioning');
+        transitionTimer = setTimeout(function () {
+          applyPage();
+          if (window.requestAnimationFrame) {
+            window.requestAnimationFrame(function () {
+              track.classList.remove('is-transitioning');
+            });
+          } else {
+            track.classList.remove('is-transitioning');
+          }
+        }, transitionDelay);
+      }
+
       function nextPage() {
-        current = (current + 1) % pages;
-        showPage(current);
+        showPage((current + 1) % pages, false);
       }
 
       function buildDots() {
@@ -185,11 +218,11 @@
           dot.type = 'button';
           dot.className = 'google-review-dot' + (i === 0 ? ' is-active' : '');
           dot.setAttribute('aria-label', labelTemplate.replace('%s', String(i + 1)));
+          dot.setAttribute('aria-current', i === 0 ? 'true' : 'false');
           dot.addEventListener('click', (function (idx) {
             return function () {
               stopRotation();
-              current = idx;
-              showPage(current);
+              showPage(idx, false);
               startRotation();
             };
           })(i));
@@ -216,7 +249,18 @@
           current = Math.min(current, Math.max(0, pages - 1));
           buildDots();
         }
-        showPage(current);
+        showPage(current, true);
+      }
+
+      if (reducedMotionQuery && reducedMotionQuery.addEventListener) {
+        reducedMotionQuery.addEventListener('change', function (event) {
+          reducedMotion = event.matches;
+          if (reducedMotion && track) {
+            clearTimeout(transitionTimer);
+            track.classList.remove('is-transitioning');
+            applyPage();
+          }
+        });
       }
 
       root.addEventListener('mouseenter', stopRotation);
