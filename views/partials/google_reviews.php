@@ -104,7 +104,7 @@ $slideLabel = (string)t('google_reviews.slide_label', 'Grupo de reseñas %s');
               $tagLabel = count($tagParts) > 0 ? implode(' · ', $tagParts) : $sourceTagLabel;
             ?>
             <article class="google-review-card<?php echo $idx >= 3 ? ' google-review-card--extra' : ''; ?>" data-review-index="<?php echo e((string)$idx); ?>">
-              <header class="google-review-head">
+              <div class="google-review-head">
                 <div class="google-review-person">
                   <span class="google-review-avatar" aria-hidden="true"><?php echo e($initialsFor($review['name'])); ?></span>
                   <div class="google-review-identity">
@@ -118,7 +118,7 @@ $slideLabel = (string)t('google_reviews.slide_label', 'Grupo de reseñas %s');
                   </div>
                 </div>
                 <span class="google-review-tag"><?php echo e($tagLabel); ?></span>
-              </header>
+              </div>
               <div class="google-stars" aria-label="<?php echo e(sprintf($starsLabel, (string)$review['stars'])); ?>"><?php echo e(str_repeat('★', $review['stars']) . str_repeat('☆', 5 - $review['stars'])); ?></div>
               <p class="google-review-text"><?php echo e($review['text']); ?></p>
             </article>
