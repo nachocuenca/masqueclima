@@ -30,6 +30,16 @@ Auditoría SEO continua en dev local.
 
 Final production-readiness SEO decision, P0/P1/P2/P3 classification and deployment checklist are consolidated in `docs/FINAL_SEO_PRODUCTION_READINESS_AUDIT.md`.
 
+## Addendum 2026-05-30 — Google Reviews Module
+
+- Se implementó un módulo global de reseñas Google justo antes del CTA final en páginas comerciales.
+- Fuente de datos manual: `app/content/google_reviews.php` con rating 5,0, 70 opiniones y 12 reseñas iniciales aportadas por usuario.
+- Sin fotos de usuarios: se usan avatares con iniciales y metadatos textuales.
+- Enlace oficial usado: `https://share.google/2YL5e0lFenNMWZNk1`.
+- Se añadieron labels multiidioma para el bloque (`es/en/de/nl/ru/no`).
+- El bloque no se renderiza si faltan `rating`, `review_count` o `google_url`.
+- No se añadió `Review` ni `AggregateRating` schema en JSON-LD (decisión explícita para evitar riesgos de self-serving markup).
+
 ---
 
 ## 1. Homes (6 idiomas)

@@ -26,6 +26,20 @@ return [
   'form' => [
     'ok' => 'Vi har mottatt forespørselen din og kontakter deg snart.',
   ],
+  'google_reviews' => [
+    'eyebrow' => 'Kunder som allerede stoler på oss',
+    'title' => 'Kundeanmeldelser',
+    'excellent' => 'Utmerket',
+    'based_on' => 'Basert på %s anmeldelser',
+    'link' => 'Se alle anmeldelser på Google',
+    'tag' => 'Google-anmeldelse',
+    'verified' => 'Verifiserte anmeldelser på Google',
+    'updated' => 'Oppdatert: %s',
+    'summary_label' => 'Sammendrag av Google-anmeldelser',
+    'stars_label' => '%s av 5 stjerner',
+    'with_photos' => 'med bilder',
+    'slide_label' => 'Anmeldelsesgruppe %s',
+  ],
   'footer' => [
     'rights' => 'Alle rettigheter forbeholdt.',
     'line2' => 'Spesialister på klimaanlegg, varmepumper, strøm og solvarme i Alicante-provinsen.',

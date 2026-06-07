@@ -36,6 +36,15 @@ Checklist final antes de dominio bueno (sin deploy automático):
 5. Si Turnstile se activa en producción, validar claves reales en entorno y flujo de formulario tras deploy.
 6. Limpiar cache/CDN si aplica para publicar sitemap/metadatos actualizados.
 
+Addendum 2026-05-30 (módulo reseñas Google):
+
+- Añadido módulo global de reseñas Google antes del CTA final en páginas comerciales.
+- Fuente manual en `app/content/google_reviews.php` con enlace externo oficial del perfil, rating 5,0, 70 opiniones y 12 reseñas iniciales aportadas por usuario.
+- Sin API, sin iframe y sin widget externo pesado.
+- Sin fotos de usuarios: el módulo usa avatares sobrios con iniciales.
+- Sin cambios en `robots.txt`, `sitemap.xml`, DNS, SMTP o Turnstile.
+- Sin marcado `Review/AggregateRating` en JSON-LD por política de riesgo SEO.
+
 ## 2. Estado git
 
 Estado inicial de Fase 0:

@@ -137,6 +137,21 @@ return [
     'keywords' => 'climatización, calefacción y energía solar en Alicante',
   ],
 
+  'google_reviews' => [
+    'eyebrow'   => 'Clientes que ya confían en nosotros',
+    'title'     => 'Opiniones de nuestros clientes',
+    'excellent' => 'Excelente',
+    'based_on'  => 'A base de %s reseñas',
+    'link'      => 'Ver todas las reseñas en Google',
+    'tag'       => 'Reseña de Google',
+    'verified'  => 'Reseñas verificadas en Google',
+    'updated'   => 'Actualizado: %s',
+    'summary_label' => 'Resumen de reseñas de Google',
+    'stars_label'   => '%s de 5 estrellas',
+    'with_photos'   => 'con fotos',
+    'slide_label'   => 'Grupo de reseñas %s',
+  ],
+
   'img' => [
     'asesoramiento_alt' => 'Asesoramiento y diagnóstico personalizado',
     'seleccion_alt'     => 'Selección de la mejor solución',

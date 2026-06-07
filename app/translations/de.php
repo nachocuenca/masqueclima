@@ -99,6 +99,21 @@ return [
     'keywords'=>'Klimatisierung, Heizung und Solarthermie in Alicante',
   ],
 
+  'google_reviews' => [
+    'eyebrow'   => 'Kunden, die uns bereits vertrauen',
+    'title'     => 'Kundenbewertungen',
+    'excellent' => 'Ausgezeichnet',
+    'based_on'  => 'Basierend auf %s Bewertungen',
+    'link'      => 'Alle Bewertungen auf Google ansehen',
+    'tag'       => 'Google-Bewertung',
+    'verified'  => 'Verifizierte Bewertungen auf Google',
+    'updated'   => 'Aktualisiert: %s',
+    'summary_label' => 'Zusammenfassung der Google-Bewertungen',
+    'stars_label'   => '%s von 5 Sternen',
+    'with_photos'   => 'mit Fotos',
+    'slide_label'   => 'Bewertungsgruppe %s',
+  ],
+
   'img' => [
     'asesoramiento_alt'=>'Personalisierte Diagnose und Beratung',
     'seleccion_alt'=>'Auswahl der besten Lösung',

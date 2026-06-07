@@ -127,4 +127,111 @@
     }
   })();
 
+  // ---- Google reviews carousel (progressive enhancement) ----
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-google-reviews-carousel]').forEach(function (root) {
+      var cards = Array.prototype.slice.call(root.querySelectorAll('.google-review-card'));
+      if (!cards.length) return;
+
+      var dotsHost = root.querySelector('.google-review-dots');
+      var visible = getVisibleCount();
+      var pages = Math.ceil(cards.length / visible);
+      var current = 0;
+      var timer = null;
+      var resizeTimer = null;
+      var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var interval = parseInt(root.getAttribute('data-interval') || '6000', 10);
+
+      root.classList.add('is-ready');
+
+      function getVisibleCount() {
+        if (window.matchMedia && window.matchMedia('(max-width: 767.98px)').matches) return 1;
+        if (window.matchMedia && window.matchMedia('(max-width: 991.98px)').matches) return 2;
+        return Math.max(1, parseInt(root.getAttribute('data-visible') || '3', 10) || 3);
+      }
+
+      function showPage(pageIndex) {
+        if (pages < 1) pages = 1;
+        current = Math.max(0, Math.min(pageIndex, pages - 1));
+        var start = current * visible;
+        var end = start + visible;
+        cards.forEach(function (card, idx) {
+          if (idx >= start && idx < end) {
+            card.classList.remove('google-review-card--hidden');
+          } else {
+            card.classList.add('google-review-card--hidden');
+          }
+        });
+
+        if (dotsHost) {
+          dotsHost.querySelectorAll('.google-review-dot').forEach(function (dot, idx) {
+            dot.classList.toggle('is-active', idx === current);
+          });
+        }
+      }
+
+      function nextPage() {
+        current = (current + 1) % pages;
+        showPage(current);
+      }
+
+      function buildDots() {
+        if (!dotsHost) return;
+        dotsHost.innerHTML = '';
+        if (pages <= 1) return;
+        var labelTemplate = dotsHost.getAttribute('data-dot-label') || 'Slide %s';
+        for (var i = 0; i < pages; i++) {
+          var dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'google-review-dot' + (i === 0 ? ' is-active' : '');
+          dot.setAttribute('aria-label', labelTemplate.replace('%s', String(i + 1)));
+          dot.addEventListener('click', (function (idx) {
+            return function () {
+              stopRotation();
+              current = idx;
+              showPage(current);
+              startRotation();
+            };
+          })(i));
+          dotsHost.appendChild(dot);
+        }
+      }
+
+      function stopRotation() {
+        if (!timer) return;
+        clearInterval(timer);
+        timer = null;
+      }
+
+      function startRotation() {
+        if (reducedMotion || timer || pages <= 1) return;
+        timer = setInterval(nextPage, Math.max(5000, interval));
+      }
+
+      function syncLayout() {
+        var nextVisible = getVisibleCount();
+        if (nextVisible !== visible) {
+          visible = nextVisible;
+          pages = Math.ceil(cards.length / visible);
+          current = Math.min(current, Math.max(0, pages - 1));
+          buildDots();
+        }
+        showPage(current);
+      }
+
+      root.addEventListener('mouseenter', stopRotation);
+      root.addEventListener('mouseleave', startRotation);
+      root.addEventListener('focusin', stopRotation);
+      root.addEventListener('focusout', startRotation);
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(syncLayout, 120);
+      });
+
+      buildDots();
+      syncLayout();
+      startRotation();
+    });
+  });
+
 })();

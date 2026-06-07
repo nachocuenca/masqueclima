@@ -99,6 +99,21 @@ return [
     'keywords'=>'airconditioning, verwarming en zonneboilers in Alicante',
   ],
 
+  'google_reviews' => [
+    'eyebrow'   => 'Klanten die ons al vertrouwen',
+    'title'     => 'Klantbeoordelingen',
+    'excellent' => 'Uitstekend',
+    'based_on'  => 'Gebaseerd op %s beoordelingen',
+    'link'      => 'Alle reviews op Google bekijken',
+    'tag'       => 'Google-review',
+    'verified'  => 'Geverifieerde reviews op Google',
+    'updated'   => 'Bijgewerkt: %s',
+    'summary_label' => 'Samenvatting van Google-reviews',
+    'stars_label'   => '%s van 5 sterren',
+    'with_photos'   => 'met foto\'s',
+    'slide_label'   => 'Reviewgroep %s',
+  ],
+
   'img' => [
     'asesoramiento_alt'=>'Persoonlijk advies en diagnose',
     'seleccion_alt'=>'Selectie van de beste oplossing',

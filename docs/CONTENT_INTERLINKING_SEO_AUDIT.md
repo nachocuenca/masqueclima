@@ -15,6 +15,15 @@
 
 Referencia de cierre: ver `docs/FINAL_SEO_PRODUCTION_READINESS_AUDIT.md` para el dictamen final de salida a dominio bueno.
 
+## 8. Actualización 2026-05-30 — Social proof Google
+
+- Nuevo bloque global de reseñas Google insertado justo antes del CTA final en plantillas comerciales.
+- Arquitectura de datos manual (`app/content/google_reviews.php`) para evitar dependencia API en runtime.
+- Datos iniciales cargados: rating 5,0, 70 opiniones y 12 reseñas reales aportadas por usuario, sin fotos de usuarios.
+- Enlace de referencia aportado por usuario: `https://share.google/2YL5e0lFenNMWZNk1`.
+- Sin cambios de schema reviews en JSON-LD (sin `Review`/`AggregateRating`).
+- El bloque mantiene comportamiento seguro: si faltan datos base, no se renderiza.
+
 ## 1. RESUMEN EJECUTIVO
 
 Se encontraron **2 bugs P1** de código y **5 hallazgos SEO P2/P3**. Los dos bugs P1 han sido corregidos y validados en esta sesión. No se realizaron commits, despliegues, ni cambios en producción.

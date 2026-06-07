@@ -125,6 +125,21 @@ return [
     'keywords'=>'air conditioning, heating and solar energy in Alicante',
   ],
 
+  'google_reviews' => [
+    'eyebrow'   => 'Customers who already trust us',
+    'title'     => 'Customer reviews',
+    'excellent' => 'Excellent',
+    'based_on'  => 'Based on %s reviews',
+    'link'      => 'See all reviews on Google',
+    'tag'       => 'Google review',
+    'verified'  => 'Verified reviews on Google',
+    'updated'   => 'Updated: %s',
+    'summary_label' => 'Google reviews summary',
+    'stars_label'   => '%s out of 5 stars',
+    'with_photos'   => 'with photos',
+    'slide_label'   => 'Reviews group %s',
+  ],
+
   'img' => [
     'asesoramiento_alt'=>'Personalised diagnosis and advice',
     'seleccion_alt'=>'Best-fit solution selection',

@@ -169,6 +169,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
 
   $html = patch_snapshot_primary_nav($html, $lang);
   $html = patch_snapshot_remove_city_navigation_extras($html);
+  $html = patch_snapshot_google_reviews($html, $lang, $path);
   $html = patch_snapshot_quote_modal($html, $lang);
   $html = patch_snapshot_cookie_banner($html, $lang);
   $html = patch_snapshot_contact_anchor($html);
@@ -531,6 +532,40 @@ function patch_snapshot_contact_anchor(string $html): string {
     $html,
     1
   ) ?? $html;
+}
+
+function patch_snapshot_google_reviews(string $html, string $lang, string $path): string {
+  $path = normalize_snapshot_path($path);
+  if (is_legal_page_path($path) || str_contains($html, 'class="google-reviews-section"') || !str_contains($html, 'id="presupuesto"')) {
+    return $html;
+  }
+
+  $reviewsHtml = google_reviews_html($lang);
+  if (trim($reviewsHtml) === '') {
+    return $html;
+  }
+
+  return preg_replace(
+    '/(<section\b[^>]*\bid="presupuesto"[^>]*>)/i',
+    $reviewsHtml . "\n" . '$1',
+    $html,
+    1
+  ) ?? $html;
+}
+
+function is_legal_page_path(string $path): bool {
+  $normalized = normalize_snapshot_path($path);
+  foreach (legal_hreflang_map() as $group) {
+    if (!is_array($group)) {
+      continue;
+    }
+    foreach ($group as $candidate) {
+      if (is_string($candidate) && normalize_snapshot_path($candidate) === $normalized) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 function patch_snapshot_footer_guides_link(string $html, string $lang): string {
@@ -1181,9 +1216,10 @@ function render_es_legacy_shell(array $page, string $path, string $body): string
   $interactiveTail = legacy_es_interactive_main_tail($base, $mainStart + strlen($mainOpen), $mainEnd);
   $tail = substr($base, $mainEnd);
   $headAndHeader = patch_es_hub_head($headAndHeader, $page, $path);
+  $googleReviews = google_reviews_html('es');
   $finalCta = final_budget_cta_html('es');
 
-  return $headAndHeader . "\n" . $body . "\n" . $finalCta . "\n" . $interactiveTail . "\n" . $tail;
+  return $headAndHeader . "\n" . $body . "\n" . $googleReviews . "\n" . $finalCta . "\n" . $interactiveTail . "\n" . $tail;
 }
 
 function legacy_es_interactive_main_tail(string $base, int $mainContentStart, int $mainEnd): string {
@@ -1206,6 +1242,10 @@ function legacy_es_interactive_main_tail(string $base, int $mainContentStart, in
 
 function final_budget_cta_html(string $lang): string {
   return render_partial('final_budget_cta', ['lang' => $lang]);
+}
+
+function google_reviews_html(string $lang): string {
+  return render_partial('google_reviews', ['lang' => $lang]);
 }
 
 function es_service_page_for_path(string $path): ?array {
@@ -1413,7 +1453,7 @@ function render_es_minimal_shell(array $page, string $path, string $body): strin
     '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">' .
     '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">' .
     '<link rel="stylesheet" href="/assets/css/styles.css">' . $hreflang . es_page_jsonld($path, $page) . '</head><body><main id="main-content">' .
-    $body . final_budget_cta_html('es') . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
+    $body . google_reviews_html('es') . final_budget_cta_html('es') . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
 function patch_es_hub_head(string $html, array $page, string $path): string {
@@ -2447,9 +2487,10 @@ function render_lang_legacy_shell(array $page, string $path, string $body, strin
   $interactiveTail = legacy_es_interactive_main_tail($base, $mainStart + strlen($mainOpen), $mainEnd);
   $tail = substr($base, $mainEnd);
   $headAndHeader = patch_lang_hub_head($headAndHeader, $page, $path, $lang);
+  $googleReviews = google_reviews_html($lang);
   $finalCta = final_budget_cta_html($lang);
 
-  return $headAndHeader . "\n" . $body . "\n" . $finalCta . "\n" . $interactiveTail . "\n" . $tail;
+  return $headAndHeader . "\n" . $body . "\n" . $googleReviews . "\n" . $finalCta . "\n" . $interactiveTail . "\n" . $tail;
 }
 
 function render_lang_minimal_shell(array $page, string $path, string $body, string $lang): string {
@@ -2459,7 +2500,7 @@ function render_lang_minimal_shell(array $page, string $path, string $body, stri
     . '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">'
     . '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">'
     . '<link rel="stylesheet" href="/assets/css/styles.css">' . $hreflang . lang_page_jsonld($path, $lang, $page) . '</head><body><main id="main-content">'
-    . $body . final_budget_cta_html($lang) . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
+    . $body . google_reviews_html($lang) . final_budget_cta_html($lang) . '</main><script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>';
 }
 
 function patch_lang_hub_head(string $html, array $page, string $path, string $lang): string {
