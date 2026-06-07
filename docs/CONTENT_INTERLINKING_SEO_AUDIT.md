@@ -1,5 +1,18 @@
 # CONTENT, INTERLINKING & SEO AUDIT
 
+## Addendum 2026-06-07 - Google Reviews final polish
+
+Scope: final local polish of the Google Reviews/social-proof module before deploy. No deploy, production, DNS, Nginx, SMTP, Turnstile, `.env`, forms, robots, sitemap, Search Console, API, iframe or review schema changes.
+
+Current state:
+- Commercial pages render the Google Reviews block before the final CTA.
+- Legal pages do not render the Google Reviews block.
+- The widget uses initials avatars only; no real user photos are used.
+- The `con fotos` chip and visible updated-date line were removed.
+- The Google CTA is now a softer integrated secondary action.
+- The carousel keeps desktop/tablet/mobile behavior at 3/2/1 cards with smoother fade/slide transitions and `prefers-reduced-motion` support.
+- No `Review` or `AggregateRating` schema was added for this module.
+
 ## Addendum 2026-06-07 - P1 ES sitemap prep
 
 Scope: local sitemap preparation for the six prioritized Spanish guide URLs. No deploy, production, robots, DNS, Nginx, SMTP, Turnstile, `.env`, forms or Search Console changes.

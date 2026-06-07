@@ -1,5 +1,20 @@
 # SEO_CONTINUOUS_AUDIT.md
 
+## Addendum 2026-06-07 - Final predeploy local audit
+
+Scope: final local SEO/technical audit before the eventual deploy. No production, deploy, DNS, Nginx, SMTP, Turnstile, `.env`, form, robots or Search Console changes.
+
+Google Reviews final polish:
+- The global Google Reviews module keeps manual data only: no API, no iframe and no real user photos.
+- Removed the `con fotos` / `with photos` chip and the visible updated-date line from the widget.
+- Refined the Google CTA into a softer secondary pill-style action.
+- Smoothed the carousel transition with a fade/slide track state while keeping dots, hover/focus pause and `prefers-reduced-motion`.
+- Commercial pages keep Google reviews before the final CTA; legal pages remain without the module.
+- No `Review` or `AggregateRating` schema was added for the Google Reviews module.
+
+Schema note:
+- A search still finds inherited `aggregateRating` markup in the legacy reformas snapshots only. This is documented as separate legacy debt and was not changed in this audit.
+
 ## Addendum 2026-06-07 - P1 ES guide sitemap prep
 
 Scope: local sitemap preparation for the six Spanish P1 guide URLs. No production, deploy, robots, DNS, Nginx, SMTP, Turnstile, `.env`, forms or Search Console changes.
