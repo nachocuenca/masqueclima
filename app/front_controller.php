@@ -204,6 +204,30 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
     $html = $parts[0] . '</head>' . $parts[1];
   }
 
+  $html = patch_snapshot_asset_versions($html);
+
+  return $html;
+}
+
+function patch_snapshot_asset_versions(string $html): string {
+  $assets = [
+    'href' => '/assets/css/styles.css',
+    'src' => '/assets/js/main.js',
+  ];
+
+  foreach ($assets as $attr => $assetPath) {
+    $versionedUrl = versioned_asset($assetPath);
+    $pattern = '/\b' . preg_quote($attr, '/') . '\s*=\s*(["\'])' . preg_quote($assetPath, '/') . '(?:\?[^"\']*)?\1/i';
+    $html = preg_replace_callback(
+      $pattern,
+      static function (array $matches) use ($attr, $versionedUrl): string {
+        $quote = $matches[1];
+        return $attr . '=' . $quote . e($versionedUrl) . $quote;
+      },
+      $html
+    ) ?? $html;
+  }
+
   return $html;
 }
 

@@ -9,6 +9,24 @@ if (!function_exists('asset')) {
     }
 }
 
+if (!function_exists('versioned_asset')) {
+    function versioned_asset(string $path): string {
+        $url = str_starts_with($path, '/assets/') ? $path : asset($path);
+        $cleanPath = parse_url($url, PHP_URL_PATH);
+
+        if (!is_string($cleanPath) || !str_starts_with($cleanPath, '/assets/') || str_contains($cleanPath, '..')) {
+            return $url;
+        }
+
+        $file = __DIR__ . '/../public' . $cleanPath;
+        if (!is_file($file)) {
+            return $url;
+        }
+
+        return $url . (str_contains($url, '?') ? '&' : '?') . 'v=' . rawurlencode((string) filemtime($file));
+    }
+}
+
 if (!function_exists('base_url')) {
     function base_url(): string {
         return canonical_base_url();

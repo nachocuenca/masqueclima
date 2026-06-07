@@ -435,6 +435,10 @@ footer{text-align:center;}
   background:#f7f9fc;
   border-top:1px solid #e5eef8;
   border-bottom:1px solid #e5eef8;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  contain:paint;
 }
 .google-reviews-shell{
   background:#fff;
@@ -537,7 +541,8 @@ footer{text-align:center;}
   -webkit-line-clamp:6;
   -webkit-box-orient:vertical;
 }
-.google-review-dots{display:flex;justify-content:center;gap:.45rem;margin-top:.8rem;}
+.google-review-dots{display:none;justify-content:center;gap:.45rem;margin-top:.8rem;}
+.google-review-carousel.is-ready .google-review-dots{display:flex;}
 .google-review-dot{
   width:9px;height:9px;border-radius:50%;
   border:0;background:#cbd8e6;cursor:pointer;
