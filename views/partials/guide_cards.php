@@ -1,12 +1,12 @@
 <?php
-// Dynamic guide cards: ES shows the current P1 batch; other languages keep the existing 3.
+// Dynamic guide cards: show the current P1 batch in every language.
  $requestPath = $_SERVER['REQUEST_URI'] ?? '/es/';
  if (preg_match('#^/([a-z]{2})/#', $requestPath, $m)) { $lang = $m[1]; } else { $lang = 'es'; }
  $guidesFile = __DIR__ . '/../../app/content/guides/' . $lang . '.php';
  $cards = [];
  if (is_file($guidesFile)) {
    $all = require $guidesFile;
-   $limit = $lang === 'es' ? 6 : 3;
+   $limit = 6;
    $cards = array_slice($all, 0, $limit);
  }
   $prefixMap = [

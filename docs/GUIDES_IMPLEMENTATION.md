@@ -1,5 +1,35 @@
 # Guides Implementation
 
+## Blog SEO P1 multilingual adaptation - 2026-06-07
+
+Scope of this local pass:
+- Added contextual EN/DE/NL/RU/NO versions for the 6 prioritized P1 commercial-intent guides.
+- Kept the existing ES URLs and replaced their temporary `es_only` flag with stable `guide_key` values.
+- Added complete guide equivalence maps for ES/EN/DE/NL/RU/NO plus `x-default` pointing to the ES equivalent.
+- Updated guide hub cards so each language hub shows the 6 P1 guides first.
+- Updated the language-selector helper map so guide language switches point to the real localized equivalent URLs.
+- Did not edit `public/sitemap.xml`, `public/robots.txt`, DNS, Nginx, SMTP, Turnstile, `.env`, forms, Search Console, deploy or production.
+
+P1 guide URLs now available locally:
+- ES: `/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/`, `/es/blog/por-que-aire-acondicionado-no-enfria/`, `/es/blog/aire-acondicionado-conductos-o-split/`, `/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/`, `/es/blog/reparar-o-cambiar-aire-acondicionado/`, `/es/blog/como-ahorrar-luz-aire-acondicionado/`
+- EN: `/en/guides/how-much-air-conditioning-installation-costs-benidorm/`, `/en/guides/why-air-conditioning-not-cooling/`, `/en/guides/ducted-air-conditioning-or-split/`, `/en/guides/air-conditioning-holiday-apartments-benidorm/`, `/en/guides/repair-or-replace-air-conditioning/`, `/en/guides/how-to-save-electricity-air-conditioning/`
+- DE: `/de/ratgeber/kosten-klimaanlage-installation-benidorm/`, `/de/ratgeber/warum-kuehlt-klimaanlage-nicht/`, `/de/ratgeber/kanal-klimaanlage-oder-split/`, `/de/ratgeber/klimaanlage-ferienwohnungen-benidorm/`, `/de/ratgeber/klimaanlage-reparieren-oder-ersetzen/`, `/de/ratgeber/strom-sparen-mit-klimaanlage/`
+- NL: `/nl/gidsen/kosten-airco-installatie-benidorm/`, `/nl/gidsen/waarom-koelt-airco-niet/`, `/nl/gidsen/kanaalairco-of-split/`, `/nl/gidsen/airco-vakantieappartementen-benidorm/`, `/nl/gidsen/airco-repareren-of-vervangen/`, `/nl/gidsen/stroom-besparen-met-airco/`
+- RU: `/ru/gidy/skolko-stoit-ustanovit-konditsioner-benidorm/`, `/ru/gidy/pochemu-konditsioner-ne-ohlazhdaet/`, `/ru/gidy/kanalnyj-konditsioner-ili-split/`, `/ru/gidy/konditsioner-dlya-turisticheskih-apartamentov-benidorm/`, `/ru/gidy/remont-ili-zamena-konditsionera/`, `/ru/gidy/kak-ekonomit-elektroenergiyu-s-konditsionerom/`
+- NO: `/no/guider/hva-koster-installasjon-aircondition-benidorm/`, `/no/guider/hvorfor-kjoler-ikke-aircondition/`, `/no/guider/kanalbasert-aircondition-eller-split/`, `/no/guider/aircondition-ferieleiligheter-benidorm/`, `/no/guider/reparere-eller-bytte-aircondition/`, `/no/guider/spare-strom-med-aircondition/`
+
+Local validation on `127.0.0.1:8787`:
+- 36/36 P1 guide URLs return HTTP 200.
+- 36/36 have absolute self-canonical URLs, one H1, title/meta description, `BlogPosting`, visible FAQ with `FAQPage`, Google reviews before the final CTA and no `noindex`.
+- 36/36 emit complete ES/EN/DE/NL/RU/NO hreflang alternates and `x-default` to the ES equivalent.
+- Internal link sweep from the 36 guides checked 133 localized internal URLs with 0 errors.
+- 6/6 guide hubs show the 6 P1 cards in the expected order, with no placeholders.
+
+Pending before final publication:
+- Update `public/sitemap.xml` in a later authorized microphase so the multilingual URLs and alternates match the validated URL set.
+- Deploy only after final approval.
+- Search Console actions only after deploy and production sitemap validation.
+
 ## Scope
 - Added and validated 18 localized guide URLs across ES, EN, DE, NL, RU and NO.
 - Fixed localized internal links in guide content where legacy URLs were still present.

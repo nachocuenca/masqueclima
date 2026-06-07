@@ -3059,6 +3059,54 @@ function guide_hreflang_map(): array {
   if ($map !== null) return $map;
   $b = 'https://masqueclima.es';
   $map = [
+    'install_cost_benidorm' => [
+      'es' => $b . '/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/',
+      'en' => $b . '/en/guides/how-much-air-conditioning-installation-costs-benidorm/',
+      'de' => $b . '/de/ratgeber/kosten-klimaanlage-installation-benidorm/',
+      'nl' => $b . '/nl/gidsen/kosten-airco-installatie-benidorm/',
+      'ru' => $b . '/ru/gidy/skolko-stoit-ustanovit-konditsioner-benidorm/',
+      'no' => $b . '/no/guider/hva-koster-installasjon-aircondition-benidorm/',
+    ],
+    'not_cooling' => [
+      'es' => $b . '/es/blog/por-que-aire-acondicionado-no-enfria/',
+      'en' => $b . '/en/guides/why-air-conditioning-not-cooling/',
+      'de' => $b . '/de/ratgeber/warum-kuehlt-klimaanlage-nicht/',
+      'nl' => $b . '/nl/gidsen/waarom-koelt-airco-niet/',
+      'ru' => $b . '/ru/gidy/pochemu-konditsioner-ne-ohlazhdaet/',
+      'no' => $b . '/no/guider/hvorfor-kjoler-ikke-aircondition/',
+    ],
+    'ducted_vs_split' => [
+      'es' => $b . '/es/blog/aire-acondicionado-conductos-o-split/',
+      'en' => $b . '/en/guides/ducted-air-conditioning-or-split/',
+      'de' => $b . '/de/ratgeber/kanal-klimaanlage-oder-split/',
+      'nl' => $b . '/nl/gidsen/kanaalairco-of-split/',
+      'ru' => $b . '/ru/gidy/kanalnyj-konditsioner-ili-split/',
+      'no' => $b . '/no/guider/kanalbasert-aircondition-eller-split/',
+    ],
+    'holiday_apartments' => [
+      'es' => $b . '/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/',
+      'en' => $b . '/en/guides/air-conditioning-holiday-apartments-benidorm/',
+      'de' => $b . '/de/ratgeber/klimaanlage-ferienwohnungen-benidorm/',
+      'nl' => $b . '/nl/gidsen/airco-vakantieappartementen-benidorm/',
+      'ru' => $b . '/ru/gidy/konditsioner-dlya-turisticheskih-apartamentov-benidorm/',
+      'no' => $b . '/no/guider/aircondition-ferieleiligheter-benidorm/',
+    ],
+    'repair_or_replace' => [
+      'es' => $b . '/es/blog/reparar-o-cambiar-aire-acondicionado/',
+      'en' => $b . '/en/guides/repair-or-replace-air-conditioning/',
+      'de' => $b . '/de/ratgeber/klimaanlage-reparieren-oder-ersetzen/',
+      'nl' => $b . '/nl/gidsen/airco-repareren-of-vervangen/',
+      'ru' => $b . '/ru/gidy/remont-ili-zamena-konditsionera/',
+      'no' => $b . '/no/guider/reparere-eller-bytte-aircondition/',
+    ],
+    'save_electricity' => [
+      'es' => $b . '/es/blog/como-ahorrar-luz-aire-acondicionado/',
+      'en' => $b . '/en/guides/how-to-save-electricity-air-conditioning/',
+      'de' => $b . '/de/ratgeber/strom-sparen-mit-klimaanlage/',
+      'nl' => $b . '/nl/gidsen/stroom-besparen-met-airco/',
+      'ru' => $b . '/ru/gidy/kak-ekonomit-elektroenergiyu-s-konditsionerom/',
+      'no' => $b . '/no/guider/spare-strom-med-aircondition/',
+    ],
     'heat_pump' => [
       'es' => $b . '/es/blog/aerotermia-bomba-calor-cuando-merece-la-pena/',
       'en' => $b . '/en/guides/heat-pump-aerothermal-when-worth-it/',

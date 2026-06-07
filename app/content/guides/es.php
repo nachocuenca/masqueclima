@@ -4,7 +4,7 @@ declare(strict_types=1);
 return [
 
   '/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/' => [
-    'hreflang'        => 'es_only',
+    'guide_key'       => 'install_cost_benidorm',
     'slug'            => 'cuanto-cuesta-instalar-aire-acondicionado-benidorm',
     'title'           => 'Cu&aacute;nto cuesta instalar aire acondicionado en Benidorm | +QUECLIMA',
     'description'     => 'Factores que influyen en el coste de instalar aire acondicionado en Benidorm: equipo, distancia, acceso, preinstalaci&oacute;n, conductos y visita t&eacute;cnica.',
@@ -127,7 +127,7 @@ return [
   ],
 
   '/es/blog/por-que-aire-acondicionado-no-enfria/' => [
-    'hreflang'        => 'es_only',
+    'guide_key'       => 'not_cooling',
     'slug'            => 'por-que-aire-acondicionado-no-enfria',
     'title'           => 'Por qu&eacute; mi aire acondicionado no enfr&iacute;a | +QUECLIMA',
     'description'     => 'Causas habituales por las que un aire acondicionado no enfr&iacute;a: filtros, mantenimiento, gas, unidad exterior, termostato, fugas y dimensionamiento.',
@@ -239,7 +239,7 @@ return [
   ],
 
   '/es/blog/aire-acondicionado-conductos-o-split/' => [
-    'hreflang'        => 'es_only',
+    'guide_key'       => 'ducted_vs_split',
     'slug'            => 'aire-acondicionado-conductos-o-split',
     'title'           => 'Aire acondicionado por conductos o split: cu&aacute;l elegir | +QUECLIMA',
     'description'     => 'Comparativa entre aire acondicionado por conductos y split: est&eacute;tica, obra, coste, mantenimiento, zonificaci&oacute;n y tipo de vivienda.',
@@ -358,7 +358,7 @@ return [
   ],
 
   '/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/' => [
-    'hreflang'        => 'es_only',
+    'guide_key'       => 'holiday_apartments',
     'slug'            => 'aire-acondicionado-apartamentos-turisticos-benidorm',
     'title'           => 'Aire acondicionado para apartamentos tur&iacute;sticos en Benidorm | +QUECLIMA',
     'description'     => 'Gu&iacute;a para elegir y mantener aire acondicionado en apartamentos tur&iacute;sticos de Benidorm: fiabilidad, ruido, consumo, uso intensivo y revisi&oacute;n antes de temporada.',
@@ -475,7 +475,7 @@ return [
   ],
 
   '/es/blog/reparar-o-cambiar-aire-acondicionado/' => [
-    'hreflang'        => 'es_only',
+    'guide_key'       => 'repair_or_replace',
     'slug'            => 'reparar-o-cambiar-aire-acondicionado',
     'title'           => 'Reparar o cambiar el aire acondicionado: cu&aacute;ndo merece la pena | +QUECLIMA',
     'description'     => 'Criterios para decidir si reparar o cambiar un aire acondicionado: antig&uuml;edad, aver&iacute;as recurrentes, eficiencia, piezas, confort y diagn&oacute;stico.',
@@ -592,7 +592,7 @@ return [
   ],
 
   '/es/blog/como-ahorrar-luz-aire-acondicionado/' => [
-    'hreflang'        => 'es_only',
+    'guide_key'       => 'save_electricity',
     'slug'            => 'como-ahorrar-luz-aire-acondicionado',
     'title'           => 'C&oacute;mo ahorrar luz con el aire acondicionado | +QUECLIMA',
     'description'     => 'Consejos pr&aacute;cticos para ahorrar luz con el aire acondicionado: temperatura, filtros, modo eco, persianas, uso continuo, mantenimiento y equipo eficiente.',

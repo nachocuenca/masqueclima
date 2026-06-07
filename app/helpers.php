@@ -207,6 +207,54 @@ if (!function_exists('localized_service_equivalent_paths')) {
 if (!function_exists('localized_guide_equivalent_paths')) {
     function localized_guide_equivalent_paths(): array {
         return [
+            'install_cost_benidorm' => [
+                'es' => '/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/',
+                'en' => '/en/guides/how-much-air-conditioning-installation-costs-benidorm/',
+                'de' => '/de/ratgeber/kosten-klimaanlage-installation-benidorm/',
+                'nl' => '/nl/gidsen/kosten-airco-installatie-benidorm/',
+                'ru' => '/ru/gidy/skolko-stoit-ustanovit-konditsioner-benidorm/',
+                'no' => '/no/guider/hva-koster-installasjon-aircondition-benidorm/',
+            ],
+            'not_cooling' => [
+                'es' => '/es/blog/por-que-aire-acondicionado-no-enfria/',
+                'en' => '/en/guides/why-air-conditioning-not-cooling/',
+                'de' => '/de/ratgeber/warum-kuehlt-klimaanlage-nicht/',
+                'nl' => '/nl/gidsen/waarom-koelt-airco-niet/',
+                'ru' => '/ru/gidy/pochemu-konditsioner-ne-ohlazhdaet/',
+                'no' => '/no/guider/hvorfor-kjoler-ikke-aircondition/',
+            ],
+            'ducted_vs_split' => [
+                'es' => '/es/blog/aire-acondicionado-conductos-o-split/',
+                'en' => '/en/guides/ducted-air-conditioning-or-split/',
+                'de' => '/de/ratgeber/kanal-klimaanlage-oder-split/',
+                'nl' => '/nl/gidsen/kanaalairco-of-split/',
+                'ru' => '/ru/gidy/kanalnyj-konditsioner-ili-split/',
+                'no' => '/no/guider/kanalbasert-aircondition-eller-split/',
+            ],
+            'holiday_apartments' => [
+                'es' => '/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/',
+                'en' => '/en/guides/air-conditioning-holiday-apartments-benidorm/',
+                'de' => '/de/ratgeber/klimaanlage-ferienwohnungen-benidorm/',
+                'nl' => '/nl/gidsen/airco-vakantieappartementen-benidorm/',
+                'ru' => '/ru/gidy/konditsioner-dlya-turisticheskih-apartamentov-benidorm/',
+                'no' => '/no/guider/aircondition-ferieleiligheter-benidorm/',
+            ],
+            'repair_or_replace' => [
+                'es' => '/es/blog/reparar-o-cambiar-aire-acondicionado/',
+                'en' => '/en/guides/repair-or-replace-air-conditioning/',
+                'de' => '/de/ratgeber/klimaanlage-reparieren-oder-ersetzen/',
+                'nl' => '/nl/gidsen/airco-repareren-of-vervangen/',
+                'ru' => '/ru/gidy/remont-ili-zamena-konditsionera/',
+                'no' => '/no/guider/reparere-eller-bytte-aircondition/',
+            ],
+            'save_electricity' => [
+                'es' => '/es/blog/como-ahorrar-luz-aire-acondicionado/',
+                'en' => '/en/guides/how-to-save-electricity-air-conditioning/',
+                'de' => '/de/ratgeber/strom-sparen-mit-klimaanlage/',
+                'nl' => '/nl/gidsen/stroom-besparen-met-airco/',
+                'ru' => '/ru/gidy/kak-ekonomit-elektroenergiyu-s-konditsionerom/',
+                'no' => '/no/guider/spare-strom-med-aircondition/',
+            ],
             'capacity' => [
                 'es' => '/es/blog/que-potencia-aire-acondicionado-necesita-vivienda/',
                 'en' => '/en/guides/what-air-conditioning-capacity-home-needs/',

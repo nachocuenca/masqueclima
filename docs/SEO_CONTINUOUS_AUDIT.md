@@ -1,5 +1,27 @@
 # SEO_CONTINUOUS_AUDIT.md
 
+## Addendum 2026-06-07 - P1 multilingual guide adaptation
+
+Scope: local adaptation of the six P1 SEO guides from ES into EN/DE/NL/RU/NO. No production, deploy, DNS, Nginx, SMTP, Turnstile, `.env`, forms, robots, sitemap or Search Console changes.
+
+Current local state:
+- The 6 P1 guides now exist in ES, EN, DE, NL, RU and NO: 36 localized guide detail URLs.
+- The temporary `es_only` flag was removed from the 6 ES guide records and replaced with stable guide keys.
+- `guide_hreflang_map()` now emits complete ES/EN/DE/NL/RU/NO alternates plus `x-default` to the ES equivalent for each P1 guide.
+- `localized_guide_equivalent_paths()` was updated so the language selector points to real contextual guide equivalents.
+- Guide hubs now render the first 6 P1 guide cards in every language.
+
+Local validation on `127.0.0.1:8787`:
+- 36/36 P1 guide URLs returned HTTP 200.
+- 36/36 had absolute self-canonicals, one H1, title/meta description, `BlogPosting`, visible FAQ with `FAQPage`, Google reviews before final CTA and no `noindex`.
+- 36/36 had complete hreflang sets and correct `x-default` to ES.
+- Internal link sweep: 133 localized internal URLs checked, 0 broken links.
+- Guide hubs: 6/6 returned 200 and contained the 6 P1 cards with no placeholders.
+
+Pending:
+- Sitemap must be updated in a later authorized microphase; it was intentionally not touched here.
+- Production `/sitemap.xml` validation and Search Console work remain pending until after approved deploy.
+
 ## Addendum 2026-06-07 - Final predeploy local audit
 
 Scope: final local SEO/technical audit before the eventual deploy. No production, deploy, DNS, Nginx, SMTP, Turnstile, `.env`, form, robots or Search Console changes.
