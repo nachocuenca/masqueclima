@@ -1,12 +1,13 @@
 <?php
-// Dynamic guide cards: load first 3 guides for current language (fall back to 'es')
+// Dynamic guide cards: ES shows the current P1 batch; other languages keep the existing 3.
  $requestPath = $_SERVER['REQUEST_URI'] ?? '/es/';
  if (preg_match('#^/([a-z]{2})/#', $requestPath, $m)) { $lang = $m[1]; } else { $lang = 'es'; }
  $guidesFile = __DIR__ . '/../../app/content/guides/' . $lang . '.php';
  $cards = [];
  if (is_file($guidesFile)) {
    $all = require $guidesFile;
-   $cards = array_slice($all, 0, 3);
+   $limit = $lang === 'es' ? 6 : 3;
+   $cards = array_slice($all, 0, $limit);
  }
   $prefixMap = [
     'es' => '/es/blog/', 'en' => '/en/guides/', 'de' => '/de/ratgeber/',
@@ -24,10 +25,11 @@
 ?>
 <div class="hub-grid guides-grid">
   <?php foreach ($cards as $g): ?>
+    <?php $summary = $g['card_summary'] ?? $g['summary'] ?? $g['intro'] ?? ($g['content'][0] ?? ''); ?>
     <article class="hub-card">
       <span class="guide-badge guide-badge--live"><?php echo e($guideLabel); ?></span>
-      <h3><a href="<?php echo e($prefix . $g['slug'] . '/'); ?>"><?php echo e($g['title']); ?></a></h3>
-      <?php if (!empty($g['content'][0])): ?><p><?php echo e($g['content'][0]); ?></p><?php endif; ?>
+      <h3><a href="<?php echo e($prefix . $g['slug'] . '/'); ?>"><?php echo $g['title']; ?></a></h3>
+      <?php if ($summary !== ''): ?><p><?php echo $summary; ?></p><?php endif; ?>
       <a class="hub-pill" href="<?php echo e($prefix . $g['slug'] . '/'); ?>"><?php echo e($ctaLabel); ?></a>
     </article>
   <?php endforeach; ?>

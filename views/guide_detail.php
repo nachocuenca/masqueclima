@@ -1,6 +1,10 @@
 <?php
 $guide   = $guide   ?? [];
 $guideUi = $guideUi ?? [];
+$sections = is_array($guide['sections'] ?? null) ? $guide['sections'] : [];
+$quickSummary = is_array($guide['quick_summary'] ?? null) ? $guide['quick_summary'] : [];
+$midCta = is_array($guide['mid_cta'] ?? null) ? $guide['mid_cta'] : [];
+$midCtaAfter = (int)($midCta['after_section'] ?? 1);
 ?>
 <?= hub_styles() ?>
 <?= hub_intro(
@@ -20,26 +24,97 @@ $guideUi = $guideUi ?? [];
     <p class="hub-kicker"><?= $guideUi['intro_kicker'] ?? 'Guía' ?></p>
     <h2 class="section-title" id="guide-intro-heading"><?= $guide['h1'] ?? '' ?></h2>
     <p class="hub-muted"><?= $guide['intro'] ?? '' ?></p>
+    <?php if (!empty($quickSummary)): ?>
+      <div class="guide-quick-summary" aria-label="Resumen rapido">
+        <h3><?= $guide['quick_summary_title'] ?? 'Resumen r&aacute;pido' ?></h3>
+        <ul>
+          <?php foreach ($quickSummary as $item): ?>
+            <li><?= $item ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    <?php endif; ?>
+    <?php if (!empty($sections)): ?>
+      <nav class="guide-toc" aria-label="Indice de la guia">
+        <strong><?= $guide['toc_title'] ?? 'Indice de la guia' ?></strong>
+        <ol>
+          <?php foreach ($sections as $i => $section): ?>
+            <li><a href="#guide-section-<?= $i ?>"><?= $section['heading'] ?? '' ?></a></li>
+          <?php endforeach; ?>
+        </ol>
+      </nav>
+    <?php endif; ?>
   </div>
 </section>
 
-<?php foreach ($guide['sections'] ?? [] as $i => $section): ?>
+<?php foreach ($sections as $i => $section): ?>
 <section class="hub-section<?= ($i % 2 === 1) ? ' alt' : '' ?> guide-section" aria-labelledby="guide-section-<?= $i ?>">
   <div class="container">
     <h2 class="section-title" id="guide-section-<?= $i ?>"><?= $section['heading'] ?></h2>
     <?php foreach ($section['body'] as $item): ?>
-      <?php if (is_array($item) && isset($item['bullets'])): ?>
+      <?php if (is_array($item) && isset($item['subheading'])): ?>
+        <h3 class="guide-subheading"><?= $item['subheading'] ?></h3>
+        <?php if (!empty($item['text'])): ?>
+          <p class="hub-muted"><?= $item['text'] ?></p>
+        <?php endif; ?>
+      <?php elseif (is_array($item) && isset($item['bullets'])): ?>
         <ul class="guide-bullets">
           <?php foreach ($item['bullets'] as $bullet): ?>
             <li><?= $bullet ?></li>
           <?php endforeach; ?>
         </ul>
+      <?php elseif (is_array($item) && isset($item['callout'])): ?>
+        <aside class="guide-callout">
+          <?php if (!empty($item['callout']['title'])): ?>
+            <strong><?= $item['callout']['title'] ?></strong>
+          <?php endif; ?>
+          <?php if (!empty($item['callout']['text'])): ?>
+            <p><?= $item['callout']['text'] ?></p>
+          <?php endif; ?>
+        </aside>
+      <?php elseif (is_array($item) && isset($item['table'])): ?>
+        <div class="guide-table-wrap">
+          <table class="guide-table">
+            <?php if (!empty($item['table']['headers'])): ?>
+              <thead>
+                <tr>
+                  <?php foreach ($item['table']['headers'] as $header): ?>
+                    <th><?= $header ?></th>
+                  <?php endforeach; ?>
+                </tr>
+              </thead>
+            <?php endif; ?>
+            <tbody>
+              <?php foreach ($item['table']['rows'] ?? [] as $row): ?>
+                <tr>
+                  <?php foreach ($row as $cell): ?>
+                    <td><?= $cell ?></td>
+                  <?php endforeach; ?>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
       <?php else: ?>
         <p class="hub-muted"><?= $item ?></p>
       <?php endif; ?>
     <?php endforeach; ?>
   </div>
 </section>
+<?php if (!empty($midCta) && $i === $midCtaAfter): ?>
+<section class="hub-section guide-mid-cta-section" aria-labelledby="guide-mid-cta-heading">
+  <div class="container">
+    <div class="guide-mid-cta">
+      <div>
+        <p class="hub-kicker"><?= $midCta['kicker'] ?? 'Presupuesto' ?></p>
+        <h2 class="section-title" id="guide-mid-cta-heading"><?= $midCta['title'] ?? 'Pide asesoramiento' ?></h2>
+        <p class="hub-muted"><?= $midCta['text'] ?? 'Cu&eacute;ntanos tu caso y te orientamos con una propuesta clara.' ?></p>
+      </div>
+      <a class="btn btn-primary js-track" data-ev="<?= e($midCta['event'] ?? 'cta_quote_guide_mid') ?>" data-bs-toggle="modal" data-bs-target="#quoteModal" href="#quote"><?= $midCta['label'] ?? 'Pedir presupuesto' ?></a>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 <?php endforeach; ?>
 
 <?php if (!empty($guide['faq'])): ?>

@@ -1,5 +1,54 @@
 # SEO_CONTINUOUS_AUDIT.md
 
+## Addendum 2026-06-07 - P1 ES guide implementation validation
+
+Scope: six Spanish guide URLs implemented and validated locally. No production, deploy, sitemap, robots, DNS, Nginx, SMTP or Turnstile changes.
+
+Implemented guide URLs:
+- `/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/`
+- `/es/blog/por-que-aire-acondicionado-no-enfria/`
+- `/es/blog/aire-acondicionado-conductos-o-split/`
+- `/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/`
+- `/es/blog/reparar-o-cambiar-aire-acondicionado/`
+- `/es/blog/como-ahorrar-luz-aire-acondicionado/`
+
+Local validation on `127.0.0.1:8787`:
+- HTTP 200: 6/6 new guide URLs.
+- Editorial body length: 6/6 within the P1 target range, 901-1049 words per guide.
+- Canonical: 6/6 absolute `https://masqueclima.es/...` canonicals.
+- Headings: 6/6 have exactly one H1.
+- Metadata: 6/6 have unique titles and unique meta descriptions in the checked batch.
+- Structured data: 6/6 have `BlogPosting`; 6/6 have visible FAQs and `FAQPage`.
+- Conversion modules: 6/6 have quick summary, guide TOC, mid-page CTA, Google reviews and final budget CTA.
+- Indexability: 6/6 have no `noindex`; 6/6 have no placeholder text such as `Proximamente` or `Coming soon`.
+- Temporary hreflang: 6/6 emit 0 `rel="alternate"` links while marked `es_only`, avoiding alternates to missing translated URLs.
+- Internal links: all checked internal guide links returned 200, including related services, `/es/servicios/`, localities and `/es/zonas/`.
+
+Sitemap status:
+- `public/sitemap.xml` was not edited in this implementation pass.
+- New URLs remain blocked from sitemap inclusion until final URL approval and multilingual/hreflang decisions are closed.
+
+## Addendum 2026-06-07 - Blog SEO / guides expansion audit
+
+Scope: audit and editorial planning only. No production, deploy, sitemap, robots, DNS, Nginx, SMTP or Turnstile changes.
+
+Current guide inventory:
+- 18 detail guide records: 3 ES, 3 EN, 3 DE, 3 NL, 3 RU, 3 NO.
+- 6 guide hubs: `/es/blog/`, `/en/guides/`, `/de/ratgeber/`, `/nl/gidsen/`, `/ru/gidy/`, `/no/guider/`.
+- `public/sitemap.xml` inspected only: 192 `<loc>` entries total; 24 guide-related `<loc>` entries (6 hubs + 18 detail URLs). No sitemap edits.
+
+Local smoke validation on `127.0.0.1:8787`:
+- Guide hubs sampled: `/es/blog/` returns 200 with absolute canonical, 7 hreflang links, one H1, Google reviews present and final CTA present.
+- Current guide details: 18/18 return 200 with one H1, 7 hreflang links, `FAQPage`, `BlogPosting`, Google reviews and final CTA present.
+- PHP lint OK for `app/front_controller.php`, `views/guide_detail.php` and `views/partials/guide_cards.php`.
+
+Gaps before publishing new guides:
+- `views/guide_detail.php` has no guide TOC or mid-page soft CTA yet.
+- `views/partials/guide_cards.php` expects `content[0]` for summaries, while current guide records use `intro`; cards render without summaries.
+- Current ES guide records link to service details and localities, but not explicitly to `/es/servicios/` and `/es/zonas/`; new guides must include both hubs.
+- New guide keys must be added to `localized_guide_equivalent_paths()` and `guide_hreflang_map()` only after contextual EN/DE/NL/RU/NO URLs are validated.
+- Sitemap remains blocked until ES content, internal links, canonical, hreflang and 404 checks are complete.
+
 Auditoría SEO continua en dev local.
 **Fecha:** 2026-05-28 | **Rama:** fix/legacy-php-dev-stabilization | **Servidor:** localhost:8787
 

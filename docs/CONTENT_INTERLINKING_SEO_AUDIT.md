@@ -1,4 +1,73 @@
 # CONTENT, INTERLINKING & SEO AUDIT
+
+## Addendum 2026-06-07 - P1 ES guide interlinking implemented
+
+Scope: implemented interlinking for the six prioritized Spanish guide URLs. No sitemap, robots, deploy or production changes.
+
+Implemented guide URLs:
+1. `/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/`
+2. `/es/blog/por-que-aire-acondicionado-no-enfria/`
+3. `/es/blog/aire-acondicionado-conductos-o-split/`
+4. `/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/`
+5. `/es/blog/reparar-o-cambiar-aire-acondicionado/`
+6. `/es/blog/como-ahorrar-luz-aire-acondicionado/`
+
+Interlinking applied to each guide:
+- At least one main related service detail URL.
+- `/es/servicios/` service hub.
+- At least two locality URLs.
+- `/es/zonas/` zones hub.
+- CTA/form path through the mid-page CTA and final CTA.
+- Google reviews remain before the final CTA in the dynamic shell.
+
+Local validation on `127.0.0.1:8787`:
+- 6/6 new guide URLs return 200.
+- 6/6 guide bodies are within the P1 target range, 901-1049 words.
+- `/es/blog/` returns 200 and links to all six new P1 guides.
+- Checked internal links from the six new guides return 200.
+- The first three ES hub cards follow the requested priority order: cost in Benidorm, no-cooling diagnosis, conductos vs split.
+
+Pending before sitemap:
+- User approval of final ES URLs.
+- Decision on whether to publish ES-only URLs first or wait for adapted EN/DE/NL/RU/NO versions.
+- If multilingual versions are added, update guide equivalence/hreflang maps only after every localized URL returns 200.
+
+## Addendum 2026-06-07 - Blog SEO / guides expansion
+
+Scope: historical editorial and interlinking planning for the next guide batch. Current implemented state is documented in the P1 ES guide interlinking addendum above.
+
+Current guide interlinking audit:
+- Existing ES guide details include 3 related service-detail links and 5 locality links each.
+- Existing ES guide details do not explicitly include `/es/servicios/` or `/es/zonas/` in their guide-specific related link arrays.
+- Dynamic shells already inject Google reviews before the final CTA, so the final conversion path exists.
+- The guides hub cards are not showing summaries because `views/partials/guide_cards.php` checks `content[0]`, while guide records use `intro`.
+
+New interlinking rule for every new or updated ES guide:
+- Link to one main related service page.
+- Link to at least 2 locality pages.
+- Link to `/es/servicios/`.
+- Link to `/es/zonas/`.
+- Keep the final CTA/form path active.
+- Keep Google reviews immediately before the final CTA.
+
+Priority guides for implementation:
+1. `/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/`
+2. `/es/blog/por-que-aire-acondicionado-no-enfria/`
+3. `/es/blog/aire-acondicionado-conductos-o-split/`
+4. `/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/`
+5. `/es/blog/reparar-o-cambiar-aire-acondicionado/`
+6. `/es/blog/como-ahorrar-luz-aire-acondicionado/`
+
+Secondary ES guides and existing-guide updates:
+- `que-potencia-aire-acondicionado-necesita-vivienda` (existing, update links/CTA)
+- `mantenimiento-aire-acondicionado-antes-verano` (existing, update links/CTA)
+- `aerotermia-bomba-calor-cuando-merece-la-pena` (existing, update links/CTA)
+- `mejores-marcas-aire-acondicionado-costa-blanca`
+- `errores-comprar-aire-acondicionado-online`
+- `que-revisar-antes-instalar-aire-acondicionado-vivienda`
+
+Sitemap gate:
+- Do not add the six implemented P1 ES URLs, the remaining planned ES URLs, or any future EN/DE/NL/RU/NO equivalents to `public/sitemap.xml` until final URL approval, internal links, hreflang maps and every target URL are validated.
 **Sesión 7 — fix/legacy-php-dev-stabilization**  
 **Fecha:** 2026-05-29  
 **Rama:** `fix/legacy-php-dev-stabilization` (HEAD pre-fix: `bfbc545`)  

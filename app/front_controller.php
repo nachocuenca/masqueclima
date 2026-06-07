@@ -1448,7 +1448,7 @@ function render_service_detail_body(array $service, string $lang = 'es'): string
 
 function render_es_minimal_shell(array $page, string $path, string $body): string {
   $canonical = 'https://masqueclima.es' . $path;
-  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
+  $hreflang = page_hreflang_html($path, $page, 'es');
   return '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' .
     '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">' .
     '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">' .
@@ -1472,7 +1472,7 @@ function patch_es_hub_head(string $html, array $page, string $path): string {
   if (!empty($page['hero_image'])) {
     $html = patch_og_image_meta($html, 'https://masqueclima.es' . $page['hero_image']);
   }
-  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
+  $hreflang = page_hreflang_html($path, $page, 'es');
   $html = str_replace('</head>', $hreflang . es_page_jsonld($path, $page) . "\n</head>", $html);
 
   return $html;
@@ -2495,7 +2495,7 @@ function render_lang_legacy_shell(array $page, string $path, string $body, strin
 
 function render_lang_minimal_shell(array $page, string $path, string $body, string $lang): string {
   $canonical = 'https://masqueclima.es' . $path;
-  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
+  $hreflang = page_hreflang_html($path, $page, $lang);
   return '<!DOCTYPE html><html lang="' . e($lang) . '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
     . '<title>' . $page['title'] . '</title><meta name="description" content="' . $page['description'] . '">'
     . '<link rel="canonical" href="' . $canonical . '"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">'
@@ -2520,10 +2520,22 @@ function patch_lang_hub_head(string $html, array $page, string $path, string $la
   if (!empty($page['hero_image'])) {
     $html = patch_og_image_meta($html, 'https://masqueclima.es' . $page['hero_image']);
   }
-  $hreflang = !empty($page['guide_key']) ? guide_hreflang_html((string)$page['guide_key']) : localized_hreflang_links_html($path);
+  $hreflang = page_hreflang_html($path, $page, $lang);
   $html = str_replace('</head>', $hreflang . lang_page_jsonld($path, $lang, $page) . "\n</head>", $html);
 
   return $html;
+}
+
+function page_hreflang_html(string $path, array $page, string $lang): string {
+  if (($page['hreflang'] ?? null) === 'es_only') {
+    return '';
+  }
+
+  if (!empty($page['guide_key'])) {
+    return guide_hreflang_html((string) $page['guide_key']);
+  }
+
+  return localized_hreflang_links_html($path);
 }
 
 function lang_page_jsonld(string $path, string $lang, array $page): string {
