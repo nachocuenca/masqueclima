@@ -2,7 +2,7 @@
 
 ## Addendum 2026-06-07 - P1 multilingual guide adaptation
 
-Scope: local adaptation of the six P1 SEO guides from ES into EN/DE/NL/RU/NO. No production, deploy, DNS, Nginx, SMTP, Turnstile, `.env`, forms, robots, sitemap or Search Console changes.
+Scope: local adaptation of the six P1 SEO guides from ES into EN/DE/NL/RU/NO and sitemap closure for the multilingual URL set. No production, deploy, DNS, Nginx, SMTP, Turnstile, `.env`, forms, robots or Search Console changes.
 
 Current local state:
 - The 6 P1 guides now exist in ES, EN, DE, NL, RU and NO: 36 localized guide detail URLs.
@@ -10,6 +10,7 @@ Current local state:
 - `guide_hreflang_map()` now emits complete ES/EN/DE/NL/RU/NO alternates plus `x-default` to the ES equivalent for each P1 guide.
 - `localized_guide_equivalent_paths()` was updated so the language selector points to real contextual guide equivalents.
 - Guide hubs now render the first 6 P1 guide cards in every language.
+- `public/sitemap.xml` now contains the 36 P1 guide URLs with complete ES/EN/DE/NL/RU/NO `xhtml:link` alternates and `x-default` to ES.
 
 Local validation on `127.0.0.1:8787`:
 - 36/36 P1 guide URLs returned HTTP 200.
@@ -17,9 +18,10 @@ Local validation on `127.0.0.1:8787`:
 - 36/36 had complete hreflang sets and correct `x-default` to ES.
 - Internal link sweep: 133 localized internal URLs checked, 0 broken links.
 - Guide hubs: 6/6 returned 200 and contained the 6 P1 cards with no placeholders.
+- Sitemap: XML OK, UTF-8 without BOM, 228 `<loc>` entries, 228 unique URLs, 36 P1 URLs present and 7 alternates per P1 URL.
+- Robots: `public/robots.txt` was checked and left unchanged.
 
 Pending:
-- Sitemap must be updated in a later authorized microphase; it was intentionally not touched here.
 - Production `/sitemap.xml` validation and Search Console work remain pending until after approved deploy.
 
 ## Addendum 2026-06-07 - Final predeploy local audit

@@ -2,7 +2,7 @@
 
 ## Addendum 2026-06-07 - P1 multilingual guide interlinking
 
-Scope: local EN/DE/NL/RU/NO adaptation for the 6 P1 guide batch and guide interlinking validation. No deploy, production, DNS, Nginx, SMTP, Turnstile, `.env`, forms, robots, sitemap, Search Console, API, iframe or review schema changes.
+Scope: local EN/DE/NL/RU/NO adaptation for the 6 P1 guide batch, interlinking validation and multilingual sitemap closure. No deploy, production, DNS, Nginx, SMTP, Turnstile, `.env`, forms, robots, Search Console, API, iframe or review schema changes.
 
 Implemented local state:
 - 36 P1 guide detail URLs are available across ES/EN/DE/NL/RU/NO.
@@ -10,16 +10,17 @@ Implemented local state:
 - Non-ES guide content links to localized routes rather than Spanish routes, except for unavoidable global assets/navigation outside guide content.
 - The language selector and hreflang maps now use the same contextual guide equivalents.
 - Google reviews remain before the final CTA; no `Review` or `AggregateRating` schema was added.
+- `public/sitemap.xml` now includes the 36 P1 guide URLs with complete localized alternates and `x-default` to the ES equivalent.
 
 Validation on `127.0.0.1:8787`:
 - 36/36 P1 guide URLs returned 200 with self-canonical, one H1, `BlogPosting`, visible FAQ/`FAQPage`, Google reviews and final CTA.
 - 36/36 emitted complete ES/EN/DE/NL/RU/NO hreflang and `x-default` to the ES equivalent.
 - 133 localized internal links discovered from the 36 guides returned 200.
 - 6/6 guide hubs returned 200 and showed the 6 P1 cards with no placeholders.
+- Sitemap validation: XML OK, UTF-8 without BOM, 228 unique `<loc>` entries, 36 P1 URLs present and 7 alternates per P1 URL.
+- `public/robots.txt` was checked and left unchanged.
 
 Publication gate:
-- `public/sitemap.xml` was intentionally not updated in this microphase.
-- Multilingual sitemap entries and sitemap hreflang should be handled in the next authorized sitemap microphase after final URL approval.
 - Search Console remains pending until after deploy and production sitemap validation.
 
 ## Addendum 2026-06-07 - Google Reviews final polish

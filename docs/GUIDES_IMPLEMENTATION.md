@@ -8,7 +8,8 @@ Scope of this local pass:
 - Added complete guide equivalence maps for ES/EN/DE/NL/RU/NO plus `x-default` pointing to the ES equivalent.
 - Updated guide hub cards so each language hub shows the 6 P1 guides first.
 - Updated the language-selector helper map so guide language switches point to the real localized equivalent URLs.
-- Did not edit `public/sitemap.xml`, `public/robots.txt`, DNS, Nginx, SMTP, Turnstile, `.env`, forms, Search Console, deploy or production.
+- Updated `public/sitemap.xml` after validation so the 36 P1 URLs are present with complete ES/EN/DE/NL/RU/NO alternates and `x-default` to ES.
+- Did not edit `public/robots.txt`, DNS, Nginx, SMTP, Turnstile, `.env`, forms, Search Console, deploy or production.
 
 P1 guide URLs now available locally:
 - ES: `/es/blog/cuanto-cuesta-instalar-aire-acondicionado-benidorm/`, `/es/blog/por-que-aire-acondicionado-no-enfria/`, `/es/blog/aire-acondicionado-conductos-o-split/`, `/es/blog/aire-acondicionado-apartamentos-turisticos-benidorm/`, `/es/blog/reparar-o-cambiar-aire-acondicionado/`, `/es/blog/como-ahorrar-luz-aire-acondicionado/`
@@ -24,10 +25,11 @@ Local validation on `127.0.0.1:8787`:
 - 36/36 emit complete ES/EN/DE/NL/RU/NO hreflang alternates and `x-default` to the ES equivalent.
 - Internal link sweep from the 36 guides checked 133 localized internal URLs with 0 errors.
 - 6/6 guide hubs show the 6 P1 cards in the expected order, with no placeholders.
+- Sitemap validation: XML OK, UTF-8 without BOM, 228 `<loc>` entries, 228 unique URLs, 36 P1 guide URLs present, 7 alternates per P1 URL.
 
 Pending before final publication:
-- Update `public/sitemap.xml` in a later authorized microphase so the multilingual URLs and alternates match the validated URL set.
 - Deploy only after final approval.
+- Validate deployed `/sitemap.xml` after the approved deploy.
 - Search Console actions only after deploy and production sitemap validation.
 
 ## Scope
