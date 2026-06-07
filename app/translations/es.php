@@ -140,8 +140,9 @@ return [
   'google_reviews' => [
     'eyebrow'   => 'Clientes que ya confían en nosotros',
     'title'     => 'Opiniones de nuestros clientes',
+    'lead'      => 'Valoraciones reales de clientes que han confiado en +QUECLIMA para instalar, reparar o mantener su climatización.',
     'excellent' => 'Excelente',
-    'based_on'  => 'A base de %s reseñas',
+    'based_on'  => 'A base de %s reseñas en Google',
     'link'      => 'Ver todas las reseñas en Google',
     'tag'       => 'Reseña de Google',
     'verified'  => 'Reseñas verificadas en Google',

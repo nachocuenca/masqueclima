@@ -102,8 +102,9 @@ return [
   'google_reviews' => [
     'eyebrow'   => 'Klanten die ons al vertrouwen',
     'title'     => 'Klantbeoordelingen',
+    'lead'      => 'Echte beoordelingen van klanten die +QUECLIMA vertrouwden voor de installatie, reparatie of het onderhoud van hun airconditioning.',
     'excellent' => 'Uitstekend',
-    'based_on'  => 'Gebaseerd op %s beoordelingen',
+    'based_on'  => 'Gebaseerd op %s beoordelingen op Google',
     'link'      => 'Alle reviews op Google bekijken',
     'tag'       => 'Google-review',
     'verified'  => 'Geverifieerde reviews op Google',

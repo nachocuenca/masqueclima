@@ -29,8 +29,9 @@ return [
   'google_reviews' => [
     'eyebrow' => 'Kunder som allerede stoler på oss',
     'title' => 'Kundeanmeldelser',
+    'lead'  => 'Ekte anmeldelser fra kunder som stolte på +QUECLIMA for installasjon, reparasjon eller vedlikehold av klimaanlegg.',
     'excellent' => 'Utmerket',
-    'based_on' => 'Basert på %s anmeldelser',
+    'based_on' => 'Basert på %s anmeldelser på Google',
     'link' => 'Se alle anmeldelser på Google',
     'tag' => 'Google-anmeldelse',
     'verified' => 'Verifiserte anmeldelser på Google',

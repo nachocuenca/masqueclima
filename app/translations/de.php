@@ -102,8 +102,9 @@ return [
   'google_reviews' => [
     'eyebrow'   => 'Kunden, die uns bereits vertrauen',
     'title'     => 'Kundenbewertungen',
+    'lead'      => 'Echte Bewertungen von Kunden, die +QUECLIMA für die Installation, Reparatur oder Wartung ihrer Klimaanlage vertraut haben.',
     'excellent' => 'Ausgezeichnet',
-    'based_on'  => 'Basierend auf %s Bewertungen',
+    'based_on'  => 'Basierend auf %s Bewertungen auf Google',
     'link'      => 'Alle Bewertungen auf Google ansehen',
     'tag'       => 'Google-Bewertung',
     'verified'  => 'Verifizierte Bewertungen auf Google',

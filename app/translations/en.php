@@ -128,8 +128,9 @@ return [
   'google_reviews' => [
     'eyebrow'   => 'Customers who already trust us',
     'title'     => 'Customer reviews',
+    'lead'      => 'Real reviews from customers who trusted +QUECLIMA to install, repair or maintain their air conditioning.',
     'excellent' => 'Excellent',
-    'based_on'  => 'Based on %s reviews',
+    'based_on'  => 'Based on %s reviews on Google',
     'link'      => 'See all reviews on Google',
     'tag'       => 'Google review',
     'verified'  => 'Verified reviews on Google',
