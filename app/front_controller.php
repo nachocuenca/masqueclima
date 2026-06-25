@@ -182,6 +182,7 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_snapshot_og_image($html, $path, $lang);
 
   $html = patch_snapshot_home_hero($html, $path, $lang);
+  $html = patch_snapshot_demand_notice($html, $path, $lang);
 
   $statusScript = snapshot_feedback_script();
   if ($statusScript !== '') {
@@ -266,6 +267,93 @@ function snapshot_whatsapp_label(string $lang): string {
   $label = function_exists('t') ? t('cta.whatsapp', $fallback) : $fallback;
 
   return is_string($label) && $label !== '' && $label !== 'cta.whatsapp' ? $label : $fallback;
+}
+
+function demand_notice_styles(): string {
+  return 'padding:.75rem .9rem;border:1px solid #f3d18c;border-left:4px solid #d88916;border-radius:8px;background:#fff8e8;color:#4d3413;font-size:.92rem;line-height:1.45;';
+}
+
+function demand_notice_html(string $variant = 'home'): string {
+  $lang = (string) ($GLOBALS['current_lang'] ?? 'es');
+  $labels = heatwave_notice_labels($lang);
+
+  return '<div class="heatwave-form-notice" role="note" aria-label="' . e($labels['aria']) . '" data-demand-notice="1" style="margin:0 0 1rem;' . demand_notice_styles() . '">' .
+    '<span aria-hidden="true" style="display:inline-block;margin-right:.35rem;">&#9728;</span>' .
+    '<span>' . $labels['form'] . '</span>' .
+    '</div>';
+}
+
+function heatwave_notice_labels(string $lang): array {
+  $labels = [
+    'es' => [
+      'aria' => 'Aviso por alta demanda',
+      'banner' => 'Alta demanda por ola de calor: estamos recibiendo muchas solicitudes y podemos tardar m&aacute;s de lo habitual en responder. Las nuevas citas pueden tener una espera aproximada de un mes. Damos prioridad a incidencias urgentes de clientes actuales.',
+      'banner_mobile' => 'Ola de calor: alta demanda y respuesta m&aacute;s lenta. Nuevas citas: espera aprox. de un mes. Urgencias de clientes actuales, prioridad.',
+      'form' => 'Alta demanda por ola de calor: las nuevas citas pueden tener una espera aproximada de un mes. Priorizamos incidencias urgentes de clientes actuales.',
+    ],
+    'en' => [
+      'aria' => 'High demand notice',
+      'banner' => 'High demand due to the heatwave: we are receiving many requests and may take longer than usual to respond. New appointments may have an estimated wait of around one month. We prioritise urgent issues for existing customers.',
+      'banner_mobile' => 'Heatwave: high demand and slower replies. New appointments: about a one-month wait. Urgent issues for existing customers take priority.',
+      'form' => 'High demand due to the heatwave: new appointments may have an estimated wait of around one month. We prioritise urgent issues for existing customers.',
+    ],
+    'de' => [
+      'aria' => 'Hinweis zu hoher Nachfrage',
+      'banner' => 'Hohe Nachfrage wegen der Hitzewelle: Wir erhalten viele Anfragen und die Antwort kann l&auml;nger als gewohnt dauern. Neue Termine k&ouml;nnen derzeit etwa einen Monat Wartezeit haben. Dringende Anliegen bestehender Kunden haben Vorrang.',
+      'banner_mobile' => 'Hitzewelle: hohe Nachfrage, Antworten dauern l&auml;nger. Neue Termine: ca. ein Monat Wartezeit. Notf&auml;lle bestehender Kunden haben Vorrang.',
+      'form' => 'Hohe Nachfrage wegen der Hitzewelle: Neue Termine k&ouml;nnen derzeit etwa einen Monat Wartezeit haben. Dringende Anliegen bestehender Kunden haben Vorrang.',
+    ],
+    'nl' => [
+      'aria' => 'Melding hoge vraag',
+      'banner' => 'Hoge vraag door de hittegolf: we ontvangen veel aanvragen en antwoorden mogelijk later dan normaal. Voor nieuwe afspraken kan de wachttijd ongeveer een maand zijn. Spoedgevallen van bestaande klanten krijgen prioriteit.',
+      'banner_mobile' => 'Hittegolf: hoge vraag en tragere reacties. Nieuwe afspraken: ongeveer een maand wachttijd. Spoed voor bestaande klanten krijgt prioriteit.',
+      'form' => 'Hoge vraag door de hittegolf: voor nieuwe afspraken kan de wachttijd ongeveer een maand zijn. Spoedgevallen van bestaande klanten krijgen prioriteit.',
+    ],
+    'ru' => [
+      'aria' => '&#1059;&#1074;&#1077;&#1076;&#1086;&#1084;&#1083;&#1077;&#1085;&#1080;&#1077; &#1086; &#1074;&#1099;&#1089;&#1086;&#1082;&#1086;&#1084; &#1089;&#1087;&#1088;&#1086;&#1089;&#1077;',
+      'banner' => '&#1042;&#1099;&#1089;&#1086;&#1082;&#1080;&#1081; &#1089;&#1087;&#1088;&#1086;&#1089; &#1080;&#1079;-&#1079;&#1072; &#1078;&#1072;&#1088;&#1099;: &#1084;&#1099; &#1087;&#1086;&#1083;&#1091;&#1095;&#1072;&#1077;&#1084; &#1084;&#1085;&#1086;&#1075;&#1086; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1086;&#1074; &#1080; &#1084;&#1086;&#1078;&#1077;&#1084; &#1086;&#1090;&#1074;&#1077;&#1095;&#1072;&#1090;&#1100; &#1076;&#1086;&#1083;&#1100;&#1096;&#1077; &#1086;&#1073;&#1099;&#1095;&#1085;&#1086;&#1075;&#1086;. &#1053;&#1086;&#1074;&#1099;&#1077; &#1074;&#1080;&#1079;&#1080;&#1090;&#1099; &#1084;&#1086;&#1075;&#1091;&#1090; &#1080;&#1084;&#1077;&#1090;&#1100; &#1086;&#1078;&#1080;&#1076;&#1072;&#1085;&#1080;&#1077; &#1086;&#1082;&#1086;&#1083;&#1086; &#1086;&#1076;&#1085;&#1086;&#1075;&#1086; &#1084;&#1077;&#1089;&#1103;&#1094;&#1072;. &#1057;&#1088;&#1086;&#1095;&#1085;&#1099;&#1077; &#1089;&#1083;&#1091;&#1095;&#1072;&#1080; &#1090;&#1077;&#1082;&#1091;&#1097;&#1080;&#1093; &#1082;&#1083;&#1080;&#1077;&#1085;&#1090;&#1086;&#1074; &#1074; &#1087;&#1088;&#1080;&#1086;&#1088;&#1080;&#1090;&#1077;.',
+      'banner_mobile' => '&#1046;&#1072;&#1088;&#1072;: &#1074;&#1099;&#1089;&#1086;&#1082;&#1080;&#1081; &#1089;&#1087;&#1088;&#1086;&#1089;, &#1086;&#1090;&#1074;&#1077;&#1095;&#1072;&#1077;&#1084; &#1076;&#1086;&#1083;&#1100;&#1096;&#1077;. &#1053;&#1086;&#1074;&#1099;&#1077; &#1074;&#1080;&#1079;&#1080;&#1090;&#1099;: &#1086;&#1078;&#1080;&#1076;&#1072;&#1085;&#1080;&#1077; &#1086;&#1082;&#1086;&#1083;&#1086; &#1084;&#1077;&#1089;&#1103;&#1094;&#1072;. &#1057;&#1088;&#1086;&#1095;&#1085;&#1099;&#1077; &#1089;&#1083;&#1091;&#1095;&#1072;&#1080; &#1090;&#1077;&#1082;&#1091;&#1097;&#1080;&#1093; &#1082;&#1083;&#1080;&#1077;&#1085;&#1090;&#1086;&#1074; &#1074; &#1087;&#1088;&#1080;&#1086;&#1088;&#1080;&#1090;&#1077;.',
+      'form' => '&#1042;&#1099;&#1089;&#1086;&#1082;&#1080;&#1081; &#1089;&#1087;&#1088;&#1086;&#1089; &#1080;&#1079;-&#1079;&#1072; &#1078;&#1072;&#1088;&#1099;: &#1085;&#1086;&#1074;&#1099;&#1077; &#1074;&#1080;&#1079;&#1080;&#1090;&#1099; &#1084;&#1086;&#1075;&#1091;&#1090; &#1080;&#1084;&#1077;&#1090;&#1100; &#1086;&#1078;&#1080;&#1076;&#1072;&#1085;&#1080;&#1077; &#1086;&#1082;&#1086;&#1083;&#1086; &#1086;&#1076;&#1085;&#1086;&#1075;&#1086; &#1084;&#1077;&#1089;&#1103;&#1094;&#1072;. &#1057;&#1088;&#1086;&#1095;&#1085;&#1099;&#1077; &#1089;&#1083;&#1091;&#1095;&#1072;&#1080; &#1090;&#1077;&#1082;&#1091;&#1097;&#1080;&#1093; &#1082;&#1083;&#1080;&#1077;&#1085;&#1090;&#1086;&#1074; &#1074; &#1087;&#1088;&#1080;&#1086;&#1088;&#1080;&#1090;&#1077;.',
+    ],
+    'no' => [
+      'aria' => 'Varsel om stor p&aring;gang',
+      'banner' => 'Stor p&aring;gang p&aring; grunn av heteb&oslash;lgen: vi mottar mange henvendelser og kan bruke lenger tid enn vanlig p&aring; &aring; svare. Nye avtaler kan ha omtrent en m&aring;neds ventetid. Vi prioriterer akutte saker for eksisterende kunder.',
+      'banner_mobile' => 'Heteb&oslash;lge: stor p&aring;gang og tregere svar. Nye avtaler: ca. &eacute;n m&aring;neds ventetid. Akutte saker for eksisterende kunder prioriteres.',
+      'form' => 'Stor p&aring;gang p&aring; grunn av heteb&oslash;lgen: nye avtaler kan ha omtrent en m&aring;neds ventetid. Vi prioriterer akutte saker for eksisterende kunder.',
+    ],
+  ];
+
+  return $labels[$lang] ?? $labels['es'];
+}
+
+function heatwave_top_banner_html(string $lang): string {
+  $labels = heatwave_notice_labels($lang);
+  return '<div class="heatwave-top-banner" role="note" aria-label="' . e($labels['aria']) . '" data-heatwave-banner="1" style="box-sizing:border-box;width:100%;background:#fff3d6;border-bottom:1px solid #efc56f;color:#4b3412;font-size:.9rem;line-height:1.28;">' .
+    '<div style="box-sizing:border-box;width:100%;max-width:1180px;margin:0 auto;padding:.42rem .95rem;display:flex;align-items:center;gap:.65rem;">' .
+    '<span class="heatwave-banner-icon" aria-hidden="true" style="flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:1.55rem;height:1.55rem;font-size:1.35rem;line-height:1;">&#9728;</span>' .
+    '<span class="heatwave-text-desktop" style="min-width:0;flex:1 1 auto;overflow-wrap:anywhere;">' . $labels['banner'] . '</span>' .
+    '<span class="heatwave-text-mobile" style="min-width:0;flex:1 1 auto;overflow-wrap:anywhere;">' . ($labels['banner_mobile'] ?? $labels['banner']) . '</span>' .
+    '</div>' .
+    '</div>';
+}
+
+function patch_snapshot_demand_notice(string $html, string $path, string $lang): string {
+  if (!str_contains($html, 'data-heatwave-banner="1"')) {
+    $banner = heatwave_top_banner_html($lang);
+    $html = preg_replace('/<header\b([^>]*)>/i', '<header$1 style="position:sticky;top:0;z-index:1040;width:100%;">' . "\n" . $banner, $html, 1) ?? $html;
+    $html = str_replace('</head>', heatwave_layout_overrides() . "\n</head>", $html);
+  }
+
+  if (str_contains($html, 'id="presupuesto"') && !str_contains($html, 'data-demand-contact-notice="1"')) {
+    $contactNotice = '<div data-demand-contact-notice="1">' . demand_notice_html('contact') . '</div>';
+    $html = preg_replace('/(<section\b[^>]*\bid="presupuesto"[^>]*>\s*<div class="container">)/i', '$1' . "\n    " . $contactNotice, $html, 1) ?? $html;
+  }
+
+  return $html;
+}
+
+function heatwave_layout_overrides(): string {
+  return '<style>html{scroll-padding-top:140px}body .hero{margin-top:0!important}header{position:sticky!important;top:0!important;z-index:1040!important;width:100%!important}.navbar.fixed-top{position:static!important;top:auto!important}.heatwave-top-banner{position:relative!important}.heatwave-text-mobile{display:none}.heatwave-form-notice{box-shadow:none!important}[id]{scroll-margin-top:140px}@media(max-width:767.98px){html{scroll-padding-top:150px}[id]{scroll-margin-top:150px}.heatwave-top-banner{font-size:.79rem!important;line-height:1.22!important}.heatwave-top-banner>div{padding:.32rem .72rem!important;gap:.5rem!important;align-items:center!important}.heatwave-banner-icon{width:1.65rem!important;height:1.65rem!important;font-size:1.45rem!important}.heatwave-text-desktop{display:none!important}.heatwave-text-mobile{display:inline!important}}</style>';
 }
 
 function patch_snapshot_primary_nav(string $html, string $lang): string {
@@ -438,6 +526,14 @@ function patch_snapshot_quote_modal(string $html, string $lang): string {
   $modal = preg_replace('/(<button type="button" class="btn-close[^"]*"[^>]*aria-label=")[^"]*(")/i', '$1' . e(html_entity_decode($labels['close'], ENT_QUOTES | ENT_HTML5, 'UTF-8')) . '$2', $modal, 1) ?? $modal;
   $modal = preg_replace('/(<h3 class="mb-2 fw-bold">)[\s\S]*?(<\/h3>)/', '$1' . $labels['title'] . '$2', $modal, 1) ?? $modal;
   $modal = preg_replace('/(<p class="text-muted mb-4">)[\s\S]*?(<\/p>)/', '$1' . $labels['intro'] . '$2', $modal, 1) ?? $modal;
+  if (!str_contains($modal, 'data-demand-modal-notice="1"')) {
+    $modal = preg_replace(
+      '/(<form method="post" action="\/contact-submit\.php")/i',
+      '<div data-demand-modal-notice="1">' . demand_notice_html('contact') . '</div>' . "\n\n        " . '$1',
+      $modal,
+      1
+    ) ?? $modal;
+  }
 
   foreach ([
     'q-name' => 'name',
@@ -552,7 +648,7 @@ function patch_snapshot_contact_anchor(string $html): string {
 
   return preg_replace(
     '/(<section\b[^>]*\bid="presupuesto"[^>]*>)/i',
-    '<span id="contacto" class="visually-hidden"></span>' . "\n" . '$1',
+    '<span id="contacto" aria-hidden="true" style="display:block;height:0;scroll-margin-top:170px;"></span>' . "\n" . '$1',
     $html,
     1
   ) ?? $html;

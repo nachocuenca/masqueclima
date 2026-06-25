@@ -44,10 +44,13 @@ $data = [
   'name' => trim((string) ($_POST['name'] ?? '')),
   'phone' => trim((string) ($_POST['phone'] ?? '')),
   'email' => trim((string) ($_POST['email'] ?? '')),
+  'tipo_solicitud' => trim((string) ($_POST['tipo_solicitud'] ?? '')),
   'service' => trim((string) ($_POST['service'] ?? '')),
   'message' => trim((string) ($_POST['message'] ?? '')),
   'path' => $returnTo,
 ];
+
+$data['tipo_solicitud'] = contact_normalize_request_type($data['tipo_solicitud']);
 
 if ($data['name'] === '' || $data['phone'] === '') {
   redirect_with_status($returnTo, '0');
@@ -77,6 +80,7 @@ function log_contact(array $data): bool {
     'name' => $data['name'] ?? '',
     'phone' => $data['phone'] ?? '',
     'email' => $data['email'] ?? '',
+    'tipo_solicitud' => $data['tipo_solicitud'] ?? '',
     'service' => $data['service'] ?? '',
     'message' => str_replace(["\r", "\n"], ' ', (string) ($data['message'] ?? '')),
     'path' => $data['path'] ?? '',

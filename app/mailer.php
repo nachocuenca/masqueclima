@@ -21,15 +21,42 @@ function contact_recipients(array $brand): array {
   return array_values($recipients);
 }
 
+function contact_request_type_labels(): array {
+  return [
+    'no_indicado' => 'No indicado',
+    'cliente_actual_incidencia_urgente' => 'Cliente actual / incidencia urgente',
+    'nueva_instalacion_presupuesto' => 'Nueva instalación o presupuesto',
+    'revision_mantenimiento' => 'Revisión o mantenimiento',
+    'lista_espera' => 'Lista de espera',
+  ];
+}
+
+function contact_normalize_request_type(string $value): string {
+  $value = trim($value);
+  if ($value === '' || preg_match('/[\x00-\x1F\x7F]/', $value) || strlen($value) > 80) {
+    return 'no_indicado';
+  }
+
+  $labels = contact_request_type_labels();
+  return array_key_exists($value, $labels) ? $value : 'no_indicado';
+}
+
+function contact_request_type_label(string $value): string {
+  $labels = contact_request_type_labels();
+  $value = contact_normalize_request_type($value);
+  return $labels[$value] ?? $value;
+}
+
 function send_contact(array $data): bool {
   $name = $data['name'] ?? '';
   $phone = $data['phone'] ?? '';
   $email = $data['email'] ?? '';
+  $requestType = contact_request_type_label((string) ($data['tipo_solicitud'] ?? ''));
   $service = $data['service'] ?? '';
   $message = $data['message'] ?? '';
 
-  $subject = '[Web] Nueva solicitud de presupuesto';
-  $body = "Nombre: {$name}\nTeléfono: {$phone}\nEmail: {$email}\nServicio: {$service}\n\nMensaje:\n{$message}";
+  $subject = '[Web] ' . ($requestType !== '' ? $requestType : 'Nueva solicitud de presupuesto');
+  $body = "Tipo de solicitud: {$requestType}\nNombre: {$name}\nTeléfono: {$phone}\nEmail: {$email}\nServicio: {$service}\n\nMensaje:\n{$message}";
 
   $smtp = config('smtp', []);
   $brand = config('brand', []);

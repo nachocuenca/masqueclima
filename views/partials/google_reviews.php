@@ -132,7 +132,7 @@ $slideLabel = (string)t('google_reviews.slide_label', 'Grupo de reseñas %s');
                   <?php endif; ?>
                 </div>
                 <div class="google-stars google-stars--sm" aria-label="<?php echo e(sprintf($starsLabel, (string)$review['stars'])); ?>"><?php echo e(str_repeat('★', $review['stars']) . str_repeat('☆', 5 - $review['stars'])); ?></div>
-                <p class="google-review-text"><span class="google-review-quote" aria-hidden="true">"</span><?php echo e($review['text']); ?></p>
+                <p class="google-review-text"><?php echo e($review['text']); ?></p>
               </div>
             <?php endforeach; ?>
           </div>

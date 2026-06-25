@@ -683,15 +683,6 @@ footer{text-align:center;}
   -webkit-box-orient:vertical;
   flex:1;
 }
-.google-review-quote{
-  font-size:1.55rem;
-  line-height:.45;
-  color:#b8cfe8;
-  margin-right:.12rem;
-  font-family:Georgia,'Times New Roman',serif;
-  vertical-align:top;
-}
-
 /* Dots */
 .google-review-dots{
   display:none;
