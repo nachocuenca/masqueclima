@@ -53,6 +53,30 @@ if (!function_exists('site_status_copy')) {
   }
 }
 
+if (!function_exists('site_status_add_body_class')) {
+  function site_status_add_body_class(string $html): string {
+    return preg_replace_callback(
+      '/<body\b([^>]*)>/i',
+      static function (array $matches): string {
+        $attrs = $matches[1] ?? '';
+        if (preg_match('/\bclass=("|\')([^"\']*)\1/i', $attrs, $classMatch)) {
+          $current = trim((string) ($classMatch[2] ?? ''));
+          if (!preg_match('/(?:^|\s)booking-closed(?:\s|$)/', $current)) {
+            $replacement = 'class="' . trim($current . ' booking-closed') . '"';
+            $attrs = preg_replace('/\bclass=("|\')[^"\']*\1/i', $replacement, $attrs, 1) ?? $attrs;
+          }
+        } else {
+          $attrs .= ' class="booking-closed"';
+        }
+
+        return '<body' . $attrs . '>';
+      },
+      $html,
+      1
+    ) ?? $html;
+  }
+}
+
 if (!function_exists('site_status_transform_output')) {
   function site_status_transform_output(string $html, int $phase = 0): string {
     if ((bool) config('app.accepting_new_work', true)) {
@@ -166,11 +190,7 @@ HTML;
       '</div>' .
     '</aside>';
 
-    $html = preg_replace('/<body([^>]*)>/i', '<body$1 class="booking-closed">', $html, 1) ?? $html;
-
-    // Si el body ya tenía class, evitar dos atributos class.
-    $html = preg_replace('/<body([^>]*)class="([^"]*)"([^>]*) class="booking-closed">/i', '<body$1class="$2 booking-closed"$3>', $html, 1) ?? $html;
-    $html = preg_replace('/<body([^>]*)class="booking-closed"([^>]*)class="([^"]*)"([^>]*)>/i', '<body$1class="$3 booking-closed"$2$4>', $html, 1) ?? $html;
+    $html = site_status_add_body_class($html);
 
     if (stripos($html, '</head>') !== false) {
       $html = preg_replace('/<\/head>/i', $styles . "\n</head>", $html, 1) ?? $html;
