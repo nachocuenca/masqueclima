@@ -39,6 +39,8 @@ return [
   ],
   'app' => [
     'env' => getenv('APP_ENV') ?: 'production',
-    'ga4_id' => getenv('GA4_ID') ?: null
+    'ga4_id' => getenv('GA4_ID') ?: null,
+    // Cierre comercial temporal. Para reabrir sin tocar código: ACCEPTING_NEW_WORK=1.
+    'accepting_new_work' => (getenv('ACCEPTING_NEW_WORK') ?: '0') === '1',
   ]
 ];
