@@ -59,11 +59,11 @@ if (!function_exists('site_status_add_body_class')) {
       '/<body\b([^>]*)>/i',
       static function (array $matches): string {
         $attrs = $matches[1] ?? '';
-        if (preg_match('/\bclass=("|\')([^"\']*)\1/i', $attrs, $classMatch)) {
-          $current = trim((string) ($classMatch[2] ?? ''));
+        if (preg_match('/\bclass="([^"]*)"/i', $attrs, $classMatch)) {
+          $current = trim((string) ($classMatch[1] ?? ''));
           if (!preg_match('/(?:^|\s)booking-closed(?:\s|$)/', $current)) {
             $replacement = 'class="' . trim($current . ' booking-closed') . '"';
-            $attrs = preg_replace('/\bclass=("|\')[^"\']*\1/i', $replacement, $attrs, 1) ?? $attrs;
+            $attrs = preg_replace('/\bclass="[^"]*"/i', $replacement, $attrs, 1) ?? $attrs;
           }
         } else {
           $attrs .= ' class="booking-closed"';
