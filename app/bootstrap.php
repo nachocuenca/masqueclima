@@ -116,3 +116,12 @@ if (!function_exists('flash')){
     $val=$_SESSION['flash'][$k]??null; if(isset($_SESSION['flash'][$k])) unset($_SESSION['flash'][$k]); return $val;
   }
 }
+
+// Estado comercial global: se aplica al HTML final de snapshots y vistas dinámicas.
+$statusFile = __DIR__ . '/site_status.php';
+if (is_file($statusFile)) {
+  require_once $statusFile;
+  if (function_exists('site_status_register_output_buffer')) {
+    site_status_register_output_buffer();
+  }
+}
