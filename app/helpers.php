@@ -100,6 +100,75 @@ if (!function_exists('render_partial')) {
     }
 }
 
+if (!function_exists('accepting_new_work')) {
+    function accepting_new_work(): bool {
+        return (bool) config('app.accepting_new_work', false);
+    }
+}
+
+if (!function_exists('closed_agenda_copy')) {
+    function closed_agenda_copy(string $lang): array {
+        $copy = [
+            'es' => [
+                'title' => 'AGENDA TEMPORALMENTE CERRADA',
+                'body' => 'En estos momentos no estamos aceptando nuevos trabajos ni solicitudes de presupuesto.',
+                'existing' => 'Si ya tienes un trabajo en curso con +QUECLIMA, puedes contactar con nosotros por los canales habituales.',
+                'short' => 'Agenda cerrada temporalmente',
+                'unavailable' => 'Solicitudes de presupuesto no disponibles',
+                'call' => 'Llamar por trabajo en curso',
+                'whatsapp' => 'WhatsApp para trabajos en curso',
+            ],
+            'en' => [
+                'title' => 'SCHEDULE TEMPORARILY CLOSED',
+                'body' => 'We are not accepting new jobs or quote requests at the moment.',
+                'existing' => 'If you already have work in progress with +QUECLIMA, you can contact us through the usual channels.',
+                'short' => 'Schedule temporarily closed',
+                'unavailable' => 'Quote requests unavailable',
+                'call' => 'Call about ongoing work',
+                'whatsapp' => 'WhatsApp for ongoing work',
+            ],
+            'de' => [
+                'title' => 'TERMINKALENDER VOR&Uuml;BERGEHEND GESCHLOSSEN',
+                'body' => 'Derzeit nehmen wir keine neuen Auftr&auml;ge und keine Angebotsanfragen an.',
+                'existing' => 'Wenn Sie bereits einen laufenden Auftrag mit +QUECLIMA haben, k&ouml;nnen Sie uns &uuml;ber die gewohnten Kan&auml;le kontaktieren.',
+                'short' => 'Terminkalender vor&uuml;bergehend geschlossen',
+                'unavailable' => 'Angebotsanfragen nicht verf&uuml;gbar',
+                'call' => 'Anruf zu laufendem Auftrag',
+                'whatsapp' => 'WhatsApp f&uuml;r laufende Auftr&auml;ge',
+            ],
+            'nl' => [
+                'title' => 'AGENDA TIJDELIJK GESLOTEN',
+                'body' => 'Op dit moment nemen we geen nieuwe opdrachten of offerteaanvragen aan.',
+                'existing' => 'Heb je al lopend werk met +QUECLIMA, dan kun je contact opnemen via de gebruikelijke kanalen.',
+                'short' => 'Agenda tijdelijk gesloten',
+                'unavailable' => 'Offerteaanvragen niet beschikbaar',
+                'call' => 'Bellen over lopend werk',
+                'whatsapp' => 'WhatsApp voor lopend werk',
+            ],
+            'ru' => [
+                'title' => '&#1047;&#1040;&#1055;&#1048;&#1057;&#1068; &#1042;&#1056;&#1045;&#1052;&#1045;&#1053;&#1053;&#1054; &#1047;&#1040;&#1050;&#1056;&#1067;&#1058;&#1040;',
+                'body' => '&#1057;&#1077;&#1081;&#1095;&#1072;&#1089; &#1084;&#1099; &#1085;&#1077; &#1087;&#1088;&#1080;&#1085;&#1080;&#1084;&#1072;&#1077;&#1084; &#1085;&#1086;&#1074;&#1099;&#1077; &#1079;&#1072;&#1082;&#1072;&#1079;&#1099; &#1080; &#1079;&#1072;&#1087;&#1088;&#1086;&#1089;&#1099; &#1085;&#1072; &#1089;&#1084;&#1077;&#1090;&#1091;.',
+                'existing' => '&#1045;&#1089;&#1083;&#1080; &#1091; &#1074;&#1072;&#1089; &#1091;&#1078;&#1077; &#1077;&#1089;&#1090;&#1100; &#1090;&#1077;&#1082;&#1091;&#1097;&#1080;&#1081; &#1087;&#1088;&#1086;&#1077;&#1082;&#1090; &#1089; +QUECLIMA, &#1089;&#1074;&#1103;&#1078;&#1080;&#1090;&#1077;&#1089;&#1100; &#1089; &#1085;&#1072;&#1084;&#1080; &#1095;&#1077;&#1088;&#1077;&#1079; &#1086;&#1073;&#1099;&#1095;&#1085;&#1099;&#1077; &#1082;&#1072;&#1085;&#1072;&#1083;&#1099;.',
+                'short' => '&#1047;&#1072;&#1087;&#1080;&#1089;&#1100; &#1074;&#1088;&#1077;&#1084;&#1077;&#1085;&#1085;&#1086; &#1079;&#1072;&#1082;&#1088;&#1099;&#1090;&#1072;',
+                'unavailable' => '&#1047;&#1072;&#1087;&#1088;&#1086;&#1089;&#1099; &#1085;&#1072; &#1089;&#1084;&#1077;&#1090;&#1091; &#1085;&#1077;&#1076;&#1086;&#1089;&#1090;&#1091;&#1087;&#1085;&#1099;',
+                'call' => '&#1055;&#1086;&#1079;&#1074;&#1086;&#1085;&#1080;&#1090;&#1100; &#1087;&#1086; &#1090;&#1077;&#1082;&#1091;&#1097;&#1077;&#1084;&#1091; &#1087;&#1088;&#1086;&#1077;&#1082;&#1090;&#1091;',
+                'whatsapp' => 'WhatsApp &#1076;&#1083;&#1103; &#1090;&#1077;&#1082;&#1091;&#1097;&#1080;&#1093; &#1087;&#1088;&#1086;&#1077;&#1082;&#1090;&#1086;&#1074;',
+            ],
+            'no' => [
+                'title' => 'KALENDEREN ER MIDLERTIDIG STENGT',
+                'body' => 'For &oslash;yeblikket tar vi ikke imot nye jobber eller tilbudsforesp&oslash;rsler.',
+                'existing' => 'Hvis du allerede har et p&aring;g&aring;ende arbeid med +QUECLIMA, kan du kontakte oss via de vanlige kanalene.',
+                'short' => 'Kalenderen er midlertidig stengt',
+                'unavailable' => 'Tilbudsforesp&oslash;rsler er ikke tilgjengelige',
+                'call' => 'Ring om p&aring;g&aring;ende arbeid',
+                'whatsapp' => 'WhatsApp for p&aring;g&aring;ende arbeid',
+            ],
+        ];
+
+        return $copy[$lang] ?? $copy['es'];
+    }
+}
+
 if (!function_exists('localized_hub_url')) {
     function localized_hub_url(string $lang, string $hub): ?string {
         $paths = [

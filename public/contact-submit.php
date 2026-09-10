@@ -14,6 +14,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 $returnTo = safe_return_to((string) ($_POST['return_to'] ?? '/es/'));
 $status = '0';
 
+if (!accepting_new_work()) {
+  redirect_with_status($returnTo, 'closed');
+}
+
 if (!empty($_POST['company'])) {
   redirect_with_status($returnTo, '1');
 }

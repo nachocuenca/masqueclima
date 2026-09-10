@@ -426,3 +426,21 @@ footer{text-align:center;}
   .hero h1{font-size:2rem;}
   .section-title,.nosotros-title,.zona-title,.faq-title{font-size:1.5rem;}
 }
+
+/* ---------------------------
+   Agenda temporalmente cerrada
+---------------------------- */
+.mc-closed-agenda{background:#f4f8fb;border-block:1px solid #d8e5ee;margin-top:76px;padding:1.15rem 0;scroll-margin-top:96px}
+.mc-closed-agenda__box{max-width:1120px;margin:0 auto;padding:0 1rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center}
+.mc-closed-agenda__label{display:inline-flex;align-items:center;gap:.45rem;margin:0 0 .35rem;color:#0a5d89;font-size:.78rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.mc-closed-agenda__dot{width:.65rem;height:.65rem;border-radius:50%;background:#f4b63f;box-shadow:0 0 0 4px rgba(244,182,63,.18)}
+.mc-closed-agenda h2{margin:0 0 .45rem;color:#12324a;font-size:clamp(1.25rem,2vw,1.75rem);font-weight:900;letter-spacing:0;line-height:1.18}
+.mc-closed-agenda p{margin:0;color:#31485a;line-height:1.58}
+.mc-closed-agenda p+p{margin-top:.35rem}
+.mc-closed-agenda__actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:flex-end}
+.mc-closed-agenda__btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:.72rem 1rem;border:1px solid #b8ccd9;border-radius:8px;background:#fff;color:#12324a;font-weight:800;text-decoration:none!important;white-space:nowrap}
+.mc-closed-agenda__btn--wa{border-color:#25d366;color:#147a3b}
+.mc-closed-agenda__disabled,.mc-closed-form{display:block;width:100%;padding:.85rem 1rem;border:1px solid #d8e5ee;border-radius:8px;background:#eef4f8;color:#43576a;font-weight:800;text-align:center;text-decoration:none!important;cursor:not-allowed}
+.mc-closed-form{font-weight:700;line-height:1.55}
+.mc-closed-form small{display:block;margin-top:.3rem;color:#5c7183;font-weight:500}
+@media (max-width:767.98px){.mc-closed-agenda{padding:1rem 0}.mc-closed-agenda__box{grid-template-columns:1fr}.mc-closed-agenda__actions{justify-content:flex-start}.mc-closed-agenda__btn{width:100%}}

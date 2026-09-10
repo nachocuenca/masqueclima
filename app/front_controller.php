@@ -163,6 +163,9 @@ function patch_snapshot_html(string $html, string $path, string $lang): string {
   $html = patch_locality_hero_image($html, $path, $lang);
 
   $html = patch_snapshot_home_hero($html, $path, $lang);
+  if (!accepting_new_work()) {
+    $html = patch_snapshot_closed_agenda($html, $lang);
+  }
 
   $statusScript = snapshot_feedback_script();
   if ($statusScript !== '') {
@@ -213,6 +216,107 @@ function snapshot_whatsapp_label(string $lang): string {
   $label = function_exists('t') ? t('cta.whatsapp', $fallback) : $fallback;
 
   return is_string($label) && $label !== '' && $label !== 'cta.whatsapp' ? $label : $fallback;
+}
+
+function patch_snapshot_closed_agenda(string $html, string $lang): string {
+  $copy = closed_agenda_copy($lang);
+  $html = inject_closed_agenda_banner($html, $copy);
+  $html = neutralize_snapshot_quote_links($html, $copy);
+  $html = neutralize_snapshot_capture_forms($html, $copy);
+  $html = neutralize_snapshot_budget_context($html, $copy);
+
+  return $html;
+}
+
+function inject_closed_agenda_banner(string $html, array $copy): string {
+  if (str_contains($html, 'id="agenda-cerrada"')) {
+    return $html;
+  }
+
+  $title = (string) $copy['title'];
+  $body = (string) $copy['body'];
+  $existing = (string) $copy['existing'];
+  $call = e(html_entity_decode((string) $copy['call'], ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+  $whatsapp = e(html_entity_decode((string) $copy['whatsapp'], ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+  $banner = <<<HTML
+
+<section class="mc-closed-agenda" id="agenda-cerrada" role="status" aria-labelledby="agenda-cerrada-title">
+  <div class="mc-closed-agenda__box">
+    <div>
+      <p class="mc-closed-agenda__label"><span class="mc-closed-agenda__dot" aria-hidden="true"></span>{$copy['short']}</p>
+      <h2 id="agenda-cerrada-title">{$title}</h2>
+      <p>{$body}</p>
+      <p>{$existing}</p>
+    </div>
+    <div class="mc-closed-agenda__actions" aria-label="Contact channels for ongoing work">
+      <a class="mc-closed-agenda__btn" href="tel:+34613026600" aria-label="{$call}">+34 613 02 66 00</a>
+      <a class="mc-closed-agenda__btn mc-closed-agenda__btn--wa" href="https://wa.me/34613026600" target="_blank" rel="noopener" aria-label="{$whatsapp}">WhatsApp</a>
+    </div>
+  </div>
+</section>
+HTML;
+
+  return preg_replace('/(<main\b[^>]*>)/i', '$1' . $banner, $html, 1) ?? $html;
+}
+
+function neutralize_snapshot_quote_links(string $html, array $copy): string {
+  $label = (string) $copy['unavailable'];
+
+  return preg_replace_callback(
+    '/<a\b(?=[^>]*(?:data-bs-target=(["\'])#quoteModal\1|href=(["\'])#quote\2))[^>]*>[\s\S]*?<\/a>/i',
+    static function (array $matches) use ($label): string {
+      $open = $matches[0];
+      $class = 'mc-closed-agenda__disabled';
+      if (preg_match('/\bclass=(["\'])(.*?)\1/i', $open, $classMatch)) {
+        $class = trim($classMatch[2] . ' mc-closed-agenda__disabled');
+      }
+
+      return '<a class="' . e($class) . '" href="#agenda-cerrada" aria-disabled="true" role="link">' . $label . '</a>';
+    },
+    $html
+  ) ?? $html;
+}
+
+function neutralize_snapshot_capture_forms(string $html, array $copy): string {
+  $title = (string) $copy['unavailable'];
+  $body = (string) $copy['existing'];
+
+  return preg_replace(
+    '/<form\b(?=[^>]*(?:contact-submit\.php|js-track-form|contact_submit))[\s\S]*?<\/form>/i',
+    '<div class="mc-closed-form" role="note">' . $title . '<small>' . $body . '</small></div>',
+    $html
+  ) ?? $html;
+}
+
+function neutralize_snapshot_budget_context(string $html, array $copy): string {
+  $short = (string) $copy['short'];
+  $body = (string) $copy['body'];
+  $existing = (string) $copy['existing'];
+  $call = (string) $copy['call'];
+  $whatsapp = (string) $copy['whatsapp'];
+
+  $html = preg_replace_callback(
+    '/(<section\b[^>]*\bclass="[^"]*\bbudget-panel\b[^"]*"[^>]*\bid="presupuesto"[^>]*>)([\s\S]*?)(<\/section>)/i',
+    static function (array $matches) use ($short, $body, $existing, $call, $whatsapp): string {
+      $section = $matches[2];
+      $section = preg_replace('/(<h2[^>]*>)[\s\S]*?(<\/h2>)/i', '$1' . $short . '$2', $section, 1) ?? $section;
+      $section = preg_replace('/(<h2[^>]*>[\s\S]*?<\/h2>\s*<p[^>]*>)[\s\S]*?(<\/p>)/i', '$1' . $body . '$2', $section, 1) ?? $section;
+      $section = preg_replace('/(<a\b[^>]*href="tel:\+34613026600"[^>]*>[\s\S]*?<span>)[\s\S]*?(<\/span>)/i', '$1' . $call . '$2', $section, 1) ?? $section;
+      $section = preg_replace('/(<a\b[^>]*href="https:\/\/wa\.me\/34613026600"[^>]*>[\s\S]*?<span>)[\s\S]*?(<\/span>)/i', '$1' . $whatsapp . '$2', $section, 1) ?? $section;
+      $section = preg_replace('/(<div class="cta-note"[^>]*>)[\s\S]*?(<\/div>)/i', '$1' . $existing . '$2', $section, 1) ?? $section;
+
+      return $matches[1] . $section . $matches[3];
+    },
+    $html
+  ) ?? $html;
+
+  $html = preg_replace('/(<div class="modal fade quote-modal" id="quoteModal"[\s\S]*?<h3 class="mb-2 fw-bold">)[\s\S]*?(<\/h3>)/i', '$1' . $short . '$2', $html, 1) ?? $html;
+  $html = preg_replace('/(<div class="modal fade quote-modal" id="quoteModal"[\s\S]*?<p class="text-muted mb-4">)[\s\S]*?(<\/p>)/i', '$1' . $body . '$2', $html, 1) ?? $html;
+
+  $html = preg_replace('/(<a\b[^>]*href="https:\/\/wa\.me\/34613026600"[^>]*aria-label=")[^"]*(")/i', '$1' . e(html_entity_decode($whatsapp, ENT_QUOTES | ENT_HTML5, 'UTF-8')) . '$2', $html) ?? $html;
+  $html = str_replace('BLOQUE CENTRAL — Solicita tu presupuesto (versión seria/minimal v2)', 'BLOQUE CENTRAL — Agenda cerrada temporalmente', $html);
+
+  return $html;
 }
 
 function patch_snapshot_primary_nav(string $html, string $lang): string {
