@@ -1,10 +1,14 @@
-# Despliegue en cPanel
+# Deploy — NO USAR DESDE `main`
 
-1. **Subir el repositorio** a `public_html/masqueclima/` usando Git o FTP.
-2. En el `public_html/` raíz del dominio copiar:
-   - `public_html/index.php`
-   - `public_html/.htaccess`
-3. En cPanel → *Select PHP Version* escoger **PHP 8.0+** para el dominio.
-4. El front controller quedará en `public_html/masqueclima/public/index.php`.
-5. Subir también `public/.htaccess`, `public/robots.txt` y `public/sitemap.xml` dentro de `masqueclima/public/`.
-6. Limpiar cachés (cPanel o CDN) y comprobar que `/`, `/es/`… responden `200`.
+La rama `main` no representa producción y no debe desplegarse.
+
+Procedimiento vigente:
+
+1. Cambiar a la rama `production`.
+2. Leer `DEPLOY.md` y `docs/DEPLOY.md` en esa rama.
+3. Desplegar en el VPS `51.254.128.162` mediante releases inmutables bajo `/srv/apps/masqueclima/releases/` y switch del symlink `current`.
+4. Recargar `php8.4-fpm` tras el switch y ejecutar QA.
+
+Nicalia/cPanel se mantiene para correo/cPanel y no es el origen web público.
+
+Rama correcta: https://github.com/nachocuenca/masqueclima/tree/production
