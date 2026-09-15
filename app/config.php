@@ -39,7 +39,8 @@ return [
   ],
   'app' => [
     'env' => getenv('APP_ENV') ?: 'production',
-    'ga4_id' => getenv('GA4_ID') ?: null
+    'ga4_id' => getenv('GA4_ID') ?: null,
+    'accepting_new_work' => filter_var(getenv('ACCEPTING_NEW_WORK') ?: 'false', FILTER_VALIDATE_BOOLEAN),
   ],
   'turnstile' => [
     'enabled'    => filter_var(getenv('TURNSTILE_ENABLED') ?: 'false', FILTER_VALIDATE_BOOLEAN),
